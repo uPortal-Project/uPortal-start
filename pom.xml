@@ -123,6 +123,8 @@
         <env>local</env>
         <filters.file>filters/${env}.properties</filters.file>
 
+        <uPortal.version>5.0.0-M1</uPortal.version>
+
         <!-- WAR Dependency Version Properties -->
         <AnnouncementsPortlet.version>2.2.3</AnnouncementsPortlet.version>
         <basiclti-portlet.version>1.4.2</basiclti-portlet.version>
@@ -136,7 +138,7 @@
         <NewsReaderPortlet.version>4.2.2</NewsReaderPortlet.version>
         <NotificationPortlet.version>3.0.1</NotificationPortlet.version>
         <sakai-connector-portlet.version>1.5.2</sakai-connector-portlet.version>
-        <SimpleContentPortlet.version>2.0.2</SimpleContentPortlet.version>
+        <SimpleContentPortlet.version>2.1.1</SimpleContentPortlet.version>
         <WeatherPortlet.version>1.1.5</WeatherPortlet.version>
         <WebProxyPortlet.version>2.2.2</WebProxyPortlet.version>
 
@@ -224,7 +226,6 @@
         <stringtemplate.version>4.0.2</stringtemplate.version>
         <tika.version>1.5</tika.version>
         <tomcat-jdbc.version>7.0.37</tomcat-jdbc.version>
-        <uPortal.version>5.0.0-SNAPSHOT</uPortal.version>
         <uportal-ear-deployer.version>3.1.5</uportal-ear-deployer.version>
         <uportal-maven-plugin.version>1.0.1</uportal-maven-plugin.version>
         <usertype.version>3.1.0.GA</usertype.version>
