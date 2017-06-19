@@ -410,7 +410,7 @@ modules.xml
 
 # Project specific ignores
 /build.properties
-/data/
+/hsqldb/
 
 # Project specific includes
 !**/filters/local.properties
