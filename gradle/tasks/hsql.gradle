@@ -1,28 +1,43 @@
-buildscript {
-    repositories {
-        maven {
-            url 'https://plugins.gradle.org/m2/'
-        }
-        maven {url 'http://dl.bintray.com/vermeulen-mp/gradle-plugins'}
-        mavenLocal()
-    }
-    dependencies {
-        classpath 'com.wiredforcode:gradle-spawn-plugin:0.6.0'
-    }
+repositories {
+    mavenLocal()
+    mavenCentral()
 }
 
-import com.wiredforcode.gradle.spawn.*
+configurations {
+    hsqldb
+}
+
+dependencies {
+    hsqldb "org.hsqldb:hsqldb:${hsqldbVersion}"
+}
 
 // NOTE: The startHsql task can be executed after uportal-war is built because it uses hsqldb-2.3.2.jar in classpath, otherwise it will fail
 task startHsql(type: SpawnProcessTask) {
     group 'Hypersonic SQL'
-    description 'Start hsql server.'
-    def cmd = "java -cp ${rootDir}/uportal-war/target/uPortal/WEB-INF/lib/hsqldb-2.3.2.jar org.hsqldb.server.Server --database.0 file:./data/uPortal;hsqldb.tx=mvcc --dbname.0 uPortal --address localhost --port 8887"
-    command cmd
+    description 'Start hsql server'
     ready 'Startup sequence completed'
+
+    doFirst {
+        logger.lifecycle('Starting embedded HSQLDB uPortal database')
+
+        String classpath = '';
+        configurations.hsqldb.resolve().each {
+            if (classpath.length() != 0) {
+                classpath += ';'
+            }
+            classpath += it.getAbsolutePath()
+        }
+
+        String cmd = "java -cp ${classpath} org.hsqldb.server.Server --database.0 file:./hsqldb/uPortal;hsqldb.tx=mvcc --dbname.0 uPortal --address localhost --port 8887"
+        command cmd
+    }
 }
 
 task stopHsql(type: KillProcessTask) {
     group 'Hypersonic SQL'
     description 'Stop hsql server.'
+
+    doFirst {
+        logger.lifecycle('Stopping embedded HSQLDB uPortal database')
+    }
 }

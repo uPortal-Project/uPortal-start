@@ -1,0 +1,44 @@
+def buildProps = new Properties()
+
+task loadBuildProps() {
+    description 'Loads build settings from the build.properties file'
+    doLast {
+        logger.lifecycle('Reading build.properties')
+        def buildPropsFile = file('build.properties')
+        if (buildPropsFile.exists()) {
+            buildPropsFile.withInputStream { buildProps.load(it) }
+        } else {
+            /*
+             * Stop the build by throwing the relevant exception from the org.gradle.api package
+             * (https://stackoverflow.com/questions/10312259/recommended-way-to-stop-a-gradle-build).
+             */
+            throw new InvalidUserDataException('The build.properties file is not present')
+        }
+    }
+}
+
+task cleanShared(type: Delete, dependsOn: 'loadBuildProps') {
+    group 'Clean Tomcat'
+    description 'Removes ALL shared libraries from the servlet container.'
+    followSymlinks = true
+
+    doFirst {
+        def serverHome = buildProps.getProperty('server.home')
+        def sharedLibs = "${serverHome}/shared/lib"
+        logger.lifecycle("Removing shared libraries from servlet container at location:  ${sharedLibs}")
+        delete sharedLibs
+    }
+}
+
+task cleanPortal(type: Delete, dependsOn: 'loadBuildProps') {
+    group 'Clean Tomcat'
+    description 'Removes the deployed uPortal from the servlet container.'
+    followSymlinks = true
+
+    doFirst {
+        def serverHome = buildProps.getProperty('server.home')
+        def uPortalDeployDir = "${serverHome}/webapps/uPortal"
+        logger.lifecycle("Removing deployed uPortal from servlet container at location:  ${uPortalDeployDir}")
+        delete uPortalDeployDir
+    }
+}

@@ -1,2 +1,6 @@
-apply from: rootProject.file('gradle/tasks/clean.gradle')
+plugins {
+    id "com.wiredforcode.spawn" version "0.8.2"
+}
+
+apply from: rootProject.file('gradle/tasks/cleanPortal.gradle')
 apply from: rootProject.file('gradle/tasks/hsql.gradle')
