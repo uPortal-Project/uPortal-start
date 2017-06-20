@@ -1,22 +1,3 @@
-def buildProps = new Properties()
-
-task loadBuildProps() {
-    description 'Loads build settings from the build.properties file'
-    doLast {
-        logger.lifecycle('Reading build.properties')
-        def buildPropsFile = file('build.properties')
-        if (buildPropsFile.exists()) {
-            buildPropsFile.withInputStream { buildProps.load(it) }
-        } else {
-            /*
-             * Stop the build by throwing the relevant exception from the org.gradle.api package
-             * (https://stackoverflow.com/questions/10312259/recommended-way-to-stop-a-gradle-build).
-             */
-            throw new InvalidUserDataException('The build.properties file is not present')
-        }
-    }
-}
-
 task cleanShared(type: Delete, dependsOn: 'loadBuildProps') {
     group 'Clean Tomcat'
     description 'Removes ALL shared libraries from the servlet container.'

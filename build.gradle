@@ -2,5 +2,30 @@ plugins {
     id "com.wiredforcode.spawn" version "0.8.2"
 }
 
+ext {
+    buildProps = new Properties();  // Initialized by the 'loadBuildProps' task, if needed
+}
+
+/*
+ * uPortal CLI Tools
+ */
 apply from: rootProject.file('gradle/tasks/cleanPortal.gradle')
 apply from: rootProject.file('gradle/tasks/hsql.gradle')
+apply from: rootProject.file('gradle/tasks/tomcat.gradle')
+
+task loadBuildProps() {
+    description 'Loads build settings from the build.properties file'
+    doLast {
+        logger.lifecycle('Reading build.properties')
+        def buildPropsFile = file('build.properties')
+        if (buildPropsFile.exists()) {
+            buildPropsFile.withInputStream { buildProps.load(it) }
+        } else {
+            /*
+             * Stop the build by throwing the relevant exception from the org.gradle.api package
+             * (https://stackoverflow.com/questions/10312259/recommended-way-to-stop-a-gradle-build).
+             */
+            throw new InvalidUserDataException('The build.properties file is not present')
+        }
+    }
+}
