@@ -1,0 +1,12 @@
+task portalClean(type: Delete, dependsOn: 'loadBuildProps') {
+    group 'Clean the deployed uPortal within Tomcat'
+    description 'Removes the deployed uPortal from the servlet container.'
+    followSymlinks = true
+
+    doFirst {
+        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
+        def uPortalDeployDir = "${serverHome}/webapps/uPortal"
+        logger.lifecycle("Removing deployed uPortal from servlet container at location:  ${uPortalDeployDir}")
+        delete uPortalDeployDir
+    }
+}

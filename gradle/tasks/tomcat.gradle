@@ -1,0 +1,115 @@
+ext {
+    defaultServerHome = "${projectDir.getPath()}/.gradle/tomcat"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+configurations {
+    tomcat
+    shared
+}
+
+dependencies {
+    tomcat "org.apache.tomcat:tomcat:${tomcatVersion}@tar.gz"
+    shared "javax.ccpp:ccpp:${ccppVersion}"
+    shared "org.apache.portals.pluto:pluto-container-api:${plutoVersion}"
+    shared "org.apache.portals.pluto:pluto-container-driver-api:${plutoVersion}"
+    shared "org.apache.portals.pluto:pluto-taglib:${plutoVersion}"
+    shared "org.jasig.service.persondir:person-directory-api:${personDirectoryVersion}"
+    shared "org.jasig.portal:uPortal-api-platform:${uPortalVersion}"
+    shared "${portletApiDependency}"
+}
+
+task tomcatInstall(dependsOn: 'loadBuildProps') {
+    description 'Downloads the Apache Tomcat servlet container and performs the necessary configuration steps'
+
+    doLast {
+        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
+
+        logger.lifecycle("Installing Tomcat servlet container version ${tomcatVersion} to location ${serverHome}")
+
+        File tomcatTmpDir = new File('build/tmp/tomcat')
+
+        // Clear & reset the tomcat directory
+        tomcatTmpDir.deleteDir()
+        tomcatTmpDir.mkdirs()
+
+        File tomcatTarFile = new File("${tomcatTmpDir}/tomcat-gunziped.tar")
+
+        // Gunzip the Tomcat binaries
+        File tomcatTarGz = configurations.tomcat.files.iterator().next()
+        ant.gunzip(src: tomcatTarGz, dest: tomcatTarFile.getPath())
+
+        // Un-archive the tar file
+        copy {
+            from tarTree(tomcatTarFile.getPath())
+            into tomcatTmpDir
+        }
+
+        // Clear any previous copy of Tomcat
+        new File(serverHome).deleteDir()
+
+        // Copy to the final location & configure our settings in the process
+        copy {
+            from "${tomcatTmpDir}/apache-tomcat-${tomcatVersion}"
+            into serverHome
+
+            // Configure 'shared.loader' property
+            filesMatching('conf/catalina.properties') {
+                filter { line ->
+                    line.replace('shared.loader=', 'shared.loader=${catalina.base}/shared/lib/*.jar')
+                }
+            }
+
+            // Configure sessionCookiePath attribute
+            filesMatching('conf/context.xml') {
+                filter { line ->
+                    line.replace('<Context>', '<Context sessionCookiePath="/">')
+                }
+            }
+        }
+
+        // Add setenv.sh (*nix) & setenv.bat (Windows)
+        copy {
+            from 'etc/tomcat/bin'
+            into "${serverHome}/bin"
+        }
+
+        // Add shared.loader dependencies
+        copy {
+            from configurations.shared
+            into "${serverHome}/shared/lib"
+        }
+    }
+}
+
+import org.gradle.internal.os.OperatingSystem;
+
+task tomcatStart(type: SpawnProcessTask) {
+    group 'Tomcat'
+    description 'Start the embedded Tomcat servlet container'
+    ready 'org.apache.catalina.startup.Catalina.start Server startup'
+
+    doFirst {
+        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
+        logger.lifecycle("Starting Tomcat servlet container in ${serverHome}")
+        String scriptFile = OperatingSystem.current().isWindows() ? 'startup.bat' : 'startup.sh'
+        command "${serverHome}/bin/${scriptFile}"
+    }
+}
+
+task tomcatStop(type: SpawnProcessTask) {
+    group 'Tomcat'
+    description 'Stop the embedded Tomcat servlet container'
+    ready 'A valid shutdown command was received via the shutdown port. Stopping the Server instance.'
+
+    doFirst {
+        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
+        logger.lifecycle("Stopping Tomcat servlet container in ${serverHome}")
+        String scriptFile = OperatingSystem.current().isWindows() ? 'shutdown.bat' : 'shutdown.sh'
+        command "${serverHome}/bin/${scriptFile}"
+    }
+}

@@ -12,7 +12,7 @@ dependencies {
 }
 
 // NOTE: The startHsql task can be executed after uportal-war is built because it uses hsqldb-2.3.2.jar in classpath, otherwise it will fail
-task startHsql(type: SpawnProcessTask) {
+task hsqlStart(type: SpawnProcessTask) {
     group 'Hypersonic SQL'
     description 'Start hsql server'
     ready 'Startup sequence completed'
@@ -33,7 +33,7 @@ task startHsql(type: SpawnProcessTask) {
     }
 }
 
-task stopHsql(type: KillProcessTask) {
+task hsqlStop(type: KillProcessTask) {
     group 'Hypersonic SQL'
     description 'Stop hsql server.'
 

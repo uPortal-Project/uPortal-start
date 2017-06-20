@@ -2,5 +2,14 @@ plugins {
     id "com.wiredforcode.spawn" version "0.8.2"
 }
 
-apply from: rootProject.file('gradle/tasks/cleanPortal.gradle')
+ext {
+    buildProps = new Properties();  // Initialized by the 'loadBuildProps' task, if needed
+}
+
+/*
+ * uPortal CLI Tools
+ */
 apply from: rootProject.file('gradle/tasks/hsql.gradle')
+apply from: rootProject.file('gradle/tasks/portal.gradle')
+apply from: rootProject.file('gradle/tasks/properties.gradle')
+apply from: rootProject.file('gradle/tasks/tomcat.gradle')
