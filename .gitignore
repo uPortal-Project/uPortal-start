@@ -408,10 +408,8 @@ gradle-app.setting
 *.ipr
 modules.xml
 
-# Project specific ignores
+# Project-specific ignores
 /build.properties
-/hsqldb/
-/tomcat/
 
 # Project specific includes
 !**/filters/local.properties

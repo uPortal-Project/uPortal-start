@@ -1,3 +1,7 @@
+ext {
+    defaultServerHome = "${projectDir.getPath()}/.gradle/tomcat"
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -23,7 +27,7 @@ task tomcatInstall(dependsOn: 'loadBuildProps') {
     description 'Downloads the Apache Tomcat servlet container and performs the necessary configuration steps'
 
     doLast {
-        String serverHome = buildProps.getProperty('server.home') ?: "${projectDir.getPath()}/tomcat"  // default
+        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
 
         logger.lifecycle("Installing Tomcat servlet container version ${tomcatVersion} to location ${serverHome}")
 
@@ -90,7 +94,7 @@ task tomcatStart(type: SpawnProcessTask) {
     ready 'org.apache.catalina.startup.Catalina.start Server startup'
 
     doFirst {
-        String serverHome = buildProps.getProperty('server.home') ?: "${projectDir.getPath()}/tomcat"  // default
+        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
         logger.lifecycle("Starting Tomcat servlet container in ${serverHome}")
         String scriptFile = OperatingSystem.current().isWindows() ? 'startup.bat' : 'startup.sh'
         command "${serverHome}/bin/${scriptFile}"
@@ -103,7 +107,7 @@ task tomcatStop(type: SpawnProcessTask) {
     ready 'A valid shutdown command was received via the shutdown port. Stopping the Server instance.'
 
     doFirst {
-        String serverHome = buildProps.getProperty('server.home') ?: "${projectDir.getPath()}/tomcat"  // default
+        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
         logger.lifecycle("Stopping Tomcat servlet container in ${serverHome}")
         String scriptFile = OperatingSystem.current().isWindows() ? 'shutdown.bat' : 'shutdown.sh'
         command "${serverHome}/bin/${scriptFile}"
