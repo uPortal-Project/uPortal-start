@@ -9,7 +9,7 @@ bower_components
 ### Eclipse ###
 
 .metadata
-bin/
+/bin/
 tmp/
 *.tmp
 *.bak

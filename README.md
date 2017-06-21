@@ -11,4 +11,6 @@ environments_
 configuration steps, cleaning up the previous installation if necessary
 - **tomcatStart**:  Starts the embedded Tomcat servlet container
 - **tomcatStop**:  Stops the embedded Tomcat servlet container
+- **tomcatClearLogs**:  Deletes all files and sub folders in the Tomcat logs directory (not
+recommended for server deployments)
 - **portalClean**:  Deletes the deployed `/uPortal` webapp in Tomcat

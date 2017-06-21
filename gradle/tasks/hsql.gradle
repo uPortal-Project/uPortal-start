@@ -9,35 +9,66 @@ configurations {
 
 dependencies {
     hsqldb "org.hsqldb:hsqldb:${hsqldbVersion}"
+    hsqldb "org.hsqldb:sqltool:${hsqldbVersion}"  // Needed for stopping the embedded HSQLDB
 }
 
-// NOTE: The startHsql task can be executed after uportal-war is built because it uses hsqldb-2.3.2.jar in classpath, otherwise it will fail
-task hsqlStart(type: SpawnProcessTask) {
-    group 'Hypersonic SQL'
-    description 'Start hsql server'
-    ready 'Startup sequence completed'
+task hsqlStart {
+    group 'HSQL'
+    description 'Start the embedded hsql server'
 
-    doFirst {
+    doLast {
         logger.lifecycle('Starting embedded HSQLDB uPortal database')
 
+        String classpathSeparatorCharacter = isWindows ? ';' : ':'
         String classpath = '';
         configurations.hsqldb.resolve().each {
             if (classpath.length() != 0) {
-                classpath += ';'
+                classpath += classpathSeparatorCharacter
             }
             classpath += it.getAbsolutePath()
         }
 
-        String cmd = "java -cp ${classpath} org.hsqldb.server.Server --database.0 file:./hsqldb/uPortal;hsqldb.tx=mvcc --dbname.0 uPortal --address localhost --port 8887"
-        command cmd
+        ant.exec(executable: 'java', spawn: true) {
+            arg(value: '-cp')
+            arg(value: classpath)
+            arg(value: 'org.hsqldb.server.Server')
+            arg(value: '--database.0')
+            arg(value: 'file:./.gradle/hsqldb/uPortal;hsqldb.tx=mvcc')
+            arg(value: '--dbname.0')
+            arg(value: 'uPortal')
+            arg(value: '--address')
+            arg(value: 'localhost')
+            arg(value: '--port')
+            arg(value: '8887')
+        }
     }
 }
 
-task hsqlStop(type: KillProcessTask) {
-    group 'Hypersonic SQL'
-    description 'Stop hsql server.'
+task hsqlStop {
+    group 'HSQL'
+    description 'Stop the embedded hsql server'
 
-    doFirst {
+    doLast {
         logger.lifecycle('Stopping embedded HSQLDB uPortal database')
+
+        String classpathSeparatorCharacter = isWindows ? ';' : ':'
+        String classpath = '';
+        configurations.hsqldb.resolve().each {
+            if (classpath.length() != 0) {
+                classpath += classpathSeparatorCharacter
+            }
+            classpath += it.getAbsolutePath()
+        }
+
+        ant.exec(executable: 'java', spawn: true) {
+            arg(value: '-cp')
+            arg(value: classpath)
+            arg(value: 'org.hsqldb.cmdline.SqlTool')
+            arg(value: '--rcFile')
+            arg(value: 'etc/hsql/hsqldb.sqltool.rc')
+            arg(value: '--sql')
+            arg(value: 'shutdown compact;')
+            arg(value: 'uPortalDb')
+        }
     }
 }

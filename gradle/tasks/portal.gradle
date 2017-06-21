@@ -1,5 +1,5 @@
 task portalClean(type: Delete, dependsOn: 'loadBuildProps') {
-    group 'Clean the deployed uPortal within Tomcat'
+    group 'Portal'
     description 'Removes the deployed uPortal from the servlet container.'
     followSymlinks = true
 
