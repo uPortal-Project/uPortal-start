@@ -86,30 +86,26 @@ task tomcatInstall(dependsOn: 'loadBuildProps') {
     }
 }
 
-import org.gradle.internal.os.OperatingSystem;
-
-task tomcatStart(type: SpawnProcessTask) {
+task tomcatStart {
     group 'Tomcat'
     description 'Start the embedded Tomcat servlet container'
-    ready 'org.apache.catalina.startup.Catalina.start Server startup'
 
-    doFirst {
+    doLast {
         String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
         logger.lifecycle("Starting Tomcat servlet container in ${serverHome}")
-        String scriptFile = OperatingSystem.current().isWindows() ? 'startup.bat' : 'startup.sh'
-        command "${serverHome}/bin/${scriptFile}"
+        String scriptFile = isWindows ? 'startup.bat' : './startup.sh'
+        ant.exec(dir: "${serverHome}/bin", executable: scriptFile, spawn: true)
     }
 }
 
-task tomcatStop(type: SpawnProcessTask) {
+task tomcatStop {
     group 'Tomcat'
     description 'Stop the embedded Tomcat servlet container'
-    ready 'A valid shutdown command was received via the shutdown port. Stopping the Server instance.'
 
-    doFirst {
+    doLast {
         String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
         logger.lifecycle("Stopping Tomcat servlet container in ${serverHome}")
-        String scriptFile = OperatingSystem.current().isWindows() ? 'shutdown.bat' : 'shutdown.sh'
-        command "${serverHome}/bin/${scriptFile}"
+        String scriptFile = isWindows ? 'shutdown.bat' : './shutdown.sh'
+        ant.exec(dir: "${serverHome}/bin", executable: scriptFile, spawn: true)
     }
 }

@@ -1,5 +1,7 @@
 task loadBuildProps() {
+    group 'Properties'
     description 'Loads build settings from the build.properties file'
+
     doLast {
         logger.lifecycle('Reading build.properties')
         def buildPropsFile = file('build.properties')

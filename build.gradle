@@ -1,9 +1,8 @@
-plugins {
-    id "com.wiredforcode.spawn" version "0.8.2"
-}
+import org.gradle.internal.os.OperatingSystem;
 
 ext {
     buildProps = new Properties();  // Initialized by the 'loadBuildProps' task, if needed
+    isWindows = OperatingSystem.current().isWindows()
 }
 
 /*
