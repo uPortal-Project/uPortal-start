@@ -9,7 +9,7 @@ configurations {
 
 dependencies {
     hsqldb "org.hsqldb:hsqldb:${hsqldbVersion}"
-    hsqldb "org.hsqldb:sqltool:${hsqldbVersion}"  // For stopping the embedded HSQLDB
+    hsqldb "org.hsqldb:sqltool:${hsqldbVersion}"  // Needed for stopping the embedded HSQLDB
 }
 
 task hsqlStart {
@@ -19,10 +19,11 @@ task hsqlStart {
     doLast {
         logger.lifecycle('Starting embedded HSQLDB uPortal database')
 
+        String classpathSeparatorCharacter = isWindows ? ';' : ':'
         String classpath = '';
         configurations.hsqldb.resolve().each {
             if (classpath.length() != 0) {
-                classpath += ':'
+                classpath += classpathSeparatorCharacter
             }
             classpath += it.getAbsolutePath()
         }
@@ -50,10 +51,11 @@ task hsqlStop {
     doLast {
         logger.lifecycle('Stopping embedded HSQLDB uPortal database')
 
+        String classpathSeparatorCharacter = isWindows ? ';' : ':'
         String classpath = '';
         configurations.hsqldb.resolve().each {
             if (classpath.length() != 0) {
-                classpath += ':'
+                classpath += classpathSeparatorCharacter
             }
             classpath += it.getAbsolutePath()
         }

@@ -93,8 +93,13 @@ task tomcatStart {
     doLast {
         String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
         logger.lifecycle("Starting Tomcat servlet container in ${serverHome}")
-        String scriptFile = isWindows ? 'startup.bat' : './startup.sh'
-        ant.exec(dir: "${serverHome}/bin", executable: scriptFile, spawn: true)
+        String executable = isWindows ? 'cmd' : './startup.sh'
+        ant.exec(dir: "${serverHome}/bin", executable: executable, spawn: true) {
+            if (isWindows) {
+                arg(value: '/c')
+                arg(value: 'startup.bat')
+            }
+        }
     }
 }
 
@@ -105,7 +110,35 @@ task tomcatStop {
     doLast {
         String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
         logger.lifecycle("Stopping Tomcat servlet container in ${serverHome}")
-        String scriptFile = isWindows ? 'shutdown.bat' : './shutdown.sh'
-        ant.exec(dir: "${serverHome}/bin", executable: scriptFile, spawn: true)
+        String executable = isWindows ? 'cmd' : './shutdown.sh'
+        ant.exec(dir: "${serverHome}/bin", executable: executable, spawn: true) {
+            if (isWindows) {
+                arg(value: '/c')
+                arg(value: 'shutdown.bat')
+            }
+        }
+    }
+}
+
+task tomcatClearLogs(type: Delete) {
+    followSymlinks = true
+
+    doFirst {
+        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
+        String tomcatLogsDir = "${serverHome}/logs"
+        logger.lifecycle("Deleting Tomcat log files from ${tomcatLogsDir}...")
+
+        def deleteRecursive;
+        deleteRecursive = { file ->
+            if (file.isDirectory()) {
+                file.eachFile { deleteRecursive(it) }
+                delete file
+            } else if (file.isFile()) {
+                logger.lifecycle("  --> ${file}")
+                delete file
+            }
+        }
+
+        new File(tomcatLogsDir).eachFile { deleteRecursive(it) }
     }
 }

@@ -1,8 +1,12 @@
 import org.gradle.internal.os.OperatingSystem;
 
 ext {
-    buildProps = new Properties();  // Initialized by the 'loadBuildProps' task, if needed
+    /*
+     * Unfortunately, several of the uPortal CLI tasks need to do
+     * significantly different things on different operating systems.
+     */
     isWindows = OperatingSystem.current().isWindows()
+    buildProps = new Properties();  // Initialized by the 'loadBuildProps' task, if needed
 }
 
 /*
