@@ -11,7 +11,7 @@ task portalClean(type: Delete, dependsOn: 'loadBuildProps') {
     }
 }
 
-task portalDeploy {
+task portalDeploy(dependsOn: 'loadBuildProps') {
     group 'Portal'
     description 'Deploys uPortal and all bundled war files to the embedded Tomcat servlet container'
     dependsOn 'portalClean'
