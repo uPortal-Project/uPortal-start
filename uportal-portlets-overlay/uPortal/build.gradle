@@ -1,3 +1,7 @@
+import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
+
+apply plugin: GradlePlutoPlugin
+
 dependencies {
     runtime "org.jasig.portal:uPortal-webapp:${uPortalVersion}@war"
 }

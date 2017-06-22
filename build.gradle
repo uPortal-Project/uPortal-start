@@ -18,7 +18,7 @@ configurations {
  * resource-server, and (starting with version 5.0) uPortal itself.
  */
 dependencies {
-    bundled project(path: ':uportal-portlets-overlay:uPortal', configuration: 'war')
+    bundled project(path: ':uportal-portlets-overlay:uPortal', configuration: 'pluto')
 }
 
 /*

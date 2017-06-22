@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "org.scaldingspoon.gradle:gradle-waroverlay-plugin:0.9.3"
+        classpath "org.scaldingspoon.gradle:gradle-waroverlay-plugin:${waroverlayPluginVersion}"
     }
 }
 
@@ -21,7 +21,7 @@ subprojects {
             jcenter()
         }
         dependencies {
-            classpath "org.scaldingspoon.gradle:gradle-waroverlay-plugin:0.9.3"
+            classpath "org.scaldingspoon.gradle:gradle-waroverlay-plugin:${waroverlayPluginVersion}"
         }
     }
 

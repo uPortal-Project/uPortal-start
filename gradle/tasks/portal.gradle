@@ -14,8 +14,8 @@ task portalClean(type: Delete, dependsOn: 'loadBuildProps') {
 task portalDeploy {
     group 'Portal'
     description 'Deploys uPortal and all bundled war files to the embedded Tomcat servlet container'
-    dependsOn getTasksByName('install', true)
     dependsOn 'portalClean'
+    dependsOn getTasksByName('plutoAssemble', true)
 
     doLast {
         String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
