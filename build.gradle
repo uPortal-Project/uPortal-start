@@ -9,6 +9,18 @@ ext {
     buildProps = new Properties();  // Initialized by the 'loadBuildProps' task, if needed
 }
 
+configurations {
+    bundled
+}
+
+/*
+ * These are the "bundled" applications that deploy to Tomcat: portlets,
+ * resource-server, and (starting with version 5.0) uPortal itself.
+ */
+dependencies {
+    bundled project(path: ':uportal-portlets-overlay:uPortal', configuration: 'war')
+}
+
 /*
  * uPortal CLI Tools
  */

@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.scaldingspoon.gradle:gradle-waroverlay-plugin:0.9.3"
+    }
+}
+
+subprojects {
+    apply plugin: 'maven'
+    apply plugin: 'waroverlay'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    buildscript {
+        repositories {
+            jcenter()
+        }
+        dependencies {
+            classpath "org.scaldingspoon.gradle:gradle-waroverlay-plugin:0.9.3"
+        }
+    }
+
+    warOverlay {
+        // Include the jar files in the WAR (default is false).
+        includeWarJars true
+    }
+
+    configurations {
+        war {}
+    }
+
+    artifacts {
+        war tasks.war
+    }
+
+}

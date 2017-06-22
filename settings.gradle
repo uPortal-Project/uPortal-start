@@ -1,0 +1,3 @@
+rootProject.name = 'uPortal-start'
+
+include 'uportal-portlets-overlay:uPortal'
