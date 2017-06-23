@@ -43,15 +43,16 @@ server.webapps=${server.base}/webapps
 # If the mvn executable isn't on your path you can set the location here or set it on your path.
 #maven.home=
 
-######## uPortal Data ######## 
+######## uPortal Data ########
 
-# Use default_entities.location to override the location of data imported by the initdb
-# and/or db-import targets;  required data is imported before entities specified here
-#default_entities.location=uportal-data/default
+# Use this property to override the location of data imported by the initdb
+# and/or db-import targets;  base data is imported before entities specified
+# in quickstart.entities.location (below).
+#base.entities.location=uportal-data/base
 
-# Use quickstart_entities.location to override the location of data imported by the initdb
-# and/or db-import targets;  required and default data is imported before entities specified here
-#quickstart_entities.location=uportal-data/quickstart
+# Use this property to override the location of data imported by the initdb
+# and/or db-import targets;  base data is imported before entities specified here
+#implementation.entities.location=uportal-data/quickstart
 
 
 ######## Deployment Configuration ##########
