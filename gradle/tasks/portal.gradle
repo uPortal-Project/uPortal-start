@@ -10,3 +10,26 @@ task portalClean(type: Delete, dependsOn: 'loadBuildProps') {
         delete uPortalDeployDir
     }
 }
+
+task portalDeploy(dependsOn: 'loadBuildProps') {
+    group 'Portal'
+    description 'Deploys uPortal and all bundled war files to the embedded Tomcat servlet container'
+    dependsOn 'portalClean'
+    dependsOn getTasksByName('war', true)
+    dependsOn getTasksByName('plutoAssemble', true)
+
+    doLast {
+        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
+        logger.lifecycle("Deploying bundled applications to the Tomcat servlet container in ${serverHome}...")
+
+        configurations.bundled.files.each { war ->
+            logger.lifecycle("  --> ${war}")
+            copy {
+                into "${serverHome}/webapps/${war.getName().take(war.getName().lastIndexOf('.'))}"
+                with copySpec {
+                    from zipTree(war)
+                }
+            }
+        }
+    }
+}

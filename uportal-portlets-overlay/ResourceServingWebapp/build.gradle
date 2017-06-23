@@ -1,0 +1,7 @@
+dependencies {
+    runtime "org.jasig.resourceserver:resource-server-webapp:${resourceServerVersion}@war"
+}
+
+war {
+    archiveName 'ResourceServingWebapp.war'
+}

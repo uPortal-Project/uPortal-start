@@ -99,7 +99,7 @@
     <bean id="clearPassProxyList" class="org.jasig.cas.client.validation.ProxyList">
         <constructor-arg>
             <list>
-                <value>${environment.build.uportal.protocol}://${environment.build.uportal.server}${environment.build.uportal.context}/CasProxyServlet</value>
+                <value>http://localhost:8080/uPortal/CasProxyServlet</value>
             </list>
         </constructor-arg>
     </bean>

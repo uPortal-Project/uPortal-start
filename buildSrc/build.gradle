@@ -1,0 +1,8 @@
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.apache.portals.pluto:pluto-util:2.1.0-M3'
+}

@@ -1,0 +1,14 @@
+import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
+
+apply plugin: GradlePlutoPlugin
+
+dependencies {
+    runtime "org.jasig.portlet:BookmarksPortlet:${bookmarksPortletVersion}@war"
+    compile configurations.jdbc
+}
+
+war {
+    archiveName 'BookmarksPortlet.war'
+    exclude 'WEB-INF/tags/uwfn.tld'
+    exclude 'WEB-INF/lib/hsqldb-*.jar'
+}

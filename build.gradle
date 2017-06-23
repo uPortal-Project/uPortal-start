@@ -9,6 +9,35 @@ ext {
     buildProps = new Properties();  // Initialized by the 'loadBuildProps' task, if needed
 }
 
+configurations {
+    bundled
+}
+
+/*
+ * These are the "bundled" applications that deploy to Tomcat: portlets,
+ * resource-server, and (starting with version 5.0) uPortal itself.
+ */
+dependencies {
+    bundled project(path: ':uportal-portlets-overlay:AnnouncementsPortlet', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:basiclti-portlet', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:BookmarksPortlet', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:CalendarPortlet', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:cas', configuration: 'war')
+    bundled project(path: ':uportal-portlets-overlay:cas-proxy-test-portlet', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:email-preview', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:FunctionalTestsPortlet', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:jasig-widget-portlets', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:NewsReaderPortlet', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:NotificationPortlet', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:pluto-testsuite', configuration: 'war')
+    bundled project(path: ':uportal-portlets-overlay:ResourceServingWebapp', configuration: 'war')
+    bundled project(path: ':uportal-portlets-overlay:sakai-connector-portlet', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:SimpleContentPortlet', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:uPortal', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:WeatherPortlet', configuration: 'pluto')
+    bundled project(path: ':uportal-portlets-overlay:WebProxyPortlet', configuration: 'pluto')
+}
+
 /*
  * uPortal CLI Tools
  */

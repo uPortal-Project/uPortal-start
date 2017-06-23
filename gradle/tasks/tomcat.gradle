@@ -86,7 +86,7 @@ task tomcatInstall(dependsOn: 'loadBuildProps') {
     }
 }
 
-task tomcatStart {
+task tomcatStart(dependsOn: 'loadBuildProps') {
     group 'Tomcat'
     description 'Start the embedded Tomcat servlet container'
 
@@ -103,7 +103,7 @@ task tomcatStart {
     }
 }
 
-task tomcatStop {
+task tomcatStop(dependsOn: 'loadBuildProps') {
     group 'Tomcat'
     description 'Stop the embedded Tomcat servlet container'
 
@@ -120,8 +120,9 @@ task tomcatStop {
     }
 }
 
-task tomcatClearLogs(type: Delete) {
+task tomcatClearLogs(type: Delete, dependsOn: 'loadBuildProps') {
     followSymlinks = true
+    description 'Delete log files within Tomcat'
 
     doFirst {
         String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome

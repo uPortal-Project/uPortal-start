@@ -1,0 +1,46 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.scaldingspoon.gradle:gradle-waroverlay-plugin:${waroverlayPluginVersion}"
+    }
+}
+
+subprojects {
+    apply plugin: 'maven'
+    apply plugin: 'waroverlay'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    buildscript {
+        repositories {
+            jcenter()
+        }
+        dependencies {
+            classpath "org.scaldingspoon.gradle:gradle-waroverlay-plugin:${waroverlayPluginVersion}"
+        }
+    }
+
+    warOverlay {
+        // Include the jar files in the WAR (default is false).
+        includeWarJars true
+    }
+
+    configurations {
+        war {}
+        jdbc
+    }
+
+    dependencies {
+        jdbc "org.hsqldb:hsqldb:${hsqldbVersion}"
+    }
+
+    artifacts {
+        war tasks.war
+    }
+
+}
