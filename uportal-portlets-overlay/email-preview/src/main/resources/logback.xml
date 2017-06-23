@@ -44,7 +44,7 @@
     <!--
      | Specify a local property that sets up the logging directory
      +-->
-    <property scope="local" name="LOG_DIR" value="${environment.build.log.logfileDirectory}" />
+    <property scope="local" name="LOG_DIR" value="${catalina.base}/logs" />
 
     <!--
      | Setup a file based logger that rolls
@@ -63,7 +63,7 @@
          | http://logback.qos.ch/manual/layouts.html#conversionWord
          +-->
         <encoder>
-            <pattern>${environment.build.logback.layoutConversionPattern}</pattern>
+            <pattern>%-5level [%thread] %logger{36} %d{ISO8601} - %msg%n</pattern>
         </encoder>
 
         <!--
@@ -74,7 +74,7 @@
          | http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy
          +-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/${CONTEXT_NAME}.log.%d{${environment.build.log.rollingLogFileDatePattern}}.gz</fileNamePattern>
+            <fileNamePattern>${LOG_DIR}/${CONTEXT_NAME}.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <maxHistory>28</maxHistory>
         </rollingPolicy>
     </appender>
@@ -82,7 +82,7 @@
     <!--
      | Setup default log level to INFO
      +-->
-    <root level="${environment.build.log.rootLevel}">
+    <root level="INFO">
         <appender-ref ref="LOG" />
     </root>
 

@@ -1,0 +1,33 @@
+apply plugin: 'java'
+
+dependencies {
+    runtime("commons-dbcp:commons-dbcp:${commonsDbcpVersion}") {
+        exclude group: 'xml-apis', module: 'xml-apis'
+        exclude group: 'xerces', module: 'xercesImpl'
+    }
+    runtime "net.sf.ehcache:ehcache-core:${ehcacheVersion}"
+    runtime "org.jasig.cas:cas-server-webapp:${casServerVersion}@war"
+    runtime "org.jasig.cas:cas-server-extension-clearpass:${casServerVersion}"
+    runtime "xerces:xercesImpl:${xercesImplVersion}"
+
+    compile "commons-codec:commons-codec:${commonsCodecVersion}"
+    compile "commons-collections:commons-collections:${commonsCollectionsVersion}"
+    compile "org.jasypt:jasypt:${jasyptVersion}"
+    compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    compile configurations.jdbc
+
+    compileOnly("org.jasig.cas:cas-server-core:${casServerVersion}") {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+    compileOnly("org.springframework:spring-jdbc:${springVersion}") {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+    compileOnly servletApiDependency
+}
+
+war {
+    archiveName 'cas.war'
+    exclude 'WEB-INF/lib/cas-client-core-3.2.1.jar'
+    exclude 'WEB-INF/lib/commons-collections*jar'
+    exclude 'WEB-INF/lib/xml-apis-1.0.b2.jar'
+}

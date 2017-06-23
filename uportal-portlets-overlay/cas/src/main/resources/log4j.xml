@@ -23,7 +23,7 @@
 
 <log4j:configuration debug="false" xmlns:log4j="http://jakarta.apache.org/log4j/">
     <appender name="cas" class="org.apache.log4j.RollingFileAppender">
-        <param name="File" value="${environment.build.log.logfileDirectory}/cas.log" />
+        <param name="File" value="${catalina.base}/logs/cas.log" />
         <param name="MaxFileSize" value="512KB" />
         <param name="MaxBackupIndex" value="3" />
         <layout class="org.apache.log4j.PatternLayout">
@@ -46,7 +46,7 @@
 
     <!-- This file appender is used to output aggregated performance statistics -->
     <appender name="fileAppender" class="org.apache.log4j.FileAppender">
-        <param name="File" value="${environment.build.log.logfileDirectory}/perfStats.log"/>
+        <param name="File" value="${catalina.base}/logs/perfStats.log"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%m%n"/>
         </layout>
@@ -116,7 +116,7 @@
       logger to System.out.
     -->
     <root>
-        <level value="${environment.build.log.rootLevel}" />
+        <level value="INFO" />
         <appender-ref ref="cas" />
     </root>
 </log4j:configuration>

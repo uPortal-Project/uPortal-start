@@ -15,6 +15,7 @@ task portalDeploy(dependsOn: 'loadBuildProps') {
     group 'Portal'
     description 'Deploys uPortal and all bundled war files to the embedded Tomcat servlet container'
     dependsOn 'portalClean'
+    dependsOn getTasksByName('war', true)
     dependsOn getTasksByName('plutoAssemble', true)
 
     doLast {

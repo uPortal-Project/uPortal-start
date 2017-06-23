@@ -32,6 +32,11 @@ subprojects {
 
     configurations {
         war {}
+        jdbc
+    }
+
+    dependencies {
+        jdbc "org.hsqldb:hsqldb:${hsqldbVersion}"
     }
 
     artifacts {
