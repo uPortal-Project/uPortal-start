@@ -122,8 +122,8 @@
      +-->
     <property name="bootstrap.dir" value="${basedir}/bootstrap" />
 	<property name="uportal-db.dir" value="${basedir}/uportal-db" />
-    <property name="uportal-war.dir" value="${basedir}/uportal-portlets-overlay/uPortal" />
-    <property name="uportal-portlets-overlay.dir" value="${basedir}/uportal-portlets-overlay" />
+    <property name="uportal-war.dir" value="${basedir}/overlays/uPortal" />
+    <property name="overlays.dir" value="${basedir}/overlays" />
     <property name="uportal-ear.dir" value="${basedir}/uportal-ear" />
     <property name="uportal.war.name" value="uPortal"/> <!-- Keep in sync with uportal.docbase in pom.xml and environment.build.uportal.context in filters/*.properties -->
 
@@ -931,7 +931,7 @@
         <property name="packageArg" value="package" />
 
         <antcall target="mvn">
-            <param name="pomDir" value="${basedir}/uportal-portlets-overlay" />
+            <param name="pomDir" value="${basedir}/overlays" />
             <!-- In case target is run separately, insure the project is packaged so all filtered substitutions occur -->
             <param name="goal" value="${packageArg}" />
             <param name="goal1" value="db-init" />
@@ -1071,7 +1071,7 @@
         <property name="packageArg" value="package" />
 
         <antcall target="mvn">
-            <param name="pomDir" value="${basedir}/uportal-portlets-overlay" />
+            <param name="pomDir" value="${basedir}/overlays" />
             <!-- In case target is run separately, insure the project is packaged so all filtered substitutions occur -->
             <param name="goal" value="${packageArg}" />
             <param name="goal1" value="data-import" />
@@ -1528,7 +1528,7 @@ IMPORTANT: The '-Dpattern=' property is no longer a regular expression and is a 
      |
      | No properties are set for the overlay-sub-tasks element.
      +-->
-    <macrodef name="uportal-portlets-overlay-macro">
+    <macrodef name="overlays-macro">
         <element name="overlay-sub-tasks" optional="false" implicit="true" />
 
         <sequential>
@@ -1537,7 +1537,7 @@ IMPORTANT: The '-Dpattern=' property is no longer a regular expression and is a 
                  | Install the overlay module and all child modules
                  +-->
                 <antcall target="mvn">
-                    <param name="pomDir" value="${uportal-portlets-overlay.dir}" />
+                    <param name="pomDir" value="${overlays.dir}" />
                     <param name="goal" value="install" />
                 </antcall>
 
@@ -1564,7 +1564,7 @@ IMPORTANT: The '-Dpattern=' property is no longer a regular expression and is a 
 
         <sequential>
             <uportal-war-macro>
-                <uportal-portlets-overlay-macro>
+                <overlays-macro>
                     <fileset id="uportal-war-artifacts" file="${uportal-war.artifact}" />
 
                     <maven-artifact-macro project-name="uportal-ear" project-path="${uportal-ear.dir}" checkfilesid="uportal-war-artifacts">
@@ -1573,7 +1573,7 @@ IMPORTANT: The '-Dpattern=' property is no longer a regular expression and is a 
                          +-->
                         <ear-sub-tasks />
                     </maven-artifact-macro>
-                </uportal-portlets-overlay-macro>
+                </overlays-macro>
             </uportal-war-macro>
         </sequential>
     </macrodef>

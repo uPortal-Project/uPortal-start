@@ -249,7 +249,7 @@
         <module>uportal-db</module>
         <!-- module>uportal-war</module -->
         <module>uportal-ear</module>
-        <module>uportal-portlets-overlay</module>
+        <module>overlays</module>
         <module>bootstrap</module>
     </modules>
 
@@ -1325,7 +1325,7 @@
                     <noticeTemplate>NOTICE.template</noticeTemplate>
                     <generateChildNotices>false</generateChildNotices>
                     <excludedModules>
-                        <excludedModule>uportal-portlets-overlay</excludedModule>
+                        <excludedModule>overlays</excludedModule>
                         <excludedModule>bootstrap</excludedModule>
                         <excludedModule>uportal-ear</excludedModule>
                     </excludedModules>
