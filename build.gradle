@@ -18,7 +18,7 @@ configurations {
  * resource-server, and (starting with version 5.0) uPortal itself.
  */
 dependencies {
-    bundled project(path: ':overlays:AnnouncementsPortlet', configuration: 'pluto')
+    bundled project(path: ':overlays:Announcements', configuration: 'pluto')
     bundled project(path: ':overlays:basiclti-portlet', configuration: 'pluto')
     bundled project(path: ':overlays:BookmarksPortlet', configuration: 'pluto')
     bundled project(path: ':overlays:CalendarPortlet', configuration: 'pluto')
@@ -31,7 +31,7 @@ dependencies {
     bundled project(path: ':overlays:NotificationPortlet', configuration: 'pluto')
     bundled project(path: ':overlays:pluto-testsuite', configuration: 'war')
     bundled project(path: ':overlays:ResourceServingWebapp', configuration: 'war')
-    bundled project(path: ':overlays:sakai-connector-portlet', configuration: 'pluto')
+    bundled project(path: ':overlays:sakai-connector', configuration: 'pluto')
     bundled project(path: ':overlays:SimpleContentPortlet', configuration: 'pluto')
     bundled project(path: ':overlays:uPortal', configuration: 'pluto')
     bundled project(path: ':overlays:WeatherPortlet', configuration: 'pluto')
