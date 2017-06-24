@@ -1,5 +1,7 @@
+import org.apereo.portal.start.gradle.plugins.GradleImportExportPlugin
 import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
 
+apply plugin: GradleImportExportPlugin
 apply plugin: GradlePlutoPlugin
 
 dependencies {
@@ -8,4 +10,39 @@ dependencies {
 
 war {
     archiveName 'uPortal.war'
+}
+
+/*
+ * Import/Export Support
+ */
+
+import org.apereo.portal.start.shell.PortalShellInvoker
+
+dataInit {
+    /*
+     * Loads legacy database tables and data (i.e. non-Hibernate
+     * stuff that's still based on tables.xml and data.xml)
+     */
+    doLast {
+        String tablesFile = '/properties/db/tables.xml'
+        String dataFile = '/properties/db/data.xml'
+        boolean droptables = true
+        boolean createtables = true
+        boolean populatetables = true
+
+        File shellDir = new File("${buildDir}/shell")
+        shellDir.mkdirs()
+
+        File scriptFile = new File(shellDir, 'dataInit.groovy')
+        scriptFile.delete()
+        scriptFile.write(
+"""
+//db(String target, String tablesFile, String dataFile, String scriptFile, boolean dropTables, boolean createTables, boolean populateTables)
+portalShellBuildHelper.db('db',
+    '${tablesFile}', '${dataFile}', ' ',
+    ${droptables}, ${createtables}, ${populatetables});
+"""     )
+        PortalShellInvoker psi = new PortalShellInvoker()
+        psi.invoke(project, scriptFile.getAbsolutePath())
+    }
 }
