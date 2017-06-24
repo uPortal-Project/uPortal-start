@@ -33,14 +33,23 @@ subprojects {
     configurations {
         war {}
         jdbc
+        shell
     }
 
     dependencies {
         jdbc "org.hsqldb:hsqldb:${hsqldbVersion}"
+
+        shell portletApiDependency
+        shell servletApiDependency
     }
 
     artifacts {
         war tasks.war
+    }
+
+    task expandedWar(type: Copy, dependsOn: 'war') {
+        from zipTree("${project.buildDir}/libs/${project.name}.war")
+        into "${buildDir}/${project.name}"
     }
 
 }
