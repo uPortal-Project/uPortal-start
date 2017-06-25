@@ -14,7 +14,7 @@ class PortalShellInvoker {
         project.ant.java(fork: true, failonerror: true, dir: project.projectDir, classname: 'org.apereo.portal.shell.PortalShell') {
             classpath {
                 pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/classes")
-                fileset(dir: "${project.buildDir}/${project.name}/WEB-INF/lib", includes: '*.jar')
+                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/lib/*")
                 project.configurations.shell.files.each {
                     pathelement(location: it.absolutePath)
                 }
@@ -27,6 +27,10 @@ class PortalShellInvoker {
                 arg(value: it)
             }
         }
+    }
+
+    static String createGroovySafePath(String rawPath) {
+        return rawPath.replaceAll('\\\\', '/')
     }
 
 }

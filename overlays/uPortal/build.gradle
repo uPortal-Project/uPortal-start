@@ -78,14 +78,15 @@ portalShellBuildHelper.hibernateCreate('db-hibernate',
      * the folder defined by the 'base.entities.location' build property.
      */
     doLast {
-        String baseEntitiesLocation = buildProps.getProperty('base.entities.location') ?: defaultBaseEntitiesLocation
-        String implementationEntitiesLocation = buildProps.getProperty('implementation.entities.location') ?: defaultImplementationEntitiesLocation
+        String baseEntitiesLocation = PortalShellInvoker.createGroovySafePath(buildProps.getProperty('base.entities.location') ?: defaultBaseEntitiesLocation)
+        String implementationEntitiesLocation = PortalShellInvoker.createGroovySafePath(buildProps.getProperty('implementation.entities.location') ?: defaultImplementationEntitiesLocation)
 
         String pattern = ' '
         String file = ' '
         String archive = ' '
         String files = ' '
         String filesListFile = ' '
+        String logDir = PortalShellInvoker.createGroovySafePath(buildDir.getPath())
 
         File scriptFile = new File(shellDir, 'dataInit.groovy')
         [ baseEntitiesLocation, implementationEntitiesLocation ].each { entitiesLocation ->
@@ -97,7 +98,7 @@ portalShellBuildHelper.dataImport('data-import',
     '${pattern}',
     portalShellBuildHelper.getFilesListStringFromInput('${file}', '${files}', '${filesListFile}'),
     '${archive}',
-    '${buildDir}');
+    '${logDir}');
 """         )
         }
     }

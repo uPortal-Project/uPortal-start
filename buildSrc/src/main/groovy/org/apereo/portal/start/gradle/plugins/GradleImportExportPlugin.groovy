@@ -7,6 +7,7 @@ class GradleImportExportPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.task('dataInit') {
+            group 'Data'
             dependsOn project.tasks.expandedWar
             doFirst {
                 if (project.tasks.dataInit.actions.size() == 1) {
@@ -15,6 +16,7 @@ class GradleImportExportPlugin implements Plugin<Project> {
             }
         }
         project.task('dataImport') {
+            group 'Data'
             dependsOn project.tasks.expandedWar
             doFirst {
                 if (project.tasks.dataImport.actions.size() == 1) {
@@ -23,6 +25,7 @@ class GradleImportExportPlugin implements Plugin<Project> {
             }
         }
         project.task('dataExport') {
+            group 'Data'
             dependsOn project.tasks.expandedWar
             doFirst {
                 if (project.tasks.dataExport.actions.size() == 1) {
@@ -31,6 +34,7 @@ class GradleImportExportPlugin implements Plugin<Project> {
             }
         }
         project.task('dataDelete') {
+            group 'Data'
             dependsOn project.tasks.expandedWar
             doFirst {
                 if (project.tasks.dataDelete.actions.size() == 1) {
@@ -39,6 +43,7 @@ class GradleImportExportPlugin implements Plugin<Project> {
             }
         }
         project.task('dataList') {
+            group 'Data'
             dependsOn project.tasks.expandedWar
             doFirst {
                 if (project.tasks.dataList.actions.size() == 1) {
