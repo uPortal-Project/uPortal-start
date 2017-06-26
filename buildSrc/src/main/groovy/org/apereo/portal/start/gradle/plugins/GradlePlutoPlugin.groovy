@@ -7,6 +7,7 @@ import org.gradle.api.Project
 import org.gradle.api.Plugin
 
 class GradlePlutoPlugin implements Plugin<Project> {
+    @Override
     void apply(Project project) {
         project.task('plutoAssemble') {
             dependsOn project.tasks.war

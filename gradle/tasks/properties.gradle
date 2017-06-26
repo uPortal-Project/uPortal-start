@@ -8,11 +8,7 @@ task loadBuildProps() {
         if (buildPropsFile.exists()) {
             buildPropsFile.withInputStream { buildProps.load(it) }
         } else {
-            /*
-             * Stop the build by throwing the relevant exception from the org.gradle.api package
-             * (https://stackoverflow.com/questions/10312259/recommended-way-to-stop-a-gradle-build).
-             */
-            throw new InvalidUserDataException('The build.properties file is not present')
+            logger.lifecycle('No build.properties file found;  continuing with default build settings')
         }
     }
 }

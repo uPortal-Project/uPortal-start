@@ -969,34 +969,25 @@
     </target>
 
     <!-- Internal use -->
-    <target name="db-import-required" depends="prodPrompt" description="Imports the required data files to the database">
+    <target name="db-import-base" depends="prodPrompt" description="Imports the default data files to the database">
+        <!-- Use build.properties to override the entities.location setting -->
+        <property name="base.entities.location" value="data/base" />
+
         <up-shell-batch>
             <antcall target="data-import">
-                <param name="dir" value="${basedir}/uportal-data/required" />
+                <param name="dir" value="${basedir}/${base.entities.location}" />
             </antcall>
         </up-shell-batch>
     </target>
 
     <!-- Internal use -->
-    <target name="db-import-default" depends="prodPrompt" description="Imports the default data files to the database">
+    <target name="db-import-implementation" depends="prodPrompt" description="Imports the implementation data files to the database">
         <!-- Use build.properties to override the entities.location setting -->
-        <property name="default_entities.location" value="uportal-data/default" />
+        <property name="implementation.entities.location" value="data/quickstart" />
 
         <up-shell-batch>
             <antcall target="data-import">
-                <param name="dir" value="${basedir}/${default_entities.location}" />
-            </antcall>
-        </up-shell-batch>
-    </target>
-
-    <!-- Internal use -->
-    <target name="db-import-quickstart" depends="prodPrompt" description="Imports the quickstart data files to the database">
-        <!-- Use build.properties to override the entities.location setting -->
-        <property name="quickstart_entities.location" value="uportal-data/quickstart" />
-
-        <up-shell-batch>
-            <antcall target="data-import">
-                <param name="dir" value="${basedir}/${quickstart_entities.location}" />
+                <param name="dir" value="${basedir}/${implementation.entities.location}" />
             </antcall>
         </up-shell-batch>
     </target>
@@ -1004,23 +995,14 @@
     <!-- Internal use -->
     <target name="db-import" depends="prodPrompt" description="Imports the default XML files to the database">
         <up-shell-batch>
-            <antcall target="db-import-required" />
+            <antcall target="db-import-base" />
 
             <if>
                 <not>
-                    <isset property="noDefaultData" />
+                    <isset property="noImplementationData" />
                 </not>
                 <then>
-                    <antcall target="db-import-default" />
-                </then>
-            </if>
-
-            <if>
-                <not>
-                    <isset property="noQuickstartData" />
-                </not>
-                <then>
-                    <antcall target="db-import-quickstart" />
+                    <antcall target="db-import-implementation" />
                 </then>
             </if>
         </up-shell-batch>

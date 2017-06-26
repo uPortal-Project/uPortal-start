@@ -33,14 +33,46 @@ subprojects {
     configurations {
         war {}
         jdbc
+        shell
     }
 
     dependencies {
+        /*
+         * Add additional JDBC driver jars to the 'jdbc' configuration below;
+         * do not remove the hsqldb driver jar that is already listed.
+         */
         jdbc "org.hsqldb:hsqldb:${hsqldbVersion}"
+
+        /*
+         * These are nearly the same uPortal dependencies declared by uPortal-webapp;
+         * perhaps we should create a uPortal-all module to bundle them all as transitives.
+         */
+        shell "org.jasig.portal:uPortal-api-platform:${uPortalVersion}"
+        shell "org.jasig.portal:uPortal-groups-filesystem:${uPortalVersion}"
+        shell "org.jasig.portal:uPortal-groups-grouper:${uPortalVersion}"
+        shell "org.jasig.portal:uPortal-groups-ldap:${uPortalVersion}"
+        shell "org.jasig.portal:uPortal-groups-local:${uPortalVersion}"
+        shell "org.jasig.portal:uPortal-groups-smartldap:${uPortalVersion}"
+        shell "org.jasig.portal:uPortal-portlets:${uPortalVersion}"
+        shell "org.jasig.portal:uPortal-security-authn:${uPortalVersion}"
+        shell "org.jasig.portal:uPortal-security-xslt:${uPortalVersion}"
+        shell "org.jasig.portal:uPortal-soffit-connector:${uPortalVersion}"
+        shell "org.jasig.portal:uPortal-utils-jmx:${uPortalVersion}"
+
+        shell portletApiDependency
+        shell servletApiDependency
+
+        shell "org.apache.portals.pluto:pluto-container-driver-api:${plutoVersion}"
+        shell "javax.ccpp:ccpp:${ccppVersion}"
     }
 
     artifacts {
         war tasks.war
+    }
+
+    task expandedWar(type: Copy, dependsOn: 'war') {
+        from zipTree("${project.buildDir}/libs/${project.name}.war")
+        into "${buildDir}/${project.name}"
     }
 
 }
