@@ -111,3 +111,46 @@ portalShellBuildHelper.dataImport('data-import',
         psi.invoke(project, scriptFile.getAbsolutePath())
     }
 }
+
+dataImport {
+    dependsOn ':loadBuildProps'
+    doLast {
+        // Validate inputs
+        Map<String,String> args = [
+                file: System.getProperty('file'),
+                dir: System.getProperty('dir'),
+                manifest: System.getProperty('manifest'),
+                archive: System.getProperty('archive')
+        ].findAll { key, value -> value != null }
+        if (args.size() != 1) {
+            logger.lifecycle('Please specify exactly one of -Dfile={path}, -Ddir={path}, -Dmanifest={path}, or -Darchive={path}')
+        } else {
+            // Format the arguments
+            String dirEscaped = args.containsKey('dir') ? PortalShellInvoker.createGroovySafePath(args['dir']) : ' '
+            String pattern = ' ' // Not currently in use
+            String fileEscaped = args.containsKey('file') ? PortalShellInvoker.createGroovySafePath(args['file']) : ' '
+            String filesEscaped = ' ' // Not currently in use
+            String manifestEscaped = args.containsKey('manifest') ? PortalShellInvoker.createGroovySafePath(args['manifest']) : ' '
+            String archiveEscaped = args.containsKey('archive') ? PortalShellInvoker.createGroovySafePath(args['archive']) : ' '
+            String logDirEscaped = PortalShellInvoker.createGroovySafePath(buildDir.getPath())
+
+            // Prepare the scriptFile
+            shellDir.mkdirs()
+            File scriptFile = new File(shellDir, 'dataImport.groovy')
+            scriptFile.delete()  // Clear from previous invocation, if present
+            scriptFile.write(
+"""
+//dataImport(String target, String dataDir, String pattern, String filesList, String archive, String logDir)
+portalShellBuildHelper.dataImport("data-import",
+    '${dirEscaped}',
+    '${pattern}',
+    portalShellBuildHelper.getFilesListStringFromInput('${fileEscaped}','${filesEscaped}','${manifestEscaped}'),
+    '${archiveEscaped}',
+    '${logDirEscaped}');
+"""         )
+
+            PortalShellInvoker psi = new PortalShellInvoker()
+            psi.invoke(project, scriptFile.getAbsolutePath())
+        }
+    }
+}

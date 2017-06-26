@@ -38,6 +38,8 @@ recommended for server deployments)
 
 - **dataInit**:  Drops and recreates the schema in the embedded HSQLDB uPortal database, then loads
 both the Base Data Set and the Implementation Data Set
+- **dataImport**:  Imports the specified entity file(s) into the embedded HSQLDB uPortal database;
+please specify exactly one of -Dfile={path}, -Ddir={path}, -Dmanifest={path}, or -Darchive={path}
 
 #### Miscellaneous Tasks
 

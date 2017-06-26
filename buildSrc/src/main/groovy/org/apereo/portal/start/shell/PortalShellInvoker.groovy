@@ -11,7 +11,7 @@ class PortalShellInvoker {
     void invoke(Project project, String scriptLocation, String... args) {
 
         project.ant.setLifecycleLogLevel('INFO')
-        project.ant.java(fork: true, failonerror: true, dir: project.projectDir, classname: 'org.apereo.portal.shell.PortalShell') {
+        project.ant.java(fork: true, failonerror: true, dir: project.rootProject.projectDir, classname: 'org.apereo.portal.shell.PortalShell') {
             classpath {
                 pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/classes")
                 pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/lib/*")
