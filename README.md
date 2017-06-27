@@ -1,5 +1,7 @@
 # uPortal-start
 
+[![Linux Build Status](https://travis-ci.org/Jasig/uPortal-start.svg?branch=master)](https://travis-ci.org/Jasig/uPortal-start)
+
 ## User Guide
 
 ### Using Gradle
