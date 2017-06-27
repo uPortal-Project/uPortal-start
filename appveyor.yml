@@ -12,6 +12,7 @@ test_script:
   - gradlew.bat -u -i -S tomcatInstall
   - gradlew.bat -u -i -S tomcatStart
   - gradlew.bat -u -i -S tomcatStop
+  - gradlew.bat -u -i -S tomcatClearLogs
   # test HSQL
   - gradlew.bat -u -i -S hsqlStart
   - gradlew.bat -u -i -S dataInit
