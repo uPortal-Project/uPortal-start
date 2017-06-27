@@ -4,8 +4,10 @@ os: Visual Studio 2017 # Windows Server 2016
 install:
   - java -version
   - gradlew.bat --version
-build: gradlew.bat -u -i -S build
+build: off
 test_script:
+  # install and build source
+  - gradlew.bat -u -i -S build
   # test embedded tomcat
   - gradlew.bat -u -i -S tomcatInstall
   - gradlew.bat -u -i -S tomcatStart
@@ -14,7 +16,6 @@ test_script:
   - gradlew.bat -u -i -S hsqlStart
   - gradlew.bat -u -i -S dataInit
   - gradlew.bat -u -i -S hsqlStop
-
 cache:
   - .gradle
   - C:\Users\appveyor\.gradle
