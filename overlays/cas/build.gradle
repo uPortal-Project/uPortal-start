@@ -7,7 +7,10 @@ dependencies {
     }
     runtime "net.sf.ehcache:ehcache-core:${ehcacheVersion}"
     runtime "org.jasig.cas:cas-server-webapp:${casServerVersion}@war"
-    runtime "org.jasig.cas:cas-server-extension-clearpass:${casServerVersion}"
+    runtime("org.jasig.cas:cas-server-extension-clearpass:${casServerVersion}") {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'javax.xml', module: 'xmldsig'
+    }
     runtime "xerces:xercesImpl:${xercesImplVersion}"
 
     compile "commons-codec:commons-codec:${commonsCodecVersion}"
@@ -18,16 +21,20 @@ dependencies {
 
     compileOnly("org.jasig.cas:cas-server-core:${casServerVersion}") {
         exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'javax.xml', module: 'xmldsig'
     }
     compileOnly("org.springframework:spring-jdbc:${springVersion}") {
         exclude group: 'commons-logging', module: 'commons-logging'
     }
     compileOnly servletApiDependency
 
-    testCompile group: 'org.easymock', name: 'easymock', version: '3.4'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.easymock', name: 'easymock', version: '3.4'
+    testCompile("org.jasig.cas:cas-server-core:${casServerVersion}") {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'javax.xml', module: 'xmldsig'
+    }
     testCompile group: 'org.springframework', name: 'spring-jdbc', version: springVersion
-    testCompile group: 'org.jasig.cas', name: 'cas-server-core', version: casServerVersion
 }
 
 war {
