@@ -121,25 +121,18 @@ task tomcatStop(dependsOn: 'loadBuildProps') {
 }
 
 task tomcatClearLogs(type: Delete, dependsOn: 'loadBuildProps') {
-    followSymlinks = true
     description 'Delete log files within Tomcat'
+    String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
 
     doFirst {
-        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
-        String tomcatLogsDir = "${serverHome}/logs"
-        logger.lifecycle("Deleting Tomcat log files from ${tomcatLogsDir}...")
-
-        def deleteRecursive;
-        deleteRecursive = { file ->
-            if (file.isDirectory()) {
-                file.eachFile { deleteRecursive(it) }
-                delete file
-            } else if (file.isFile()) {
-                logger.lifecycle("  --> ${file}")
-                delete file
-            }
+        fileTree("${serverHome}/logs").visit { FileVisitDetails file ->
+            logger.lifecycle("Deleting ${file.name}")
         }
+    }
 
-        new File(tomcatLogsDir).eachFile { deleteRecursive(it) }
+    delete "${serverHome}/logs"
+
+    doLast {
+        file("${serverHome}/logs").mkdirs()
     }
 }
