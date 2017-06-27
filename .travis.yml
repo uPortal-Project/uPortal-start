@@ -8,7 +8,7 @@ script:
   - ./gradlew -u -i -S tomcatInstall
   - ./gradlew -u -i -S tomcatStart
   - ./gradlew -u -i -S tomcatStop
-  # test SQL
+  # test HSQL
   - ./gradlew -u -i -S hsqlStart
   - ./gradlew -u -i -S dataInit
   - ./gradlew -u -i -S hsqlStop
