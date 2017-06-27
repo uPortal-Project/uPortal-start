@@ -14,4 +14,6 @@ script:
   - ./gradlew -u -i -S hsqlStop
 
 cache:
-  directories: $HOME/.gradle/
+  directories:
+    - .gradle 
+    - $HOME/.gradle/
