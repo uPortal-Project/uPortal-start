@@ -1,21 +1,17 @@
 language: java
 jdk: oraclejdk8
+dist: trusty
 sudo: false
 
-before_install:
-  - unset GEM_PATH
-
-# ./gradlew assemble (default install command) won't cut it
-install:
-  - ./gradlew install
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-
 script:
-  - mvn clean test cobertura:cobertura coveralls:report -B -V
-  - ./gradlew -u -i -S check
+  # test embedded tomcat
+  - ./gradlew -u -i -S tomcatInstall
+  - ./gradlew -u -i -S tomcatStart
+  - ./gradlew -u -i -S tomcatStop
+  # test SQL
+  - ./gradlew -u -i -S hsqlStart
+  - ./gradlew -u -i -S dataInit
+  - ./gradlew -u -i -S hsqlStop
 
 cache:
-  directories:
-    - $HOME/.m2
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+  directories: $HOME/.gradle/
