@@ -154,3 +154,24 @@ portalShellBuildHelper.dataImport("data-import",
         }
     }
 }
+
+dataList {
+    dependsOn ':loadBuildProps'
+    doLast {
+        // Is there a -Dtype= argument passed?
+        String type = System.getProperty('type') ?: ' '
+
+        // Prepare the scriptFile
+        shellDir.mkdirs()
+        File scriptFile = new File(shellDir, 'dataList.groovy')
+        scriptFile.delete()  // Clear from previous invocation, if present
+        scriptFile.write(
+"""
+//dataList(String target, String type)
+portalShellBuildHelper.dataList("data-list", '${type}');
+"""     )
+
+        PortalShellInvoker psi = new PortalShellInvoker()
+        psi.invoke(project, scriptFile.getAbsolutePath())
+    }
+}
