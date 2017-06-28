@@ -155,6 +155,36 @@ portalShellBuildHelper.dataImport("data-import",
     }
 }
 
+dataExport {
+    dependsOn ':loadBuildProps'
+    doLast {
+        // Three -D arguments may be passed;  all are optional
+        String dir = System.getProperty('dir') ?: "${buildDir}/export"
+        String type = System.getProperty('type') ?: ' '
+        String sysid = System.getProperty('sysid') ?: ' '
+
+        String dirEscaped = PortalShellInvoker.createGroovySafePath(dir)
+        String logDirEscaped = PortalShellInvoker.createGroovySafePath(buildDir.getPath())
+
+        // Prepare the scriptFile
+        shellDir.mkdirs()
+        File scriptFile = new File(shellDir, 'dataExport.groovy')
+        scriptFile.delete()  // Clear from previous invocation, if present
+        scriptFile.write(
+"""
+//dataExport(String target, String dataDir, String type, String sysid, String logDir)
+portalShellBuildHelper.dataExport('data-export',
+'${dirEscaped}',
+'${type}',
+'${sysid}',
+'${logDirEscaped}');
+"""         )
+
+        PortalShellInvoker psi = new PortalShellInvoker()
+        psi.invoke(project, scriptFile.getAbsolutePath())
+    }
+}
+
 dataList {
     dependsOn ':loadBuildProps'
     doLast {
@@ -168,7 +198,7 @@ dataList {
         scriptFile.write(
 """
 //dataList(String target, String type)
-portalShellBuildHelper.dataList("data-list", '${type}');
+portalShellBuildHelper.dataList('data-list', '${type}');
 """     )
 
         PortalShellInvoker psi = new PortalShellInvoker()
