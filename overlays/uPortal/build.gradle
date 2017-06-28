@@ -124,6 +124,11 @@ dataImport {
         ].findAll { key, value -> value != null }
         if (args.size() != 1) {
             logger.lifecycle('Please specify exactly one of -Dfile={path}, -Ddir={path}, -Dmanifest={path}, or -Darchive={path}')
+            /*
+             * Stop the build by throwing the relevant exception from the org.gradle.api package
+             * (https://stackoverflow.com/questions/10312259/recommended-way-to-stop-a-gradle-build).
+             */
+            throw new InvalidUserDataException('Invalid number of parameters')
         } else {
             // Format the arguments
             String dirEscaped = args.containsKey('dir') ? PortalShellInvoker.createGroovySafePath(args['dir']) : ' '
@@ -182,6 +187,42 @@ portalShellBuildHelper.dataExport('data-export',
 
         PortalShellInvoker psi = new PortalShellInvoker()
         psi.invoke(project, scriptFile.getAbsolutePath())
+    }
+}
+
+dataDelete {
+    dependsOn ':loadBuildProps'
+    doLast {
+        // Validate inputs
+        Map<String,String> args = [
+                type: System.getProperty('type'),
+                sysid: System.getProperty('sysid')
+        ].findAll { key, value -> value != null }
+        if (args.size() != 2) {
+            logger.lifecycle('Both -Dtype={entity-type} and -Dsysid={id} must be specified ' +
+                    'for dataDelete; use the dataList task to determine available data types')
+            /*
+             * Stop the build by throwing the relevant exception from the org.gradle.api package
+             * (https://stackoverflow.com/questions/10312259/recommended-way-to-stop-a-gradle-build).
+             */
+            throw new InvalidUserDataException('Missing type and/or sysid parameter(s)')
+        } else {
+            // Prepare the scriptFile
+            shellDir.mkdirs()
+            File scriptFile = new File(shellDir, 'dataDelete.groovy')
+            scriptFile.delete()  // Clear from previous invocation, if present
+            scriptFile.write(
+"""
+//dataDelete(String target, String type, String sysid)
+portalShellBuildHelper.dataDelete('data-delete',
+'${args['type']}',
+'${args['sysid']}')
+"""         )
+
+            PortalShellInvoker psi = new PortalShellInvoker()
+            psi.invoke(project, scriptFile.getAbsolutePath())
+        }
+
     }
 }
 
