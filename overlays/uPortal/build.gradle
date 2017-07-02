@@ -20,8 +20,6 @@ import org.apereo.portal.start.shell.PortalShellInvoker
 
 ext {
     shellDir = new File("${buildDir}/shell")
-    defaultBaseEntitiesLocation = "${rootProject.projectDir}/data/base"
-    defaultImplementationEntitiesLocation = "${rootProject.projectDir}/data/quickstart"
 }
 
 dataInit {
