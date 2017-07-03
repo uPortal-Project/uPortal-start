@@ -1,5 +1,7 @@
+import org.apereo.portal.start.gradle.plugins.GradleImportExportPlugin
 import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
 
+apply plugin: GradleImportExportPlugin
 apply plugin: GradlePlutoPlugin
 
 dependencies {
@@ -10,4 +12,70 @@ dependencies {
 war {
     archiveName 'CalendarPortlet.war'
     exclude 'WEB-INF/lib/hsqldb-*.jar'
+}
+
+/*
+ * Import/Export Support
+ */
+
+import org.apereo.portal.start.shell.PortalShellInvoker
+
+dependencies {
+    impexp configurations.jdbc
+    impexp "${portletApiDependency}"
+    impexp "${servletApiDependency}"
+}
+
+dataInit {
+    dependsOn ':loadBuildProps'
+    /*
+     * Drop (if present) then create the Hibernate-managed schema.
+     */
+    doLast {
+        /*
+         * The following specifies failonerror=false because it will produce an exception like...
+         *
+         * java.sql.SQLSyntaxErrorException: a FOREIGN KEY constraint already exists on the set
+         *     of columns: FKF8F0C5957886B9ED in statement [alter table CALENDAR_CONFIGURATION
+         *     add constraint FKF8F0C5957886B9ED foreign key (CALENDAR_ID) references CALENDAR_STORE]
+         *
+         * Yet the schema will be created (as well as it ever was).
+         *
+         * The issue appears to stem from the fact that the CALENDAR_ID column is declared for
+         * both subclasses, but differently, in CalendarConfiguration.hbm.xml.
+         */
+
+        ant.setLifecycleLogLevel('INFO')
+        ant.java(fork: true, failonerror: false, dir: rootProject.projectDir, classname: 'org.jasig.portlet.calendar.util.SchemaCreator') {
+            classpath {
+                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/classes")
+                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/lib/*")
+                project.configurations.impexp.files.each {
+                    pathelement(location: it.absolutePath)
+                }
+            }
+            sysproperty(key: 'logback.configurationFile', value: 'command-line.logback.xml')
+        }
+    }
+    /*
+     * Import database entities located anywhere within the folder
+     * specified by 'implementation.entities.location'.
+     */
+    doLast {
+        String implementationEntitiesLocation = PortalShellInvoker.createGroovySafePath(buildProps.getProperty('implementation.entities.location') ?: defaultImplementationEntitiesLocation)
+
+        ant.setLifecycleLogLevel('INFO')
+        ant.java(fork: true, failonerror: true, dir: rootProject.projectDir, classname: 'org.danann.cernunnos.runtime.Main') {
+            classpath {
+                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/classes")
+                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/lib/*")
+                project.configurations.impexp.files.each {
+                    pathelement(location: it.absolutePath)
+                }
+            }
+            sysproperty(key: 'logback.configurationFile', value: 'command-line.logback.xml')
+            arg(value: 'classpath://org/jasig/portlet/calendar/io/import.crn.xml')
+            arg(value: "${implementationEntitiesLocation}")
+        }
+    }
 }
