@@ -49,13 +49,13 @@ _Gradle Wrapper_ so you don't have to install Gradle to use it.
 
 Invoking the Gradle Wrapper on \*nix:
 
-```
+```console
     $ ./gradlew {taskname} [{taskname}...]
 ```
 
 Invoking the Gradle Wrapper on Windows:
 
-```
+```console
     > gradlew.bat {taskname} [{taskname}...]
 ```
 
@@ -64,7 +64,7 @@ _NOTE:  For the sake of brevity, the remaining examples in this document are \*n
 You can view a comprehensive list of Gradle tasks -- with short descriptions of what they do -- by
 running the following command:
 
-```
+```console
     $ ./gradlew tasks
 ```
 
@@ -78,7 +78,7 @@ these configuration tasks for you.
 You can download (from [Maven Central][]), install, and properly configure an appropriate Tomcat
 container by running the following command:
 
-```
+```console
     $ ./gradlew tomcatInstall
 ```
 
@@ -95,7 +95,7 @@ dev environments of uPortal.
 
 Use the following command to start the embedded HSQLDB instance:
 
-```
+```console
     $ ./gradlew hsqlStart
 ```
 
@@ -105,7 +105,7 @@ customary to leave HSQLDB running all day, or as long as you're actively working
 
 You can stop the HSQLDB instance with the following command:
 
-```
+```console
     $ ./gradlew hsqlStop
 ```
 
@@ -117,7 +117,7 @@ working.
 
 You can do that with the following command:
 
-```
+```console
     $ ./gradlew portalDeploy
 ```
 
@@ -132,7 +132,7 @@ portal database.  The most important of these is the `dataInit` task.
 Use the following command to create the database schema and fill it with _base portal data_ as well
 as your _implementation data set_:
 
-```
+```console
     $ ./gradlew dataInit
 ```
 
@@ -146,7 +146,7 @@ the beginning).  In the case of non-production deployments, however, using `data
 Once you have deployed uPortal technology, you will need to start the Tomcat server before you can
 see your portal working.  You can do that with the following command:
 
-```
+```console
     $ ./gradlew tomcatStart
 ```
 
@@ -156,7 +156,7 @@ manipulate the portal database.
 
 You can stop the Tomcat server using with this command:
 
-```
+```console
     $ ./gradlew tomcatStop
 ```
 
