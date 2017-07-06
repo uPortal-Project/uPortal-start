@@ -1,4 +1,4 @@
-<img alt="uPortal logo" src="docs/images/uPortal-logo.jpg" />
+![uPortal logo](docs/images/uPortal-logo.jpg)
 
 [![Linux Build Status](https://travis-ci.org/Jasig/uPortal-start.svg?branch=master)](https://travis-ci.org/Jasig/uPortal-start)
 
@@ -19,13 +19,13 @@ uPortal-start help you manage:
 
 The following software packages are required for working with uPortal-start:
 
-  - A [Java Development Kit][] (JDk)
+  - A [Java Development Kit][] (JDK)
   - A suitable [Git Client][] for your OS
 
 Download and install the **latest JDK 8 release**.  Make sure you select the full JDK;  _a JRE is
 not sufficient!_
 
-**WARNING!** _Always use Git_ to obtain a copy of uPortal-start.  (Please ignore the _Download ZIP_
+:warning: _Always use Git_ to obtain a copy of uPortal-start.  (Please ignore the _Download ZIP_
 option provided by GitHub.)  The uPortal Developer Community makes improvements to uPortal-start
 every week:  new features, bug fixes, performance enhancements, additions to documentation, _&c._
 It is extremely important to be able to update your local copy of uPortal-start and (thereby)
@@ -47,7 +47,7 @@ want to perform them** when you set up a local uPortal dev environment.
 uPortal-start provides a build system and several CLI tools through Gradle, and it even comes with a
 _Gradle Wrapper_ so you don't have to install Gradle to use it.
 
-Invoking the Gradle Wrapper on *nix:
+Invoking the Gradle Wrapper on \*nix:
 
 ```
     $ ./gradlew {taskname} [{taskname}...]
@@ -59,7 +59,7 @@ Invoking the Gradle Wrapper on Windows:
     > gradlew.bat {taskname} [{taskname}...]
 ```
 
-_NOTE:  For the sake of brevity, the remaining examples in this document are *nix-only._
+_NOTE:  For the sake of brevity, the remaining examples in this document are \*nix-only._
 
 You can view a comprehensive list of Gradle tasks -- with short descriptions of what they do -- by
 running the following command:
@@ -99,7 +99,7 @@ Use the following command to start the embedded HSQLDB instance:
     $ ./gradlew hsqlStart
 ```
 
-**NOTE:**  the database must be running at all times when uPortal is running, and it also must be
+:notebook:  the database must be running at all times when uPortal is running, and it also must be
 running whenever several of the Import/Export tools are invoked.  (See examples below.)  It is
 customary to leave HSQLDB running all day, or as long as you're actively working on uPortal.
 
@@ -121,7 +121,7 @@ You can do that with the following command:
     $ ./gradlew portalDeploy
 ```
 
-**NOTE:**  you will need to _run this command again_ any time you make changes to anything inside
+:notebook:  you will need to _run this command again_ any time you make changes to anything inside
 the `overlays` folder.
 
 ### How To Create and Initialize the Database Schema
@@ -136,7 +136,7 @@ as your _implementation data set_:
     $ ./gradlew dataInit
 ```
 
-**WARNING!**  This command also _drops the existing database schema_ (beforehand) if necessary.
+:warning:  This command also _drops the existing database schema_ (beforehand) if necessary.
 You probably want to perform this task against the production portal database exactly one time (in
 the beginning).  In the case of non-production deployments, however, using `dataInit` for a full
 "database reset" is fairly common.
@@ -150,7 +150,7 @@ see your portal working.  You can do that with the following command:
     $ ./gradlew tomcatStart
 ```
 
-**WARNING!**  It is safest to run Gradle tasks in uPortal-start _only when Tomcat is not running_.
+:warning:  It is safest to run Gradle tasks in uPortal-start _only when Tomcat is not running_.
 This provision applies to tasks that build and deploy uPortal technology, as well as tasks that
 manipulate the portal database.
 
