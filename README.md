@@ -68,6 +68,14 @@ running the following command:
     $ ./gradlew tasks
 ```
 
+### List of Examples:
+
+  - [How To Install Tomcat](#how-to-install-tomcat)
+  - [How To Start the Embedded Database](#how-to-start-the-embedded-database)
+  - [How To Deploy uPortal Technology to Tomcat](#how-to-deploy-uportal-technology-to-tomcat)
+  - [How To Create and Initialize the Database Schema](#how-to-create-and-initialize-the-database-schema)
+  - [How To Start Tomcat](#how-to-start-tomcat)
+
 ### How To Install Tomcat
 
 uPortal-start comes pre-integrated with the [Apache Tomcat Servlet Container][], which is a
