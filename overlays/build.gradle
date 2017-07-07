@@ -8,6 +8,11 @@ buildscript {
 }
 
 subprojects {
+    ext {
+        defaultBaseEntitiesLocation = "${rootProject.projectDir}/data/base"
+        defaultImplementationEntitiesLocation = "${rootProject.projectDir}/data/quickstart"
+    }
+
     apply plugin: 'maven'
     apply plugin: 'waroverlay'
 
@@ -34,6 +39,7 @@ subprojects {
         war {}
         jdbc
         shell
+        impexp
     }
 
     dependencies {

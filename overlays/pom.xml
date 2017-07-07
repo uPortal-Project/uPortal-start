@@ -36,7 +36,7 @@
     <description>Parent package for portlets deployed with uPortal.</description>
 
     <modules>
-        <module>AnnouncementsPortlet</module>
+        <module>Announcements</module>
         <module>basiclti-portlet</module>
         <module>BookmarksPortlet</module>
         <module>CalendarPortlet</module>
@@ -48,7 +48,7 @@
         <module>pluto-testsuite</module>
         <module>NewsReaderPortlet</module>
         <module>NotificationPortlet</module>
-		<module>sakai-connector-portlet</module>
+		<module>sakai-connector</module>
         <module>SimpleContentPortlet</module>
         <module>uPortal</module>
         <module>WeatherPortlet</module>
