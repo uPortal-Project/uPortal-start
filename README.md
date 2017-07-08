@@ -70,11 +70,40 @@ running the following command:
 
 ### List of Examples:
 
+  - [How To Set Up Everything the First Time](#how-to-set-up-everything-the-first-time)
   - [How To Install Tomcat](#how-to-install-tomcat)
   - [How To Start the Embedded Database](#how-to-start-the-embedded-database)
   - [How To Deploy uPortal Technology to Tomcat](#how-to-deploy-uportal-technology-to-tomcat)
   - [How To Create and Initialize the Database Schema](#how-to-create-and-initialize-the-database-schema)
   - [How To Start Tomcat](#how-to-start-tomcat)
+
+### How To Set Up Everything the First Time
+
+The remaining examples (below) illustrate how to perform the most common uPortal tasks
+individually;  but there's an easy way to do all of them at once when you're just starting out.
+
+Use the following command to set up your portal the first time:
+
+```console
+    $ ./gradlew portalInit
+```
+
+This command performs the following steps:
+
+  - Starts the integrated HSQLDB instance (`hsqlStart`)
+  - Downloads, installs, and configures the integrated Tomcat servlet container (`tomcatInstall`)
+  - Deploys all uPortal web applications to Tomcat (`tomcatDeploy`)
+  - Creates the database schema, and imports both the Base & Implementation data sets (`dataInit`)
+
+:warning:  After this command, your HSQLDB instance will be running.  That's normally a good thing,
+but don't forget to stop it if you need to.
+
+:notebook:  Your Tomcat server, on the other hand, _will not be running_ when this command
+finishes.  Don't forget to [follow these instructions](#how-to-start-tomcat) to start it.
+
+:notebook:  You can run this command again later if you want to "reset" your environment to a clean
+state.  It's a good idea to **make sure both the Tomcat container and the HSQLDB instance are not
+running** when you do.
 
 ### How To Install Tomcat
 
@@ -126,11 +155,19 @@ working.
 You can do that with the following command:
 
 ```console
-    $ ./gradlew portalDeploy
+    $ ./gradlew tomcatDeploy
 ```
 
 :notebook:  you will need to _run this command again_ any time you make changes to anything inside
 the `overlays` folder.
+
+You can also run this command for one project at a time, for example...
+
+```console
+    $ ./gradlew :overlays:Announcements:tomcatDeploy
+```
+
+This is a great way to save time when you're working on a specific subproject.
 
 ### How To Create and Initialize the Database Schema
 
