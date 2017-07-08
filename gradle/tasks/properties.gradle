@@ -1,14 +1,60 @@
-task loadBuildProps() {
+task loadBuildProperties() {
     group 'Properties'
-    description 'Loads build settings from the build.properties file'
+    description 'Loads build settings from the defults.properties, build.properties, and JMV arguments (in that order)'
 
     doLast {
-        logger.lifecycle('Reading build.properties')
+
+        /*
+         * The Properties object we need to load already exists.
+         */
+        Properties buildProperties = rootProject.ext['buildProperties']
+
+        /*
+         * Start with buildDefaults.properties from the classpath.
+         */
+        InputStream defaults = this.getClass().getClassLoader().getResourceAsStream('buildDefaults.properties')
+        if (defaults == null) {
+            // The defaults.properties is missing;  this situation is untenable
+            throw new GradleScriptException('buildDefaults.properties file not found')
+        }
+        buildProperties.load(defaults)
+
+        /*
+         * The next layer is build.properties in the root directory of the
+         * project;  but it's not required.
+         */
         def buildPropsFile = file('build.properties')
         if (buildPropsFile.exists()) {
-            buildPropsFile.withInputStream { buildProps.load(it) }
+            // Anything in here trumps what we loaded earlier...
+            Properties localBuildProps = new Properties()
+            buildPropsFile.withInputStream { localBuildProps.load(it) }
+            localBuildProps.forEach { key, value ->
+                buildProperties.setProperty(key, value)
+            }
         } else {
             logger.lifecycle('No build.properties file found;  continuing with default build settings')
         }
+
+        /*
+         * The final layer is JVM arguments;  anything you specify on the
+         * command line will be honored over both the default & local
+         * settings.
+         */
+        buildProperties.forEach { key, value ->
+            String jvmArgValue = System.getProperty(key);
+            if (jvmArgValue) {
+                logger.lifecycle("Found JVM override value of '${jvmArgValue}' for build property '${key}'")
+                buildProperties.setProperty(key, jvmArgValue)
+            }
+        }
+
+        /*
+         * List the complete set of build properties to the console.
+         */
+        logger.lifecycle('Using the following build properties:')
+        buildProperties.forEach { key, value ->
+            logger.lifecycle("  -> ${key}=${value}")
+        }
+
     }
 }

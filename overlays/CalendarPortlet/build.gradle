@@ -27,7 +27,7 @@ dependencies {
 }
 
 dataInit {
-    dependsOn ':loadBuildProps'
+    dependsOn ':loadBuildProperties'
     /*
      * Drop (if present) then create the Hibernate-managed schema.
      */
@@ -62,7 +62,7 @@ dataInit {
      * specified by 'implementation.entities.location'.
      */
     doLast {
-        String implementationEntitiesLocation = PortalShellInvoker.createGroovySafePath(buildProps.getProperty('implementation.entities.location') ?: defaultImplementationEntitiesLocation)
+        String implementationEntitiesLocation = PortalShellInvoker.createGroovySafePath(rootProject.ext['buildProperties'].getProperty('implementation.entities.location'))
 
         ant.setLifecycleLogLevel('INFO')
         ant.java(fork: true, failonerror: true, dir: rootProject.projectDir, classname: 'org.danann.cernunnos.runtime.Main') {

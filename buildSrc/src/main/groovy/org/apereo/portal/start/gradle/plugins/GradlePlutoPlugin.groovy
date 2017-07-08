@@ -9,31 +9,33 @@ import org.gradle.api.Plugin
 class GradlePlutoPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
+        File destinationDir = new File (project.buildDir, 'pluto')
+        File archiveOutput = new File(destinationDir, "${project.name}.war")
+
         project.task('plutoAssemble') {
             dependsOn project.tasks.war
             doLast {
                 File archiveSource = project.configurations.war.artifacts.files.iterator().next()
-                File destinationDir = new File (project.buildDir, 'pluto')
 
                 logger.lifecycle("Processing archive ${archiveSource.getName()} " +
                         "into destination directory ${destinationDir.getPath()} " +
                         "with the Apache Pluto Assembler")
 
                 destinationDir.mkdirs()
-                File archiveOutput = new File(destinationDir, archiveSource.getName())
 
                 AssemblerConfig config = new AssemblerConfig()
                 config.setSource(archiveSource)
                 config.setDestination(archiveOutput)
                 Assembler assembler = AssemblerFactory.getFactory().createAssembler(config)
                 assembler.assemble(config)
-
-                project.artifacts.add('pluto', archiveOutput)
-
             }
         }
         project.configurations {
             pluto {}
         }
+        project.artifacts {
+            pluto archiveOutput
+        }
+        project.tasks.assemble.dependsOn 'plutoAssemble'
     }
 }

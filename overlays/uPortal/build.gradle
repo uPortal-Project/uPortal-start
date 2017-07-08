@@ -23,7 +23,7 @@ ext {
 }
 
 dataInit {
-    dependsOn ':loadBuildProps'
+    dependsOn ':loadBuildProperties'
     /*
      * Add to the scriptFile commands that drop then create then load the legacy database
      * tables and data (i.e. non-Hibernate stuff that's still based on tables.xml and data.xml)
@@ -76,8 +76,8 @@ portalShellBuildHelper.hibernateCreate('db-hibernate',
      * the folder defined by the 'base.entities.location' build property.
      */
     doLast {
-        String baseEntitiesLocation = PortalShellInvoker.createGroovySafePath(buildProps.getProperty('base.entities.location') ?: defaultBaseEntitiesLocation)
-        String implementationEntitiesLocation = PortalShellInvoker.createGroovySafePath(buildProps.getProperty('implementation.entities.location') ?: defaultImplementationEntitiesLocation)
+        String baseEntitiesLocation = PortalShellInvoker.createGroovySafePath(rootProject.ext['buildProperties'].getProperty('base.entities.location'))
+        String implementationEntitiesLocation = PortalShellInvoker.createGroovySafePath(rootProject.ext['buildProperties'].getProperty('implementation.entities.location'))
 
         String pattern = ' '
         String file = ' '
@@ -111,7 +111,7 @@ portalShellBuildHelper.dataImport('data-import',
 }
 
 dataImport {
-    dependsOn ':loadBuildProps'
+    dependsOn ':loadBuildProperties'
     doLast {
         // Validate inputs
         Map<String,String> args = [
@@ -159,7 +159,7 @@ portalShellBuildHelper.dataImport("data-import",
 }
 
 dataExport {
-    dependsOn ':loadBuildProps'
+    dependsOn ':loadBuildProperties'
     doLast {
         // Three -D arguments may be passed;  all are optional
         String dir = System.getProperty('dir') ?: "${buildDir}/export"
@@ -189,7 +189,7 @@ portalShellBuildHelper.dataExport('data-export',
 }
 
 dataDelete {
-    dependsOn ':loadBuildProps'
+    dependsOn ':loadBuildProperties'
     doLast {
         // Validate inputs
         Map<String,String> args = [
@@ -225,7 +225,7 @@ portalShellBuildHelper.dataDelete('data-delete',
 }
 
 dataList {
-    dependsOn ':loadBuildProps'
+    dependsOn ':loadBuildProperties'
     doLast {
         // Is there a -Dtype= argument passed?
         String type = System.getProperty('type') ?: ' '
