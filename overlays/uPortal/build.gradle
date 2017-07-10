@@ -1,5 +1,6 @@
 import org.apereo.portal.start.gradle.plugins.GradleImportExportPlugin
 import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
+import org.apereo.portal.start.gradle.plugins.PortalShellExec
 
 apply plugin: GradleImportExportPlugin
 apply plugin: GradlePlutoPlugin
@@ -12,235 +13,224 @@ war {
     archiveName 'uPortal.war'
 }
 
+String generateFile(folder, contents) {
+    File scriptFile = new File("${folder}/portalShellScript.groovy")
+    scriptFile.delete()
+    scriptFile.append(contents)
+    return scriptFile.absolutePath
+}
+
 /*
- * Import/Export Support
+ * Drop then create then load the legacy database
+ * tables and data (i.e. non-Hibernate stuff that's still based on tables.xml and data.xml)
  */
+task databaseInitializeLegacy(type: PortalShellExec) {
+    String tablesFile = '/properties/db/tables.xml'
+    String dataFile = '/properties/db/data.xml'
+    boolean droptables = true
+    boolean createtables = true
+    boolean populatetables = true
 
-import org.apereo.portal.start.shell.PortalShellInvoker
+    String script = """
+        portalShellBuildHelper.db('db',
+            '${tablesFile}', '${dataFile}', ' ',
+            ${droptables}, ${createtables}, ${populatetables});
+        """
+    String scriptPath = generateFile(temporaryDir, script)
 
-ext {
-    shellDir = new File("${buildDir}/shell")
+    args = ['-s', scriptPath]
 }
 
-dataInit {
-    dependsOn ':loadBuildProps'
-    /*
-     * Add to the scriptFile commands that drop then create then load the legacy database
-     * tables and data (i.e. non-Hibernate stuff that's still based on tables.xml and data.xml)
-     */
-    doLast {
-        String tablesFile = '/properties/db/tables.xml'
-        String dataFile = '/properties/db/data.xml'
-        boolean droptables = true
-        boolean createtables = true
-        boolean populatetables = true
 
-        shellDir.mkdirs()
+/*
+ * Drop then create the Hibernate-managed tables.
+ */
+task databaseInitializeHibernate(type: PortalShellExec, dependsOn: 'loadBuildProps') {
+    boolean export = true
+    String outputFile = ' '
+    String script = ''
 
-        File scriptFile = new File(shellDir, 'dataInit.groovy')
-        scriptFile.delete()  // Clear from previous invocation, if present
-        scriptFile.append(
-"""
-//db(String target, String tablesFile, String dataFile, String scriptFile, boolean dropTables, boolean createTables, boolean populateTables)
-portalShellBuildHelper.db('db',
-    '${tablesFile}', '${dataFile}', ' ',
-    ${droptables}, ${createtables}, ${populatetables});
-"""     )
+    ['PortalDb', 'RawEventsDb', 'AggrEventsDb'].each { databaseQualifier ->
+        script += """
+            portalShellBuildHelper.hibernateDrop('db-hibernate',
+                '${databaseQualifier}',
+                ${export},
+                /${outputFile}/
+            );
+            portalShellBuildHelper.hibernateCreate('db-hibernate',
+                '${databaseQualifier}',
+                ${export},
+                /${outputFile}/
+            );
+            """
     }
-    /*
-     * Add to the scriptFile commands that drop then create the Hibernate-managed tables.
-     */
-    doLast {
-        boolean export = true
-        String outputFile = ' '
 
-        File scriptFile = new File(shellDir, 'dataInit.groovy')
-        ['PortalDb', 'RawEventsDb', 'AggrEventsDb'].each { databaseQualifier ->
-            scriptFile.append(
-"""
-//hibernateDrop(String target, String databaseQualifier, boolean export, String outputFile)
-portalShellBuildHelper.hibernateDrop('db-hibernate',
-    '${databaseQualifier}',
-    ${export},
-    /${outputFile}/);
-//hibernateCreate(String target, String databaseQualifier, boolean export, String outputFile)
-portalShellBuildHelper.hibernateCreate('db-hibernate',
-    '${databaseQualifier}',
-    ${export},
-    /${outputFile}/);
-"""         )
-        }
-    }
-    /*
-     * Add to the scriptFile commands that import database entities in
-     * the folder defined by the 'base.entities.location' build property.
-     */
-    doLast {
-        String baseEntitiesLocation = PortalShellInvoker.createGroovySafePath(buildProps.getProperty('base.entities.location') ?: defaultBaseEntitiesLocation)
-        String implementationEntitiesLocation = PortalShellInvoker.createGroovySafePath(buildProps.getProperty('implementation.entities.location') ?: defaultImplementationEntitiesLocation)
+    String scriptPath = generateFile(temporaryDir, script)
 
-        String pattern = ' '
-        String file = ' '
-        String archive = ' '
-        String files = ' '
-        String filesListFile = ' '
-        String logDir = PortalShellInvoker.createGroovySafePath(buildDir.getPath())
-
-        File scriptFile = new File(shellDir, 'dataInit.groovy')
-        [ baseEntitiesLocation, implementationEntitiesLocation ].each { entitiesLocation ->
-            scriptFile.append(
-"""
-//dataImport(String target, String dataDir, String pattern, String filesList, String archive, String logDir)
-portalShellBuildHelper.dataImport('data-import',
-    '${entitiesLocation}',
-    '${pattern}',
-    portalShellBuildHelper.getFilesListStringFromInput('${file}', '${files}', '${filesListFile}'),
-    '${archive}',
-    '${logDir}');
-"""         )
-        }
-    }
-    /*
-     * Execute the commands in the scriptFile.
-     */
-    doLast {
-        File scriptFile = new File(shellDir, 'dataInit.groovy')
-        PortalShellInvoker psi = new PortalShellInvoker()
-        psi.invoke(project, scriptFile.getAbsolutePath())
-    }
+    args = ['-s', scriptPath]
 }
 
-dataImport {
-    dependsOn ':loadBuildProps'
-    doLast {
-        // Validate inputs
-        Map<String,String> args = [
-                file: System.getProperty('file'),
-                dir: System.getProperty('dir'),
-                manifest: System.getProperty('manifest'),
-                archive: System.getProperty('archive')
-        ].findAll { key, value -> value != null }
-        if (args.size() != 1) {
-            logger.lifecycle('Please specify exactly one of -Dfile={path}, -Ddir={path}, -Dmanifest={path}, or -Darchive={path}')
-            /*
-             * Stop the build by throwing the relevant exception from the org.gradle.api package
-             * (https://stackoverflow.com/questions/10312259/recommended-way-to-stop-a-gradle-build).
-             */
-            throw new InvalidUserDataException('Invalid number of parameters')
-        } else {
-            // Format the arguments
-            String dirEscaped = args.containsKey('dir') ? PortalShellInvoker.createGroovySafePath(args['dir']) : ' '
-            String pattern = ' ' // Not currently in use
-            String fileEscaped = args.containsKey('file') ? PortalShellInvoker.createGroovySafePath(args['file']) : ' '
-            String filesEscaped = ' ' // Not currently in use
-            String manifestEscaped = args.containsKey('manifest') ? PortalShellInvoker.createGroovySafePath(args['manifest']) : ' '
-            String archiveEscaped = args.containsKey('archive') ? PortalShellInvoker.createGroovySafePath(args['archive']) : ' '
-            String logDirEscaped = PortalShellInvoker.createGroovySafePath(buildDir.getPath())
+/*
+ * Import database entities in the folder defined by the 'base.entities.location' build property.
+ */
+task datebaseImportEntities(type: PortalShellExec, dependsOn: 'loadBuildProps') {
+    String baseEntitiesLocation = buildProps.getProperty('base.entities.location') ?: defaultBaseEntitiesLocation
+    String implementationEntitiesLocation = buildProps.getProperty('implementation.entities.location') ?: defaultImplementationEntitiesLocation
 
-            // Prepare the scriptFile
-            shellDir.mkdirs()
-            File scriptFile = new File(shellDir, 'dataImport.groovy')
-            scriptFile.delete()  // Clear from previous invocation, if present
-            scriptFile.write(
-"""
-//dataImport(String target, String dataDir, String pattern, String filesList, String archive, String logDir)
-portalShellBuildHelper.dataImport("data-import",
-    '${dirEscaped}',
-    '${pattern}',
-    portalShellBuildHelper.getFilesListStringFromInput('${fileEscaped}','${filesEscaped}','${manifestEscaped}'),
-    '${archiveEscaped}',
-    '${logDirEscaped}');
-"""         )
+    String pattern = ' '
+    String file = ' '
+    String archive = ' '
+    String files = ' '
+    String filesListFile = ' '
+    String logDir = buildDir.getPath()
 
-            PortalShellInvoker psi = new PortalShellInvoker()
-            psi.invoke(project, scriptFile.getAbsolutePath())
-        }
+    String script = ''
+    [ baseEntitiesLocation, implementationEntitiesLocation ].each { entitiesLocation ->
+        script += """
+            portalShellBuildHelper.dataImport('data-import',
+            '${entitiesLocation}',
+            '${pattern}',
+            portalShellBuildHelper.getFilesListStringFromInput('${file}', '${files}', '${filesListFile}'),
+            '${archive}',
+            '${logDir}');
+            """
     }
+
+    String scriptPath = generateFile(temporaryDir, script)
+
+    args = ['-s', scriptPath]
 }
 
-dataExport {
-    dependsOn ':loadBuildProps'
-    doLast {
-        // Three -D arguments may be passed;  all are optional
-        String dir = System.getProperty('dir') ?: "${buildDir}/export"
-        String type = System.getProperty('type') ?: ' '
-        String sysid = System.getProperty('sysid') ?: ' '
-
-        String dirEscaped = PortalShellInvoker.createGroovySafePath(dir)
-        String logDirEscaped = PortalShellInvoker.createGroovySafePath(buildDir.getPath())
-
-        // Prepare the scriptFile
-        shellDir.mkdirs()
-        File scriptFile = new File(shellDir, 'dataExport.groovy')
-        scriptFile.delete()  // Clear from previous invocation, if present
-        scriptFile.write(
-"""
-//dataExport(String target, String dataDir, String type, String sysid, String logDir)
-portalShellBuildHelper.dataExport('data-export',
-'${dirEscaped}',
-'${type}',
-'${sysid}',
-'${logDirEscaped}');
-"""         )
-
-        PortalShellInvoker psi = new PortalShellInvoker()
-        psi.invoke(project, scriptFile.getAbsolutePath())
-    }
-}
-
-dataDelete {
-    dependsOn ':loadBuildProps'
-    doLast {
-        // Validate inputs
-        Map<String,String> args = [
-                type: System.getProperty('type'),
-                sysid: System.getProperty('sysid')
-        ].findAll { key, value -> value != null }
-        if (args.size() != 2) {
-            logger.lifecycle('Both -Dtype={entity-type} and -Dsysid={id} must be specified ' +
-                    'for dataDelete; use the dataList task to determine available data types')
-            /*
-             * Stop the build by throwing the relevant exception from the org.gradle.api package
-             * (https://stackoverflow.com/questions/10312259/recommended-way-to-stop-a-gradle-build).
-             */
-            throw new InvalidUserDataException('Missing type and/or sysid parameter(s)')
-        } else {
-            // Prepare the scriptFile
-            shellDir.mkdirs()
-            File scriptFile = new File(shellDir, 'dataDelete.groovy')
-            scriptFile.delete()  // Clear from previous invocation, if present
-            scriptFile.write(
-"""
-//dataDelete(String target, String type, String sysid)
-portalShellBuildHelper.dataDelete('data-delete',
-'${args['type']}',
-'${args['sysid']}')
-"""         )
-
-            PortalShellInvoker psi = new PortalShellInvoker()
-            psi.invoke(project, scriptFile.getAbsolutePath())
-        }
-
-    }
-}
-
-dataList {
-    dependsOn ':loadBuildProps'
-    doLast {
-        // Is there a -Dtype= argument passed?
-        String type = System.getProperty('type') ?: ' '
-
-        // Prepare the scriptFile
-        shellDir.mkdirs()
-        File scriptFile = new File(shellDir, 'dataList.groovy')
-        scriptFile.delete()  // Clear from previous invocation, if present
-        scriptFile.write(
-"""
-//dataList(String target, String type)
-portalShellBuildHelper.dataList('data-list', '${type}');
-"""     )
-
-        PortalShellInvoker psi = new PortalShellInvoker()
-        psi.invoke(project, scriptFile.getAbsolutePath())
-    }
-}
+// dataImport {
+//     dependsOn ':loadBuildProps'
+//     doLast {
+//         // Validate inputs
+//         Map<String,String> args = [
+//                 file: System.getProperty('file'),
+//                 dir: System.getProperty('dir'),
+//                 manifest: System.getProperty('manifest'),
+//                 archive: System.getProperty('archive')
+//         ].findAll { key, value -> value != null }
+//         if (args.size() != 1) {
+//             logger.lifecycle('Please specify exactly one of -Dfile={path}, -Ddir={path}, -Dmanifest={path}, or -Darchive={path}')
+//             /*
+//              * Stop the build by throwing the relevant exception from the org.gradle.api package
+//              * (https://stackoverflow.com/questions/10312259/recommended-way-to-stop-a-gradle-build).
+//              */
+//             throw new InvalidUserDataException('Invalid number of parameters')
+//         } else {
+//             // Format the arguments
+//             String dirEscaped = args.containsKey('dir') ? PortalShellInvoker.createGroovySafePath(args['dir']) : ' '
+//             String pattern = ' ' // Not currently in use
+//             String fileEscaped = args.containsKey('file') ? PortalShellInvoker.createGroovySafePath(args['file']) : ' '
+//             String filesEscaped = ' ' // Not currently in use
+//             String manifestEscaped = args.containsKey('manifest') ? PortalShellInvoker.createGroovySafePath(args['manifest']) : ' '
+//             String archiveEscaped = args.containsKey('archive') ? PortalShellInvoker.createGroovySafePath(args['archive']) : ' '
+//             String logDirEscaped = PortalShellInvoker.createGroovySafePath(buildDir.getPath())
+//
+//             // Prepare the scriptFile
+//             shellDir.mkdirs()
+//             File scriptFile = new File(shellDir, 'dataImport.groovy')
+//             scriptFile.delete()  // Clear from previous invocation, if present
+//             scriptFile.write(
+// """
+// portalShellBuildHelper.dataImport("data-import",
+//     '${dirEscaped}',
+//     '${pattern}',
+//     portalShellBuildHelper.getFilesListStringFromInput('${fileEscaped}','${filesEscaped}','${manifestEscaped}'),
+//     '${archiveEscaped}',
+//     '${logDirEscaped}');
+// """         )
+//
+//             PortalShellInvoker psi = new PortalShellInvoker()
+//             psi.invoke(project, scriptFile.getAbsolutePath())
+//         }
+//     }
+// }
+//
+// dataExport {
+//     dependsOn ':loadBuildProps'
+//     doLast {
+//         // Three -D arguments may be passed;  all are optional
+//         String dir = System.getProperty('dir') ?: "${buildDir}/export"
+//         String type = System.getProperty('type') ?: ' '
+//         String sysid = System.getProperty('sysid') ?: ' '
+//
+//         String dirEscaped = PortalShellInvoker.createGroovySafePath(dir)
+//         String logDirEscaped = PortalShellInvoker.createGroovySafePath(buildDir.getPath())
+//
+//         // Prepare the scriptFile
+//         shellDir.mkdirs()
+//         File scriptFile = new File(shellDir, 'dataExport.groovy')
+//         scriptFile.delete()  // Clear from previous invocation, if present
+//         scriptFile.write(
+// """
+// //dataExport(String target, String dataDir, String type, String sysid, String logDir)
+// portalShellBuildHelper.dataExport('data-export',
+// '${dirEscaped}',
+// '${type}',
+// '${sysid}',
+// '${logDirEscaped}');
+// """         )
+//
+//         PortalShellInvoker psi = new PortalShellInvoker()
+//         psi.invoke(project, scriptFile.getAbsolutePath())
+//     }
+// }
+//
+// dataDelete {
+//     dependsOn ':loadBuildProps'
+//     doLast {
+//         // Validate inputs
+//         Map<String,String> args = [
+//                 type: System.getProperty('type'),
+//                 sysid: System.getProperty('sysid')
+//         ].findAll { key, value -> value != null }
+//         if (args.size() != 2) {
+//             logger.lifecycle('Both -Dtype={entity-type} and -Dsysid={id} must be specified ' +
+//                     'for dataDelete; use the dataList task to determine available data types')
+//             /*
+//              * Stop the build by throwing the relevant exception from the org.gradle.api package
+//              * (https://stackoverflow.com/questions/10312259/recommended-way-to-stop-a-gradle-build).
+//              */
+//             throw new InvalidUserDataException('Missing type and/or sysid parameter(s)')
+//         } else {
+//             // Prepare the scriptFile
+//             shellDir.mkdirs()
+//             File scriptFile = new File(shellDir, 'dataDelete.groovy')
+//             scriptFile.delete()  // Clear from previous invocation, if present
+//             scriptFile.write(
+// """
+// //dataDelete(String target, String type, String sysid)
+// portalShellBuildHelper.dataDelete('data-delete',
+// '${args['type']}',
+// '${args['sysid']}')
+// """         )
+//
+//             PortalShellInvoker psi = new PortalShellInvoker()
+//             psi.invoke(project, scriptFile.getAbsolutePath())
+//         }
+//
+//     }
+// }
+//
+// dataList {
+//     dependsOn ':loadBuildProps'
+//     doLast {
+//         // Is there a -Dtype= argument passed?
+//         String type = System.getProperty('type') ?: ' '
+//
+//         // Prepare the scriptFile
+//         shellDir.mkdirs()
+//         File scriptFile = new File(shellDir, 'dataList.groovy')
+//         scriptFile.delete()  // Clear from previous invocation, if present
+//         scriptFile.write(
+// """
+// //dataList(String target, String type)
+// portalShellBuildHelper.dataList('data-list', '${type}');
+// """     )
+//
+//         PortalShellInvoker psi = new PortalShellInvoker()
+//         psi.invoke(project, scriptFile.getAbsolutePath())
+//     }
+// }

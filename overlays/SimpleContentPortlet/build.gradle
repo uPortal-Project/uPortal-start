@@ -13,35 +13,3 @@ war {
     archiveName 'SimpleContentPortlet.war'
     exclude 'WEB-INF/lib/hsqldb-*.jar'
 }
-
-/*
- * Import/Export Support
- */
-
-import org.apereo.portal.start.shell.PortalShellInvoker
-
-dependencies {
-    impexp configurations.jdbc
-    impexp "${portletApiDependency}"
-    impexp "${servletApiDependency}"
-}
-
-dataInit {
-    dependsOn ':loadBuildProps'
-    /*
-     * Drop (if present) then create the Hibernate-managed schema.
-     */
-    doLast {
-        ant.setLifecycleLogLevel('INFO')
-        ant.java(fork: true, failonerror: true, dir: rootProject.projectDir, classname: 'org.jasig.portlet.attachment.util.SchemaCreator') {
-            classpath {
-                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/classes")
-                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/lib/*")
-                project.configurations.impexp.files.each {
-                    pathelement(location: it.absolutePath)
-                }
-            }
-            sysproperty(key: 'log4j.configuration', value: 'command-line.log4j.properties')
-        }
-    }
-}
