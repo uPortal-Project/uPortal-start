@@ -117,18 +117,19 @@ task tomcatStop(dependsOn: 'loadBuildProperties') {
 }
 
 task tomcatClearLogs(type: Delete, dependsOn: 'loadBuildProperties') {
-    description 'Delete log files within Tomcat'
+    group 'Tomcat'
+    description 'Delete all log files within Tomcat'
 
     doFirst {
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
-        boolean logsDirEmpty = true
-        fileTree("${serverHome}/logs").visit { FileVisitDetails details ->
-            logger.lifecycle("Deleting ${details.name}")
-            logsDirEmpty = false
-            delete details.file
-        }
-        if (logsDirEmpty) {
+        FileTree logsFolder = fileTree("${serverHome}/logs")
+        if (logsFolder.isEmpty()) {
             logger.lifecycle('The Tomcat logs directory is empty;  there is noting to delete')
+        } else {
+            logsFolder.visit { FileVisitDetails details ->
+                logger.lifecycle("Deleting ${details.name}")
+                delete details.file
+            }
         }
     }
 }
