@@ -5,7 +5,8 @@ task portalClean(type: Delete, dependsOn: 'loadBuildProps') {
 
     doFirst {
         String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
-        def uPortalDeployDir = "${serverHome}/webapps/uPortal"
+        String serverBase = buildProps.getProperty('server.base') ?: ${serverHome}
+        def uPortalDeployDir = "${serverBase}/webapps/uPortal"
         logger.lifecycle("Removing deployed uPortal from servlet container at location:  ${uPortalDeployDir}")
         delete uPortalDeployDir
     }
@@ -20,12 +21,13 @@ task portalDeploy(dependsOn: 'loadBuildProps') {
 
     doLast {
         String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
-        logger.lifecycle("Deploying bundled applications to the Tomcat servlet container in ${serverHome}...")
+        String serverBase = buildProps.getProperty('server.base') ?: ${serverHome}
+        logger.lifecycle("Deploying bundled applications to the Tomcat servlet container in ${serverBase}...")
 
         configurations.bundled.files.each { war ->
             logger.lifecycle("  --> ${war}")
             copy {
-                into "${serverHome}/webapps/${war.getName().take(war.getName().lastIndexOf('.'))}"
+                into "${serverBase}/webapps/${war.getName().take(war.getName().lastIndexOf('.'))}"
                 with copySpec {
                     from zipTree(war)
                 }
