@@ -12,8 +12,8 @@ class GradleTomcatDeployPlugin implements Plugin<Project> {
             description 'Removes this project from the integrated Tomcat servlet container'
 
             doFirst {
-                File serverHome = new File(project.rootProject.projectDir, project.rootProject.ext['buildProperties'].getProperty('server.home'))
-                File deployDir = new File (serverHome, "webapps/${project.name}")
+                File serverBase = new File(project.rootProject.projectDir, project.rootProject.ext['buildProperties'].getProperty('server.base'))
+                File deployDir = new File (serverBase, "webapps/${project.name}")
                 logger.lifecycle("Removing deployed application from servlet container at location:  ${deployDir}")
                 delete deployDir
             }
@@ -25,8 +25,8 @@ class GradleTomcatDeployPlugin implements Plugin<Project> {
             dependsOn 'assemble'
 
             doFirst {
-                File serverHome = new File(project.rootProject.projectDir, project.rootProject.ext['buildProperties'].getProperty('server.home'))
-                File deployDir = new File (serverHome, "webapps/${project.name}")
+                File serverBase = new File(project.rootProject.projectDir, project.rootProject.ext['buildProperties'].getProperty('server.base'))
+                File deployDir = new File (serverBase, "webapps/${project.name}")
                 logger.lifecycle("Deploying assembled application to servlet container at location:  ${deployDir}")
 
                 String artifactDir = project.plugins.hasPlugin(GradlePlutoPlugin) ? 'pluto' : 'libs'

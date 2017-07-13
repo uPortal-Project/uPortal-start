@@ -26,10 +26,20 @@
 # Use forward slashes for path names even if
 # you are in a Windows environment!
 #
+# IMPORTANT!  If you modify the value of either server.home or server.base, it is likely you will
+# want to modify the other value as well.  The default value of server.base is NOT calculated from
+# server.home.
 
-# Location of the integrated Tomcat installation; e.g. server.home=${env.CATALINA_HOME}
+# Location of the integrated Tomcat installation; e.g. server.home=${env.CATALINA_HOME}.  This
+# property corresponds with the ${catalina.home} property within Tomcat (see Tomcat/bin/catalina.sh).
 #
 #server.home=
+
+# (Optional) Base directory for resolving dynamic portions of the integrated Tomcat installation.
+# This property corresponds with the ${catalina.base} property within Tomcat (see
+# Tomcat/bin/catalina.sh).
+#
+#server.base=
 
 # Location of Base Data Set;  base data is imported before entities specified
 # in implementation.entities.location (below) and does not commonly require
