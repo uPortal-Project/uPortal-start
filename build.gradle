@@ -3,7 +3,7 @@ import org.gradle.internal.os.OperatingSystem;
 ext {
     /*
      * We need to define the buildProperties extended property here in order for the
-     * build to compile.  It will be initialized by the :loadBuildProperties task.
+     * build to compile.  It will be bootstrapped during the Gradle initialization phase.
      */
     buildProperties = new Properties()
     /*
@@ -14,9 +14,14 @@ ext {
 }
 
 /*
+ * Load the buildProperties collection, which is used by the CLI Tools.
+ * (NOTE:  This item must come first.)
+ */
+apply from: rootProject.file('gradle/tasks/properties.gradle')
+
+/*
  * uPortal CLI Tools
  */
 apply from: rootProject.file('gradle/tasks/hsql.gradle')
 apply from: rootProject.file('gradle/tasks/portal.gradle')
-apply from: rootProject.file('gradle/tasks/properties.gradle')
 apply from: rootProject.file('gradle/tasks/tomcat.gradle')

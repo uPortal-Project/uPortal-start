@@ -19,7 +19,7 @@ dependencies {
     shared "${portletApiDependency}"
 }
 
-task tomcatInstall(dependsOn: 'loadBuildProperties') {
+task tomcatInstall() {
     description 'Downloads the Apache Tomcat servlet container and performs the necessary configuration steps'
 
     doLast {
@@ -82,7 +82,7 @@ task tomcatInstall(dependsOn: 'loadBuildProperties') {
     }
 }
 
-task tomcatStart(dependsOn: 'loadBuildProperties') {
+task tomcatStart() {
     group 'Tomcat'
     description 'Start the embedded Tomcat servlet container'
 
@@ -99,7 +99,7 @@ task tomcatStart(dependsOn: 'loadBuildProperties') {
     }
 }
 
-task tomcatStop(dependsOn: 'loadBuildProperties') {
+task tomcatStop() {
     group 'Tomcat'
     description 'Stop the embedded Tomcat servlet container'
 
@@ -116,7 +116,7 @@ task tomcatStop(dependsOn: 'loadBuildProperties') {
     }
 }
 
-task tomcatClearLogs(type: Delete, dependsOn: 'loadBuildProperties') {
+task tomcatClearLogs(type: Delete) {
     group 'Tomcat'
     description 'Delete all log files within Tomcat'
 

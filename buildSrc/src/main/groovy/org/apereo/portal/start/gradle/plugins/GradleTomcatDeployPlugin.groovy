@@ -10,7 +10,6 @@ class GradleTomcatDeployPlugin implements Plugin<Project> {
         project.task('tomcatClean', type: Delete) {
             group 'Tomcat'
             description 'Removes this project from the integrated Tomcat servlet container'
-            dependsOn ':loadBuildProperties'
 
             doFirst {
                 File serverHome = new File(project.rootProject.projectDir, project.rootProject.ext['buildProperties'].getProperty('server.home'))

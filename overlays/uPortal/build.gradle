@@ -23,7 +23,6 @@ ext {
 }
 
 dataInit {
-    dependsOn ':loadBuildProperties'
     /*
      * Add to the scriptFile commands that drop then create then load the legacy database
      * tables and data (i.e. non-Hibernate stuff that's still based on tables.xml and data.xml)
@@ -111,7 +110,6 @@ portalShellBuildHelper.dataImport('data-import',
 }
 
 dataImport {
-    dependsOn ':loadBuildProperties'
     doLast {
         // Validate inputs
         Map<String,String> args = [
@@ -159,7 +157,6 @@ portalShellBuildHelper.dataImport("data-import",
 }
 
 dataExport {
-    dependsOn ':loadBuildProperties'
     doLast {
         // Three -D arguments may be passed;  all are optional
         String dir = System.getProperty('dir') ?: "${buildDir}/export"
@@ -189,7 +186,6 @@ portalShellBuildHelper.dataExport('data-export',
 }
 
 dataDelete {
-    dependsOn ':loadBuildProperties'
     doLast {
         // Validate inputs
         Map<String,String> args = [
@@ -225,7 +221,6 @@ portalShellBuildHelper.dataDelete('data-delete',
 }
 
 dataList {
-    dependsOn ':loadBuildProperties'
     doLast {
         // Is there a -Dtype= argument passed?
         String type = System.getProperty('type') ?: ' '
