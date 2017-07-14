@@ -27,7 +27,6 @@ dependencies {
 }
 
 dataInit {
-    dependsOn ':loadBuildProps'
     /*
      * Drop (if present) then create the Hibernate-managed schema.
      */

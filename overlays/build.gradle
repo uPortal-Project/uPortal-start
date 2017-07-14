@@ -8,13 +8,9 @@ buildscript {
 }
 
 subprojects {
-    ext {
-        defaultBaseEntitiesLocation = "${rootProject.projectDir}/data/base"
-        defaultImplementationEntitiesLocation = "${rootProject.projectDir}/data/quickstart"
-    }
-
     apply plugin: 'maven'
     apply plugin: 'waroverlay'
+    apply plugin: org.apereo.portal.start.gradle.plugins.GradleTomcatDeployPlugin
 
     repositories {
         mavenLocal()
@@ -80,5 +76,14 @@ subprojects {
         from zipTree("${project.buildDir}/libs/${project.name}.war")
         into "${buildDir}/${project.name}"
     }
+
+    /*
+     * Follow the pattern where 'assemble' is the generic task for building artifacts.  This allows
+     * us to develop plugins with simply 'dependsOn assemble' instead of worrying about what sorts
+     * of artifacts they produce. All subproject will have (at least) 'expandedWar';  some
+     * subprojects will also have 'plutoAssemble' (which is made a dependency of 'assemble' by the
+     * plugin).
+     */
+    assemble.dependsOn 'expandedWar'
 
 }

@@ -2,46 +2,26 @@ import org.gradle.internal.os.OperatingSystem;
 
 ext {
     /*
+     * We need to define the buildProperties extended property here in order for the
+     * build to compile.  It will be bootstrapped during the Gradle initialization phase.
+     */
+    buildProperties = new Properties()
+    /*
      * Unfortunately, several of the uPortal CLI tasks need to do
      * significantly different things on different operating systems.
      */
     isWindows = OperatingSystem.current().isWindows()
-    buildProps = new Properties();  // Initialized by the 'loadBuildProps' task, if needed
-}
-
-configurations {
-    bundled
 }
 
 /*
- * These are the "bundled" applications that deploy to Tomcat: portlets,
- * resource-server, and (starting with version 5.0) uPortal itself.
+ * Load the buildProperties collection, which is used by the CLI Tools.
+ * (NOTE:  This item must come first.)
  */
-dependencies {
-    bundled project(path: ':overlays:Announcements', configuration: 'pluto')
-    bundled project(path: ':overlays:basiclti-portlet', configuration: 'pluto')
-    bundled project(path: ':overlays:BookmarksPortlet', configuration: 'pluto')
-    bundled project(path: ':overlays:CalendarPortlet', configuration: 'pluto')
-    bundled project(path: ':overlays:cas', configuration: 'war')
-    bundled project(path: ':overlays:cas-proxy-test-portlet', configuration: 'pluto')
-    bundled project(path: ':overlays:email-preview', configuration: 'pluto')
-    bundled project(path: ':overlays:FunctionalTestsPortlet', configuration: 'pluto')
-    bundled project(path: ':overlays:jasig-widget-portlets', configuration: 'pluto')
-    bundled project(path: ':overlays:NewsReaderPortlet', configuration: 'pluto')
-    bundled project(path: ':overlays:NotificationPortlet', configuration: 'pluto')
-    bundled project(path: ':overlays:pluto-testsuite', configuration: 'war')
-    bundled project(path: ':overlays:ResourceServingWebapp', configuration: 'war')
-    bundled project(path: ':overlays:sakai-connector', configuration: 'pluto')
-    bundled project(path: ':overlays:SimpleContentPortlet', configuration: 'pluto')
-    bundled project(path: ':overlays:uPortal', configuration: 'pluto')
-    bundled project(path: ':overlays:WeatherPortlet', configuration: 'pluto')
-    bundled project(path: ':overlays:WebProxyPortlet', configuration: 'pluto')
-}
+apply from: rootProject.file('gradle/tasks/properties.gradle')
 
 /*
  * uPortal CLI Tools
  */
 apply from: rootProject.file('gradle/tasks/hsql.gradle')
 apply from: rootProject.file('gradle/tasks/portal.gradle')
-apply from: rootProject.file('gradle/tasks/properties.gradle')
 apply from: rootProject.file('gradle/tasks/tomcat.gradle')

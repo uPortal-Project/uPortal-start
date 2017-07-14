@@ -1,7 +1,3 @@
-ext {
-    defaultServerHome = "${projectDir.getPath()}/.gradle/tomcat"
-}
-
 repositories {
     mavenLocal()
     mavenCentral()
@@ -23,11 +19,11 @@ dependencies {
     shared "${portletApiDependency}"
 }
 
-task tomcatInstall(dependsOn: 'loadBuildProps') {
+task tomcatInstall() {
     description 'Downloads the Apache Tomcat servlet container and performs the necessary configuration steps'
 
     doLast {
-        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
+        String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
 
         logger.lifecycle("Installing Tomcat servlet container version ${tomcatVersion} to location ${serverHome}")
 
@@ -86,12 +82,12 @@ task tomcatInstall(dependsOn: 'loadBuildProps') {
     }
 }
 
-task tomcatStart(dependsOn: 'loadBuildProps') {
+task tomcatStart() {
     group 'Tomcat'
     description 'Start the embedded Tomcat servlet container'
 
     doLast {
-        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
+        String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
         logger.lifecycle("Starting Tomcat servlet container in ${serverHome}")
         String executable = isWindows ? 'cmd' : './startup.sh'
         ant.exec(dir: "${serverHome}/bin", executable: executable, spawn: true) {
@@ -103,12 +99,12 @@ task tomcatStart(dependsOn: 'loadBuildProps') {
     }
 }
 
-task tomcatStop(dependsOn: 'loadBuildProps') {
+task tomcatStop() {
     group 'Tomcat'
     description 'Stop the embedded Tomcat servlet container'
 
     doLast {
-        String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
+        String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
         logger.lifecycle("Stopping Tomcat servlet container in ${serverHome}")
         String executable = isWindows ? 'cmd' : './shutdown.sh'
         ant.exec(dir: "${serverHome}/bin", executable: executable, spawn: true) {
@@ -120,19 +116,20 @@ task tomcatStop(dependsOn: 'loadBuildProps') {
     }
 }
 
-task tomcatClearLogs(type: Delete, dependsOn: 'loadBuildProps') {
-    description 'Delete log files within Tomcat'
-    String serverHome = buildProps.getProperty('server.home') ?: defaultServerHome
+task tomcatClearLogs(type: Delete) {
+    group 'Tomcat'
+    description 'Delete all log files within Tomcat'
 
     doFirst {
-        fileTree("${serverHome}/logs").visit { FileVisitDetails file ->
-            logger.lifecycle("Deleting ${file.name}")
+        String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
+        FileTree logsFolder = fileTree("${serverHome}/logs")
+        if (logsFolder.isEmpty()) {
+            logger.lifecycle('The Tomcat logs directory is empty;  there is noting to delete')
+        } else {
+            logsFolder.visit { FileVisitDetails details ->
+                logger.lifecycle("Deleting ${details.name}")
+                delete details.file
+            }
         }
-    }
-
-    delete "${serverHome}/logs"
-
-    doLast {
-        file("${serverHome}/logs").mkdirs()
     }
 }
