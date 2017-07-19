@@ -204,6 +204,18 @@ You can stop the Tomcat server using with this command:
 ```console
     $ ./gradlew tomcatStop
 ```
+### First Time Running uPortal via uPortal-start
+Assuming all the defaults were left:
+* The URL to access uPortal is:  <http://localhost:8080/uPortal/>
+* Using the example credentials, you can bypass CAS when testing locally.  Available default logins / URLs:
+  * admin: <http://localhost:8080/uPortal/Login?userName=admin&password=admin>
+  * faculty: <http://localhost:8080/uPortal/Login?userName=faculty&password=faculty>
+  * staff <http://localhost:8080/uPortal/Login?userName=staff&password=staff>
+  * student <http://localhost:8080/uPortal/Login?userName=student&password=student>
+  * guest <http://localhost:8080/uPortal/render.userLayoutRootNode.uP>
+* The default tomcat install is:  _uPortal-start/.gradle/tomcat_
+* The logs to watch for issues are located in:  _uPortal-start/.gradle/tomcat/logs_
+
 
 [Apereo uPortal]: https://www.apereo.org/projects/uportal
 [uPortal 5.0 Manual]: https://jasig.github.io/uPortal
