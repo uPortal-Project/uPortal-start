@@ -9,3 +9,12 @@ task portalInit {
     dependsOn allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
     dependsOn allprojects.collect { it.tasks.matching { it.name.equals('dataInit') } }
 }
+
+task portalOpen() {
+   group 'Portal'
+   description 'Opens the Default URL in a browser'
+
+   doLast {
+      java.awt.Desktop.desktop.browse 'http://localhost:8080/uPortal/'.toURI()
+   }
+}
