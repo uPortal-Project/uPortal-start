@@ -121,8 +121,8 @@ task tomcatClearLogs(type: Delete) {
     description 'Delete all log files within Tomcat'
 
     doFirst {
-        String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
-        FileTree logsFolder = fileTree("${serverHome}/logs")
+        String serverBase = rootProject.ext['buildProperties'].getProperty('server.base')
+        FileTree logsFolder = fileTree("${serverBase}/logs")
         if (logsFolder.isEmpty()) {
             logger.lifecycle('The Tomcat logs directory is empty;  there is noting to delete')
         } else {
