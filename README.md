@@ -76,6 +76,7 @@ running the following command:
   - [How To Deploy uPortal Technology to Tomcat](#how-to-deploy-uportal-technology-to-tomcat)
   - [How To Create and Initialize the Database Schema](#how-to-create-and-initialize-the-database-schema)
   - [How To Start Tomcat](#how-to-start-tomcat)
+  - [How To Configure Your Deployment](#how-to-configure-your-deployment)
 
 ### How To Set Up Everything the First Time
 
@@ -216,6 +217,31 @@ Assuming all the defaults were left:
 * The default tomcat install is:  _uPortal-start/.gradle/tomcat_
 * The logs to watch for issues are located in:  _uPortal-start/.gradle/tomcat/logs_
 
+### How To Configure Your Deployment
+
+uPortal contains many configuration settings.  (Please refer to the [uPortal 5.0 Manual][] for a
+comprehensive guide to configuration.)  All settings have default values, which  -- for the most
+part -- have been selected to suit the needs of a local development environment (like the one this
+`README` guides you through creating).
+
+You can _override_ the value of most configuration settings using one or both of the following local
+configuration files:
+
+  - `uPortal.properties`
+  - `global.properties`
+
+Both files are optional.  `uPortal.properties` is for _uPortal-only_ settings, whereas
+`global.properties` is for settings that may also be read and used by _uPortal Modules_ (such as
+portlets).  Both files support all the same settings.  If the same setting is defined in both
+files, the value in `uPortal.properties` "wins."
+
+Both files (if you're using them) must be placed in the `portal.home` directory.  The default
+location of `portal.home` is '`${catalina.base}`/portal', but you can specify your own location by
+defining a `PORTAL_HOME` environment variable.
+
+A sample `uPortal.properties` file -- with several commonly-adjusted settings defined and
+documented -- is available in the `etc/portal` directory of this project.  Feel free to customize
+that sample with institution-specific defaults in your fork of uPortal-start.
 
 [Apereo uPortal]: https://www.apereo.org/projects/uportal
 [uPortal 5.0 Manual]: https://jasig.github.io/uPortal

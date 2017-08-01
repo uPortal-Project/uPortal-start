@@ -20,6 +20,7 @@ dependencies {
 }
 
 task tomcatInstall() {
+    group 'Tomcat'
     description 'Downloads the Apache Tomcat servlet container and performs the necessary configuration steps'
 
     doLast {
