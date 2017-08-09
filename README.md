@@ -147,6 +147,12 @@ You can stop the HSQLDB instance with the following command:
     $ ./gradlew hsqlStop
 ```
 
+You can launch the HSQL DB Manager application with the following command:
+
+```console
+    $ ./gradlew hsqlOpen
+```
+
 ### How To Deploy uPortal Technology to Tomcat
 
 When(ever) you perform the `tomcatInstall` task, the Tomcat container will be empty.  You need to
