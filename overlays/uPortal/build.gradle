@@ -6,6 +6,7 @@ apply plugin: GradlePlutoPlugin
 
 dependencies {
     runtime "org.jasig.portal:uPortal-webapp:${uPortalVersion}@war"
+    compile configurations.jdbc
 }
 
 war {
