@@ -44,6 +44,35 @@ task hsqlStart {
     }
 }
 
+
+task hsqlOpen {
+    group 'HSQL'
+    description 'Launch the HSQL Database Manager connected to the default HSQL database'
+
+    doLast {
+        logger.lifecycle('Starting the HSQLDB Database Manager, connected to the default HSQL database [uPortal]')
+
+        String classpathSeparatorCharacter = isWindows ? ';' : ':'
+        String classpath = '';
+        configurations.hsqldb.resolve().each {
+            if (classpath.length() != 0) {
+                classpath += classpathSeparatorCharacter
+            }
+            classpath += it.getAbsolutePath()
+        }
+
+        ant.exec(executable: 'java', spawn: true) {
+            arg(value: '-cp')
+            arg(value: classpath)
+            arg(value: 'org.hsqldb.util.DatabaseManagerSwing')
+            arg(value: '--url')
+            arg(value: 'jdbc:hsqldb:hsql://localhost:8887/uPortal')
+            arg(value: '--user')
+            arg(value: 'SA')
+        }
+    }
+}
+
 task hsqlStop {
     group 'HSQL'
     description 'Stop the embedded hsql server'
