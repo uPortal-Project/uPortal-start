@@ -80,6 +80,17 @@ task tomcatInstall() {
             from configurations.shared
             into "${serverHome}/shared/lib"
         }
+
+        /*
+         * Create & initialize the folder that is the default location of {portal.home].  (If
+         * another location has been specified, we don't want to mess with that.)
+         */
+        String portalHomeDir = "${serverHome}/portal"
+        new File(portalHomeDir).mkdirs()
+        copy {
+            from 'etc/portal'
+            into portalHomeDir
+        }
     }
 }
 
