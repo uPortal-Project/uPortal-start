@@ -24,7 +24,6 @@ task prepareSkinResources {
     if (skinDir.exists()) { // Needed only if we've defined custom skin(s) in uPortal-start
         // Step 1:  Unpack the upstream uPortal.war into a work directory
         doLast() {
-            logger.lifecycle "Preparing to compile and include Respondr skins located in ${skinDir}"
             // Locate the uPortal.war dependency
             Dependency d = configurations.runtime.dependencies.matching { it.name == 'uPortal-webapp' }.getAt(0)
             File uPortalWar = configurations.runtime.files(d).getAt(0)
@@ -41,16 +40,27 @@ task prepareSkinResources {
             }
         }
         // Step 3:  Use NodeJS & lessc to compile custom skin(sz)
-        // WIP @ChristianMurphy...
+        doLast {
+            // Identify custom skins located in skinDir
+            List<String> skinFiles = new FileNameFinder().getFileNames(skinDir.path, '*.less')
+            logger.lifecycle "Found the following custom skin files defined in ${skinDir}"
+            skinFiles.forEach {
+                // Strip the path and file extension
+                String skinFileName = it.substring(it.lastIndexOf(File.separator) + 1)
+                logger.lifecycle "  -> ${skinFileName}"
+            }
+        }
         // Step 4:  Replace the contents of media/skins/respondr in the war file with our enhanced version
-        war.dependsOn prepareSkinResources
         war {
             from("${workDir}/media/skins/respondr") {
                 into('media/skins/respondr')
             }
         }
+    } else {
+        logger.lifecycle "Skipping prepareSkinResources;  no custom skin files defined in ${skinDir}"
     }
 }
+war.dependsOn prepareSkinResources
 
 /*
  * Import/Export Support
