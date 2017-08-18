@@ -1,0 +1,10 @@
+{
+  "name": "uportal-start",
+  "private": true,
+  "scripts": {
+    "compile-less": "lessc"
+  },
+  "devDependencies": {
+    "less": "^2.7.2"
+  }
+}
