@@ -14,6 +14,45 @@ war {
 }
 
 /*
+ * Skinning Support
+ */
+
+// Set up resources from custom skins so we can compile with NodeJS & lessc
+task prepareSkinResources {
+    File skinDir = new File ("${projectDir}/src/main/webapp/media/skins/respondr")
+    String workDir = "${buildDir}/tmp/skin/uPortal"
+    if (skinDir.exists()) { // Needed only if we've defined custom skin(s) in uPortal-start
+        // Step 1:  Unpack the upstream uPortal.war into a work directory
+        doLast() {
+            logger.lifecycle "Preparing to compile and include Respondr skins located in ${skinDir}"
+            // Locate the uPortal.war dependency
+            Dependency d = configurations.runtime.dependencies.matching { it.name == 'uPortal-webapp' }.getAt(0)
+            File uPortalWar = configurations.runtime.files(d).getAt(0)
+            copy {
+                from zipTree(uPortalWar)
+                into workDir
+            }
+        }
+        // Step 2:  Add the skin resources from within src/main
+        doLast {
+            copy {
+                from skinDir
+                into "${workDir}/media/skins/respondr"
+            }
+        }
+        // Step 3:  Use NodeJS & lessc to compile custom skin(sz)
+        // WIP @ChristianMurphy...
+        // Step 4:  Replace the contents of media/skins/respondr in the war file with our enhanced version
+        war.dependsOn prepareSkinResources
+        war {
+            from("${workDir}/media/skins/respondr") {
+                into('media/skins/respondr')
+            }
+        }
+    }
+}
+
+/*
  * Import/Export Support
  */
 
