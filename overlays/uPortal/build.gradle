@@ -35,8 +35,8 @@ war {
  */
 
 // Set up resources from custom skins so we can compile with NodeJS & lessc
-task prepareSkinResources {
-    File skinDir = new File ("${projectDir}/src/main/webapp/media/skins/respondr")
+File skinDir = new File ("${projectDir}/src/main/webapp/media/skins/respondr")
+task prepareSkinResources(dependsOn: npmInstall) {
     String workDir = "${buildDir}/tmp/skin/uPortal"
     if (skinDir.exists()) { // Needed only if we've defined custom skin(s) in uPortal-start
         // Step 1:  Unpack the upstream uPortal.war into a work directory
@@ -56,8 +56,7 @@ task prepareSkinResources {
                 into "${workDir}/media/skins/respondr"
             }
         }
-
-        // Step 4:  Replace the contents of media/skins/respondr in the war file with our enhanced version
+        // Lastly, update configuration of the 'war' task to include compiled skins
         war {
             from("${workDir}/media/skins/respondr") {
                 into('media/skins/respondr')
@@ -70,24 +69,24 @@ task prepareSkinResources {
 
 
 // Step 3:  Use NodeJS & lessc to compile custom skin(sz)
-// Identify custom skins located in skinDir
-File skinDir = new File ("${projectDir}/src/main/webapp/media/skins/respondr")
-String skinTmpDir = "${buildDir}/tmp/skin/uPortal/media/skins/respondr/"
-List<String> skinFiles = new FileNameFinder().getFileNames(skinDir.path, '*.less')
-skinFiles.eachWithIndex { it, index ->
-    // Strip the path and file extension
-    String skinFileName = it.substring(it.lastIndexOf(File.separator) + 1)
-    logger.lifecycle "  -> ${skinFileName} $index"
+if (skinDir.exists()) {
+    String skinTmpDir = "${buildDir}/tmp/skin/uPortal/media/skins/respondr/"
+    // Identify custom skins located in skinDir
+    logger.lifecycle "Preparing Gradle tasks to compile the following custom skin files defined in ${skinDir}"
+    List<String> skinFiles = new FileNameFinder().getFileNames(skinDir.path, '*.less')
+    skinFiles.eachWithIndex { it, index ->
+        // Strip the path
+        String skinFileName = it.substring(it.lastIndexOf(File.separator) + 1)
+        logger.lifecycle "  -> ${skinFileName} $index"
 
-
-    task "compileLess${index}"(type: NpmTask, dependsOn: prepareSkinResources) {
-      args = ['run', 'compile-less', "${skinTmpDir}${skinFileName}", "${skinTmpDir}${skinFileName}.css"]
+        task "compileLess${index}"(type: NpmTask, dependsOn: prepareSkinResources) {
+            args = ['run', 'compile-less', "${skinTmpDir}${skinFileName}", "${skinTmpDir}${skinFileName.replace('.less', '.css')}"]
+        }
     }
-}
 
-
-war.dependsOn {
-    tasks.findAll { task -> task.name.startsWith('compileLess') }
+    war.dependsOn {
+        tasks.findAll { task -> task.name.startsWith('compileLess') }
+    }
 }
 
 /*
