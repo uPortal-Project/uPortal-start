@@ -1,15 +1,8 @@
 import org.apereo.portal.start.gradle.plugins.GradleImportExportPlugin
 import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
 
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
-    }
+plugins {
+  id "com.moowork.node" version "1.2.0"
 }
 
 dependencies {
@@ -22,7 +15,7 @@ apply plugin: GradlePlutoPlugin
 apply plugin: 'com.moowork.node'
 
 node {
-    version = "${nodejsVersion}"
+    version = nodejsVersion
     download = true
 }
 
@@ -36,10 +29,10 @@ war {
 
 // Set up resources from custom skins so we can compile with NodeJS & lessc
 File skinDir = new File ("${projectDir}/src/main/webapp/media/skins/respondr")
-task prepareSkinResources(dependsOn: npmInstall) {
-    String workDir = "${buildDir}/tmp/skin/uPortal"
-    if (skinDir.exists()) { // Needed only if we've defined custom skin(s) in uPortal-start
-        // Step 1:  Unpack the upstream uPortal.war into a work directory
+if (skinDir.exists()) {
+    // Step 1:  Unpack the upstream uPortal.war into a work directory
+    task prepareSkinResources(dependsOn: npmInstall) {
+        String workDir = "${buildDir}/tmp/skin/uPortal"
         doLast {
             // Locate the uPortal.war dependency
             Dependency d = configurations.runtime.dependencies.matching { it.name == 'uPortal-webapp' }.getAt(0)
@@ -62,18 +55,13 @@ task prepareSkinResources(dependsOn: npmInstall) {
                 into('media/skins/respondr')
             }
         }
-    } else {
-        logger.lifecycle "Skipping prepareSkinResources;  no custom skin files defined in ${skinDir}"
     }
-}
 
-
-// Step 3:  Use NodeJS & lessc to compile custom skin(sz)
-if (skinDir.exists()) {
     String skinTmpDir = "${buildDir}/tmp/skin/uPortal/media/skins/respondr/"
     // Identify custom skins located in skinDir
     logger.lifecycle "Preparing Gradle tasks to compile the following custom skin files defined in ${skinDir}"
     List<String> skinFiles = new FileNameFinder().getFileNames(skinDir.path, '*.less')
+    // Step 3:  Use NodeJS & lessc to compile custom skin(sz)
     skinFiles.eachWithIndex { it, index ->
         // Strip the path
         String skinFileName = it.substring(it.lastIndexOf(File.separator) + 1)
@@ -87,6 +75,8 @@ if (skinDir.exists()) {
     war.dependsOn {
         tasks.findAll { task -> task.name.startsWith('compileLess') }
     }
+} else {
+    logger.lifecycle "Skipping prepareSkinResources;  no custom skin files defined in ${skinDir}"
 }
 
 /*
