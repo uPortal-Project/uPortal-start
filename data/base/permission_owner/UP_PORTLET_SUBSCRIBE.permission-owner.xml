@@ -30,7 +30,12 @@
             (as in, browse marketplace entry).</desc>
         <targetProvider>channelsAndCategoriesTargetProvider</targetProvider>
     </activity>
-
+    <activity>
+        <name>Configure Portlet</name>
+        <fname>CONFIGURE_PORTLET</fname>
+        <desc>Configure the target portlet.</desc>
+        <targetProvider>channelsAndCategoriesTargetProvider<targetProvider>
+    </activity>
     <activity>
         <name>Subscribe</name>
         <fname>SUBSCRIBE</fname>
