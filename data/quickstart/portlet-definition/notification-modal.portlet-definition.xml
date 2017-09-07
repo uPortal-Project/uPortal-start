@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<portlet-definition xmlns="https://source.jasig.org/schemas/uportal/io/portlet-definition" xmlns:ns2="https://source.jasig.org/schemas/uportal" xmlns:ns3="https://source.jasig.org/schemas/uportal/io/portlet-type" xmlns:ns4="https://source.jasig.org/schemas/uportal/io/event-aggregation" xmlns:ns5="https://source.jasig.org/schemas/uportal/io/subscribed-fragment" xmlns:ns6="https://source.jasig.org/schemas/uportal/io/permission-owner" xmlns:ns7="https://source.jasig.org/schemas/uportal/io/user" xmlns:ns8="https://source.jasig.org/schemas/uportal/io/stylesheet-descriptor" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="5.0" xsi:schemaLocation="https://source.jasig.org/schemas/uportal/io/portlet-definition https://source.jasig.org/schemas/uportal/io/portlet-definition/portlet-definition-5.0.xsd">
+    <title>Notification Modal Portlet</title>
+    <name>Notification Modal Portlet</name>
+    <fname>notification-modal</fname>
+    <desc>Apereo Notification Portlet</desc>
+    <type>Portlet</type>
+    <timeout>20000</timeout>
+    <portlet-descriptor>
+        <ns2:webAppName>/NotificationPortlet</ns2:webAppName>
+        <ns2:portletName>Notifications</ns2:portletName>
+    </portlet-descriptor>
+    <lifecycle>
+        <entry name="PUBLISHED" user="system">2017-09-05T14:56:39.629-07:00</entry>
+        <entry name="PUBLISHED" user="admin">2017-09-06T15:57:28.527-07:00</entry>
+    </lifecycle>
+    <category>Information</category>
+    <group>Everyone</group>
+    <permissions>
+        <permission system="UP_PORTLET_SUBSCRIBE" activity="BROWSE">
+            <group>Everyone</group>
+        </permission>
+    </permissions>
+    <parameter>
+        <name>alternate</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>blockImpersonation</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>chromeStyle</name>
+        <value>default</value>
+    </parameter>
+    <parameter>
+        <name>configurable</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>disableDynamicTitle</name>
+        <value>true</value>
+    </parameter>
+    <parameter>
+        <name>disablePortletEvents</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>editable</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>hasAbout</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>hasHelp</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>hideFromMobile</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>highlight</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>iconUrl</name>
+        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/status/dialog-warning.png</value>
+    </parameter>
+    <parameter>
+        <name>mobileIconUrl</name>
+        <value>/uPortal/media/skins/icons/mobile/bullhorn.png</value>
+    </parameter>
+    <parameter>
+        <name>printable</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>showChrome</name>
+        <value>true</value>
+    </parameter>
+    <portlet-preference>
+        <name>DemoNotificationService.locations</name>
+        <readOnly>false</readOnly>
+        <value>demo/demoNotificationResponse2.json</value>
+        <value>demo/demoNotificationResponse.json</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>HideNotificationServiceDecorator.hideDurationHours</name>
+        <readOnly>false</readOnly>
+        <value>1</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>NotificationController.viewName</name>
+        <readOnly>false</readOnly>
+        <value>modal</value>
+    </portlet-preference>
+</portlet-definition>
