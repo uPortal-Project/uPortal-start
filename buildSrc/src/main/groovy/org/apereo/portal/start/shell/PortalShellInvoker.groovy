@@ -19,6 +19,7 @@ class PortalShellInvoker {
                     pathelement(location: it.absolutePath)
                 }
             }
+            sysproperty(key: 'portal.home', value: project.rootProject.ext['buildProperties'].getProperty('portal.home'))
             sysproperty(key: 'logback.configurationFile', value: 'command-line.logback.xml')
             sysproperty(key: 'java.awt.headless', value: 'true')
             arg(value: '-s')

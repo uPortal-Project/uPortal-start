@@ -47,6 +47,19 @@ def loadBuildProperties = {
     }
 
     /*
+     * And lastly, we MUST have a 'portal.home' property.  That can happen in the following ways
+     * (listed in order of priority):
+     *
+     *   - Already defined (build.properties or a JVM argument)
+     *   - Value of the PORTAL_HOME environment variable
+     *   - The uPortal default, which is "${server.base}/portal"
+     */
+    if (!buildProperties.containsKey('portal.home')) {
+        String portalHome = System.getenv('PORTAL_HOME') ?: "${buildProperties.getProperty('server.base')}/portal"
+        buildProperties.setProperty('portal.home', portalHome)
+    }
+
+    /*
      * List the complete set of build properties to the console.
      */
     logger.lifecycle('Using the following build properties:')
