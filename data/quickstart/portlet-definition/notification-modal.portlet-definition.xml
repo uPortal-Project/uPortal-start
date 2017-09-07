@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <portlet-definition xmlns="https://source.jasig.org/schemas/uportal/io/portlet-definition" xmlns:ns2="https://source.jasig.org/schemas/uportal" xmlns:ns3="https://source.jasig.org/schemas/uportal/io/portlet-type" xmlns:ns4="https://source.jasig.org/schemas/uportal/io/event-aggregation" xmlns:ns5="https://source.jasig.org/schemas/uportal/io/subscribed-fragment" xmlns:ns6="https://source.jasig.org/schemas/uportal/io/permission-owner" xmlns:ns7="https://source.jasig.org/schemas/uportal/io/user" xmlns:ns8="https://source.jasig.org/schemas/uportal/io/stylesheet-descriptor" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="5.0" xsi:schemaLocation="https://source.jasig.org/schemas/uportal/io/portlet-definition https://source.jasig.org/schemas/uportal/io/portlet-definition/portlet-definition-5.0.xsd">
-    <title>Notification Modal Portlet</title>
-    <name>Notification Modal Portlet</name>
+    <title>Modal Notification Portlet</title>
+    <name>Modal Notification Portlet</name>
     <fname>notification-modal</fname>
-    <desc>Apereo Notification Portlet</desc>
+    <desc>Modal display strategy for the Apereo Notification Portlet</desc>
     <type>Portlet</type>
     <timeout>20000</timeout>
     <portlet-descriptor>
@@ -11,16 +11,10 @@
         <ns2:portletName>Notifications</ns2:portletName>
     </portlet-descriptor>
     <lifecycle>
-        <entry name="PUBLISHED" user="system">2017-09-05T14:56:39.629-07:00</entry>
         <entry name="PUBLISHED" user="admin">2017-09-06T15:57:28.527-07:00</entry>
     </lifecycle>
     <category>Information</category>
     <group>Everyone</group>
-    <permissions>
-        <permission system="UP_PORTLET_SUBSCRIBE" activity="BROWSE">
-            <group>Everyone</group>
-        </permission>
-    </permissions>
     <parameter>
         <name>alternate</name>
         <value>false</value>
@@ -84,8 +78,10 @@
     <portlet-preference>
         <name>DemoNotificationService.locations</name>
         <readOnly>false</readOnly>
+        <!-- Something needs to be here for demo purposes, but neither of these is great...
         <value>demo/demoNotificationResponse2.json</value>
         <value>demo/demoNotificationResponse.json</value>
+        -->
     </portlet-preference>
     <portlet-preference>
         <name>HideNotificationServiceDecorator.hideDurationHours</name>
