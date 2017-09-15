@@ -64,6 +64,11 @@
         <value>/uPortal/p/toggle-resources-aggregation</value>
     </portlet-preference>
     <portlet-preference>
+        <name>AppDefinition.displayStrategy</name>
+        <readOnly>false</readOnly>
+        <value>sameWindow</value>
+    </portlet-preference>
+    <portlet-preference>
         <name>AppDefinition.iconUrl</name>
         <readOnly>false</readOnly>
         <value>/uPortal/media/font-awesome/css-3-logo.png</value>

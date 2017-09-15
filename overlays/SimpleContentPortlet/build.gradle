@@ -41,7 +41,7 @@ dataInit {
                 }
             }
             sysproperty(key: 'portal.home', value: project.rootProject.ext['buildProperties'].getProperty('portal.home'))
-            sysproperty(key: 'log4j.configuration', value: 'command-line.log4j.properties')
+            sysproperty(key: 'logback.configurationFile', value: 'command-line.logback.xml')
         }
     }
 }
