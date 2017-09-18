@@ -14,14 +14,14 @@ class GradleTomcatDeployPlugin implements Plugin<Project> {
             doFirst {
                 File serverBase
                 String serverBaseProp = project.rootProject.ext['buildProperties'].getProperty('server.base')
-                if(serverBaseProp.equals("")) {
+                if(serverBaseProp.isEmpty()) {
                     serverBase = new File(project.rootProject.getProjectDir(), ".gradle/tomcat")
-                } else if(serverBaseProp.charAt(0) == "\$") {
+                } else if(serverBaseProp.startsWith("\$")) {
                     serverBase = new File(System.getenv(serverBaseProp.replace("\$", "")))
-                } else if(serverBaseProp.charAt(0) != "/") {
+                } else if(serverBaseProp.startsWith("/")) {
                     serverBase = new File(project.rootProject.getProjectDir(), serverBaseProp)
                 } else {
-                    serverBase = new File(serverBaseProp)
+                    serverBase = new File(project.rootProject.projectDir, serverBaseProp)
                 }
 
                 File deployDir = new File (serverBase, "webapps/${project.name}")
@@ -38,14 +38,14 @@ class GradleTomcatDeployPlugin implements Plugin<Project> {
             doFirst {
                 File serverBase
                 String serverBaseProp = project.rootProject.ext['buildProperties'].getProperty('server.base')
-                if(serverBaseProp.equals("")) {
+                if(serverBaseProp.isEmpty()) {
                     serverBase = new File(project.rootProject.getProjectDir(), ".gradle/tomcat")
-                } else if(serverBaseProp.charAt(0) == "\$") {
+                } else if(serverBaseProp.startsWith("\$")) {
                     serverBase = new File(System.getenv(serverBaseProp.replace("\$", "")))
-                } else if(serverBaseProp.charAt(0) != "/") {
+                } else if(serverBaseProp.startsWith("/")) {
                     serverBase = new File(project.rootProject.getProjectDir(), serverBaseProp)
                 } else {
-                    serverBase = new File(serverBaseProp)
+                    serverBase = new File(project.rootProject.projectDir, serverBaseProp)
                 }
 
                 File deployDir = new File (serverBase, "webapps/${project.name}")
