@@ -56,7 +56,7 @@ def loadBuildProperties = {
     if (serverHome.isEmpty()) {
         serverHome = "${rootDir}/.gradle/tomcat"
     } else if (serverHome.startsWith('\$')) {
-        serverHome = System.getenv(serverHome.replace('\$', ""))
+        serverHome = System.getenv(serverHome.replace('\$', ''))
     } else if (!serverHome.startsWith('/')) {
         serverHome = "${rootDir}/${serverHome}"
     }
@@ -66,7 +66,7 @@ def loadBuildProperties = {
     if (serverBase.isEmpty()) {
         serverBase = "${rootDir}/.gradle/tomcat"
     } else if (serverBase.startsWith("\$")) {
-        serverBase = System.getenv(serverBase.replace('\$', ""))
+        serverBase = System.getenv(serverBase.replace('\$', ''))
     } else if (!serverBase.startsWith('/')) {
         serverBase = "${rootDir}/${serverBase}"
     }
