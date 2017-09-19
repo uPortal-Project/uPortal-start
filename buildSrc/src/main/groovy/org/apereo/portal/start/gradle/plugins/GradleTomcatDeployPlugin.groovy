@@ -12,18 +12,7 @@ class GradleTomcatDeployPlugin implements Plugin<Project> {
             description 'Removes this project from the integrated Tomcat servlet container'
 
             doFirst {
-                File serverBase
-                String serverBaseProp = project.rootProject.ext['buildProperties'].getProperty('server.base')
-                if(serverBaseProp.isEmpty()) {
-                    serverBase = new File(project.rootProject.getProjectDir(), ".gradle/tomcat")
-                } else if(serverBaseProp.startsWith("\$")) {
-                    serverBase = new File(System.getenv(serverBaseProp.replace("\$", "")))
-                } else if(serverBaseProp.startsWith("/")) {
-                    serverBase = new File(project.rootProject.getProjectDir(), serverBaseProp)
-                } else {
-                    serverBase = new File(project.rootProject.projectDir, serverBaseProp)
-                }
-
+                File serverBase = new File(project.rootProject.ext['buildProperties'].getProperty('server.base'))
                 File deployDir = new File (serverBase, "webapps/${project.name}")
                 logger.lifecycle("Removing deployed application from servlet container at location:  ${deployDir}")
                 delete deployDir
@@ -36,18 +25,7 @@ class GradleTomcatDeployPlugin implements Plugin<Project> {
             dependsOn 'assemble'
 
             doFirst {
-                File serverBase
-                String serverBaseProp = project.rootProject.ext['buildProperties'].getProperty('server.base')
-                if(serverBaseProp.isEmpty()) {
-                    serverBase = new File(project.rootProject.getProjectDir(), ".gradle/tomcat")
-                } else if(serverBaseProp.startsWith("\$")) {
-                    serverBase = new File(System.getenv(serverBaseProp.replace("\$", "")))
-                } else if(serverBaseProp.startsWith("/")) {
-                    serverBase = new File(project.rootProject.getProjectDir(), serverBaseProp)
-                } else {
-                    serverBase = new File(project.rootProject.projectDir, serverBaseProp)
-                }
-
+                File serverBase = new File(project.rootProject.ext['buildProperties'].getProperty('server.base'))
                 File deployDir = new File (serverBase, "webapps/${project.name}")
                 logger.lifecycle("Deploying assembled application to servlet container at location:  ${deployDir}")
 

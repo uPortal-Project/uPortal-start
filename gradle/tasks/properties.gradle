@@ -47,6 +47,32 @@ def loadBuildProperties = {
     }
 
     /*
+     * Configure server.home and server.base
+     * 1. If the property is empty, set it to be the root of uPortal-start directory\/.gradle\/tomcat
+     * 2. If the property is a OS environmental variable, find and use it
+     * 3. If the property doesn't start with a \/ assume it belongs in the root of uPortal-start directory
+     */
+    String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
+    if (serverHome.isEmpty()) {
+        serverHome = "${rootDir}/.gradle/tomcat"
+    } else if (serverHome.startsWith('\$')) {
+        serverHome = System.getenv(serverHome.replace('\$', ""))
+    } else if (!serverHome.startsWith('/')) {
+        serverHome = "${rootDir}/${serverHome}"
+    }
+    buildProperties.setProperty('server.home', serverHome)
+
+    String serverBase = project.rootProject.ext['buildProperties'].getProperty('server.base')
+    if (serverBase.isEmpty()) {
+        serverBase = "${rootDir}/.gradle/tomcat"
+    } else if (serverBase.startsWith("\$")) {
+        serverBase = System.getenv(serverBase.replace('\$', ""))
+    } else if (!serverBase.startsWith('/')) {
+        serverBase = "${rootDir}/${serverBase}"
+    }
+    buildProperties.setProperty('server.base', serverBase)
+
+    /*
      * And lastly, we MUST have a 'portal.home' property.  That can happen in the following ways
      * (listed in order of priority):
      *

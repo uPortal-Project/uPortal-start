@@ -25,13 +25,6 @@ task tomcatInstall() {
 
     doLast {
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
-        if(serverHome.isEmpty()) {
-            serverHome = "${rootDir}/.gradle/tomcat"
-        } else if(serverHome.startsWith("\$")) {
-            serverHome = System.getenv(serverHome.replace("\$", ""))
-        } else if(serverHome.startsWith("/")) {
-            serverHome = "${rootDir}/${serverHome}"
-        }
 
         logger.lifecycle("Installing Tomcat servlet container version ${tomcatVersion} to location ${serverHome}")
 
@@ -93,14 +86,6 @@ task tomcatStart() {
 
     doLast {
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
-        if(serverHome.isEmpty()) {
-            serverHome = "${rootDir}/.gradle/tomcat"
-        } else if(serverHome.startsWith("\$")) {
-            serverHome = System.getenv(serverHome.replace("\$", ""))
-        } else if(serverHome.startsWith("/")) {
-            serverHome = "${rootDir}/${serverHome}"
-        }
-
         logger.lifecycle("Starting Tomcat servlet container in ${serverHome}")
         String executable = isWindows ? 'cmd' : './startup.sh'
         ant.exec(dir: "${serverHome}/bin", executable: executable, spawn: true) {
@@ -118,14 +103,6 @@ task tomcatStop() {
 
     doLast {
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
-        if(serverHome.isEmpty()) {
-            serverHome = "${rootDir}/.gradle/tomcat"
-        } else if(serverHome.startsWith("\$")) {
-            serverHome = System.getenv(serverHome.replace("\$", ""))
-        } else if(serverHome.startsWith("/")) {
-            serverHome = "${rootDir}/${serverHome}"
-        }
-
         logger.lifecycle("Stopping Tomcat servlet container in ${serverHome}")
         String executable = isWindows ? 'cmd' : './shutdown.sh'
         ant.exec(dir: "${serverHome}/bin", executable: executable, spawn: true) {
@@ -143,14 +120,6 @@ task tomcatClearLogs(type: Delete) {
 
     doFirst {
         String serverBase = rootProject.ext['buildProperties'].getProperty('server.base')
-        if(serverBase.isEmpty()) {
-            serverBase = "${rootDir}/.gradle/tomcat"
-        } else if(serverHome.startsWith("\$")) {
-            serverBase = System.getenv(serverHome.replace("\$", ""))
-        } else if(serverHome.startsWith("/")) {
-            serverBase = "${rootDir}/${serverBase}"
-        }
-
         FileTree logsFolder = fileTree("${serverBase}/logs")
         if (logsFolder.isEmpty()) {
             logger.lifecycle('The Tomcat logs directory is empty;  there is noting to delete')
