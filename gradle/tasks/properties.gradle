@@ -59,7 +59,7 @@ def loadBuildProperties = {
         serverHome = Paths.get(rootDir.toString(), '.gradle', 'tomcat')
     } else if (serverHome.startsWith('\$')) {
         serverHome = System.getenv(serverHome.replace('\$', ''))
-    } else if (!serverHome.startsWith('/') && !serverHome.startsWith('~')) {
+    } else if (!(new File(serverHome)).isAbsolute() && !serverHome.startsWith('~')) {
         serverHome = Paths.get(rootDir.toString(), serverHome)
     } else if (serverHome.startsWith('~')) {
         serverHome = serverHome.replaceFirst('^~', System.getProperty('user.home'))
@@ -71,7 +71,7 @@ def loadBuildProperties = {
         serverBase = Paths.get(rootDir.toString(), '.gradle', 'tomcat')
     } else if (serverBase.startsWith('\$')) {
         serverBase = System.getenv(serverBase.replace('\$', ''))
-    } else if (!serverHome.startsWith('/') && !serverHome.startsWith('~')) {
+    } else if (!(new File(serverBase)).isAbsolute() && !serverBase.startsWith('~')) {
         serverBase = Paths.get(rootDir.toString(), serverHome)
     } else if (serverHome.startsWith('~')) {
         serverBase = serverBase.replaceFirst('^~', System.getProperty('user.home'))
