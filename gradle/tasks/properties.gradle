@@ -1,3 +1,5 @@
+import java.nio.file.Paths
+
 /*
  * Loads the buildProperties collection during the Gradle initialization phase.
  */
@@ -54,25 +56,25 @@ def loadBuildProperties = {
      */
     String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
     if (serverHome.isEmpty()) {
-        serverHome = "${rootDir}/.gradle/tomcat"
+        serverHome = Paths.get(rootDir.toString(), '.gradle', 'tomcat')
     } else if (serverHome.startsWith('\$')) {
         serverHome = System.getenv(serverHome.replace('\$', ''))
     } else if (!serverHome.startsWith('/') && !serverHome.startsWith('~')) {
-        serverHome = "${rootDir}/${serverHome}"
+        serverHome = Paths.get(rootDir.toString(), serverHome)
     } else if (serverHome.startsWith('~')) {
-        serverHome = serverHome.replaceFirst("^~", System.getProperty("user.home"))
+        serverHome = serverHome.replaceFirst('^~', System.getProperty('user.home'))
     }
     buildProperties.setProperty('server.home', serverHome)
 
     String serverBase = project.rootProject.ext['buildProperties'].getProperty('server.base')
     if (serverBase.isEmpty()) {
-        serverBase = "${rootDir}/.gradle/tomcat"
+        serverBase = Paths.get(rootDir.toString(), '.gradle', 'tomcat')
     } else if (serverBase.startsWith('\$')) {
         serverBase = System.getenv(serverBase.replace('\$', ''))
     } else if (!serverHome.startsWith('/') && !serverHome.startsWith('~')) {
-        serverBase = "${rootDir}/${serverBase}"
+        serverBase = Paths.get(rootDir.toString(), serverHome)
     } else if (serverHome.startsWith('~')) {
-        serverBase = serverBase.replaceFirst("^~", System.getProperty("user.home"))
+        serverBase = serverBase.replaceFirst('^~', System.getProperty('user.home'))
     }
     buildProperties.setProperty('server.base', serverBase)
 
