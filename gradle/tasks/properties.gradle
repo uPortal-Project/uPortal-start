@@ -54,28 +54,10 @@ def loadBuildProperties = {
      * 2. If the property is a OS environmental variable, find and use it
      * 3. If the property doesn't start with a \/ assume it belongs in the root of uPortal-start directory
      */
-    String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
-    if (serverHome.isEmpty()) {
-        serverHome = Paths.get(rootDir.toString(), '.gradle', 'tomcat')
-    } else if (serverHome.startsWith('\$')) {
-        serverHome = System.getenv(serverHome.replace('\$', ''))
-    } else if (!(new File(serverHome)).isAbsolute() && !serverHome.startsWith('~')) {
-        serverHome = Paths.get(rootDir.toString(), serverHome)
-    } else if (serverHome.startsWith('~')) {
-        serverHome = serverHome.replaceFirst('^~', System.getProperty('user.home'))
-    }
+    String serverHome = getProperty(rootProject.ext['buildProperties'].getProperty('server.home'))
     buildProperties.setProperty('server.home', serverHome)
 
-    String serverBase = project.rootProject.ext['buildProperties'].getProperty('server.base')
-    if (serverBase.isEmpty()) {
-        serverBase = Paths.get(rootDir.toString(), '.gradle', 'tomcat')
-    } else if (serverBase.startsWith('\$')) {
-        serverBase = System.getenv(serverBase.replace('\$', ''))
-    } else if (!(new File(serverBase)).isAbsolute() && !serverBase.startsWith('~')) {
-        serverBase = Paths.get(rootDir.toString(), serverHome)
-    } else if (serverHome.startsWith('~')) {
-        serverBase = serverBase.replaceFirst('^~', System.getProperty('user.home'))
-    }
+    String serverBase = getProperty(project.rootProject.ext['buildProperties'].getProperty('server.base'))
     buildProperties.setProperty('server.base', serverBase)
 
     /*
@@ -100,3 +82,17 @@ def loadBuildProperties = {
     }
 
 }()
+
+def getProperty(prop) {
+    if (prop.isEmpty()) {
+        prop = Paths.get(rootDir.toString(), '.gradle', 'tomcat')
+    } else if (prop.startsWith('\$')) {
+        prop = System.getenv(prop.replace('\$', ''))
+    } else if (!(new File(prop)).isAbsolute() && !prop.startsWith('~')) {
+        prop = Paths.get(rootDir.toString(), serverHome)
+    } else if (prop.startsWith('~')) {
+        prop = prop.replaceFirst('^~', System.getProperty('user.home'))
+    }
+
+    return prop
+}
