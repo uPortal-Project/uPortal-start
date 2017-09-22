@@ -49,30 +49,16 @@ task tomcatInstall() {
         // Clear any previous copy of Tomcat
         new File(serverHome).deleteDir()
 
-        // Copy to the final location & configure our settings in the process
+        // Copy to the final location
         copy {
             from "${tomcatTmpDir}/apache-tomcat-${tomcatVersion}"
             into serverHome
-
-            // Configure 'shared.loader' property
-            filesMatching('conf/catalina.properties') {
-                filter { line ->
-                    line.replace('shared.loader=', 'shared.loader=${catalina.base}/shared/lib/*.jar')
-                }
-            }
-
-            // Configure sessionCookiePath attribute
-            filesMatching('conf/context.xml') {
-                filter { line ->
-                    line.replace('<Context>', '<Context sessionCookiePath="/">')
-                }
-            }
         }
 
-        // Add setenv.sh (*nix) & setenv.bat (Windows)
+        //  Configure our settings by overlaying etc/tomcat
         copy {
-            from 'etc/tomcat/bin'
-            into "${serverHome}/bin"
+            from 'etc/tomcat'
+            into "${serverHome}"
         }
 
         // Add shared.loader dependencies
