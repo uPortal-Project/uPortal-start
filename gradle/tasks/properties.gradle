@@ -1,98 +1,109 @@
 import java.nio.file.Paths
 
 /*
- * Loads the buildProperties collection during the Gradle initialization phase.
+ * Loads the buildProperties collection, which is used by the uPortal-start CLI tools.  All of
+ * these properties support (pretty much) the same flexible options for setting them.  In order of
+ * priority (top priority first), they are:
+ *
+ *   - A JVM argument
+ *   - Environment variable (only PORTAL_HOME, CATALINA_HOME, CATALINA_BASE)
+ *   - (Optional) build.properties file
+ *   - The default value
+ *
+ * Some defaults are defined in buildSrc/src/main/resources/buildDefaults.properties;  others are
+ * calculated.
  */
-def loadBuildProperties = {
-    /*
-     * The Properties object we need to load already exists.
-     */
-    Properties buildProperties = rootProject.ext['buildProperties']
+task portalProperties() {
+    group 'Portal'
+    description 'Loads properties for the CLI tools for Packaging, Deploying, and Database Import/Export'
 
-    /*
-     * Start with buildDefaults.properties from the classpath.
-     */
-    InputStream defaults = this.getClass().getClassLoader().getResourceAsStream('buildDefaults.properties')
-    if (defaults == null) {
-        // The defaults.properties is missing;  this situation is untenable
-        throw new GradleScriptException('buildDefaults.properties file not found')
-    }
-    buildProperties.load(defaults)
+    doLast() {
 
-    /*
-     * The next layer is build.properties in the root directory of the
-     * project;  but it's not required.
-     */
-    def buildPropsFile = file('build.properties')
-    if (buildPropsFile.exists()) {
-        // Anything in here trumps what we loaded earlier...
-        Properties localBuildProps = new Properties()
-        buildPropsFile.withInputStream { localBuildProps.load(it) }
-        localBuildProps.forEach { key, value ->
-            buildProperties.setProperty(key, value)
+        /*
+         * The Properties object we need to load already exists.
+         */
+        Properties buildProperties = rootProject.ext['buildProperties']
+
+        /*
+         * Step One:  buildDefaults.properties from the classpath.
+         */
+        InputStream defaults = this.getClass().getClassLoader().getResourceAsStream('buildDefaults.properties')
+        if (defaults == null) {
+            // The defaults.properties is missing;  this situation is untenable
+            throw new GradleScriptException('buildDefaults.properties file not found')
         }
-    } else {
-        logger.lifecycle('No build.properties file found;  continuing with default build settings')
-    }
+        buildProperties.load(defaults)
 
-    /*
-     * The final layer is JVM arguments;  anything you specify on the
-     * command line will be honored over both the default & local
-     * settings.
-     */
-    buildProperties.forEach { key, value ->
-        String jvmArgValue = System.getProperty(key);
-        if (jvmArgValue) {
-            logger.lifecycle("Found JVM override value of '${jvmArgValue}' for build property '${key}'")
-            buildProperties.setProperty(key, jvmArgValue)
+        /*
+         * Step Two:  build.properties in the root of the project (if present).
+         */
+        def buildPropsFile = file('build.properties')
+        if (buildPropsFile.exists()) {
+            // Anything in here trumps what we loaded earlier...
+            Properties localBuildProps = new Properties()
+            buildPropsFile.withInputStream { localBuildProps.load(it) }
+            localBuildProps.forEach { key, value ->
+                buildProperties.setProperty(key, value)
+            }
+        } else {
+            logger.lifecycle('No build.properties file found;  continuing with default build settings')
         }
+
+        /*
+         * Step Three:  if CATALINA_HOME, CATALINA_BASE, and/or PORTAL_HOME are set, honor them now.
+         */
+        if (System.getenv('CATALINA_HOME')) {
+            buildProperties.setProperty('server.home', System.getenv('CATALINA_HOME'))
+        }
+        if (System.getenv('CATALINA_BASE')) {
+            buildProperties.setProperty('server.base', System.getenv('CATALINA_BASE'))
+        }
+        if (System.getenv('PORTAL_HOME')) {
+            buildProperties.setProperty('portal.home', System.getenv('PORTAL_HOME'))
+        }
+
+        /*
+         * Step Four:  JVM arguments that override values we already have.
+         */
+        buildProperties.forEach { key, value ->
+            String jvmArgValue = System.getProperty(key)
+            if (jvmArgValue) {
+                logger.lifecycle("Found JVM override value of '${jvmArgValue}' for build property '${key}'")
+                buildProperties.setProperty(key, jvmArgValue)
+            }
+        }
+
+        /*
+         * At this point, any property MAY have a value, and some properties MUST have a value.
+         * Properties that have a value at this point are done;  but some properties have defaults
+         * that must be calculated if absent.
+         */
+
+        /*
+         * Step Five:  Calculate server.base (if absent)
+         */
+        if (!buildProperties.containsKey('server.base')) {
+            // Still need to check for a JVM argument...
+            String serverBase = System.getProperty('server.base') ?: buildProperties.getProperty('server.home')
+            buildProperties.setProperty('server.base', serverBase)
+        }
+
+        /*
+         * Step Six:  Calculate portal.home (if absent)
+         */
+        if (!buildProperties.containsKey('portal.home')) {
+            // Still need to check for a JVM argument...
+            String portalHome = System.getProperty('portal.home') ?: "${buildProperties.getProperty('server.base')}/portal"
+            buildProperties.setProperty('portal.home', portalHome)
+        }
+
+        /*
+         * List the complete set of build properties to the console.
+         */
+        logger.lifecycle('Using the following build properties:')
+        buildProperties.forEach { key, value ->
+            logger.lifecycle("  -> ${key}=${value}")
+        }
+
     }
-
-    /*
-     * Configure server.home and server.base
-     * 1. If the property is empty, set it to be the root of uPortal-start directory\/.gradle\/tomcat
-     * 2. If the property is a OS environmental variable, find and use it
-     * 3. If the property doesn't start with a \/ assume it belongs in the root of uPortal-start directory
-     */
-    String serverHome = getProperty(rootProject.ext['buildProperties'].getProperty('server.home'))
-    buildProperties.setProperty('server.home', serverHome)
-
-    String serverBase = getProperty(project.rootProject.ext['buildProperties'].getProperty('server.base'))
-    buildProperties.setProperty('server.base', serverBase)
-
-    /*
-     * And lastly, we MUST have a 'portal.home' property.  That can happen in the following ways
-     * (listed in order of priority):
-     *
-     *   - Already defined (build.properties or a JVM argument)
-     *   - Value of the PORTAL_HOME environment variable
-     *   - The uPortal default, which is "${server.base}/portal"
-     */
-    if (!buildProperties.containsKey('portal.home')) {
-        String portalHome = System.getenv('PORTAL_HOME') ?: "${buildProperties.getProperty('server.base')}/portal"
-        buildProperties.setProperty('portal.home', portalHome)
-    }
-
-    /*
-     * List the complete set of build properties to the console.
-     */
-    logger.lifecycle('Using the following build properties:')
-    buildProperties.forEach { key, value ->
-        logger.lifecycle("  -> ${key}=${value}")
-    }
-
-}()
-
-def getProperty(prop) {
-    if (prop.isEmpty()) {
-        prop = Paths.get(rootDir.toString(), '.gradle', 'tomcat')
-    } else if (prop.startsWith('\$')) {
-        prop = System.getenv(prop.replace('\$', ''))
-    } else if (!(new File(prop)).isAbsolute() && !prop.startsWith('~')) {
-        prop = Paths.get(rootDir.toString(), serverHome)
-    } else if (prop.startsWith('~')) {
-        prop = prop.replaceFirst('^~', System.getProperty('user.home'))
-    }
-
-    return prop
 }

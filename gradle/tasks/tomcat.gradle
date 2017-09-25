@@ -22,6 +22,7 @@ dependencies {
 task tomcatInstall() {
     group 'Tomcat'
     description 'Downloads the Apache Tomcat servlet container and performs the necessary configuration steps'
+    dependsOn project.tasks.portalProperties
 
     doLast {
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
@@ -47,7 +48,7 @@ task tomcatInstall() {
         }
 
         // Clear any previous copy of Tomcat
-        new File(serverHome).deleteDir()
+        file(serverHome).deleteDir()
 
         // Copy to the final location
         copy {
@@ -72,7 +73,7 @@ task tomcatInstall() {
          * another location has been specified, we don't want to mess with that.)
          */
         String portalHomeDir = "${serverHome}/portal"
-        new File(portalHomeDir).mkdirs()
+        file(portalHomeDir).mkdirs()
         copy {
             from 'etc/portal'
             into portalHomeDir
@@ -83,6 +84,7 @@ task tomcatInstall() {
 task tomcatStart() {
     group 'Tomcat'
     description 'Start the embedded Tomcat servlet container'
+    dependsOn project.tasks.portalProperties
 
     doLast {
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
@@ -100,6 +102,7 @@ task tomcatStart() {
 task tomcatStop() {
     group 'Tomcat'
     description 'Stop the embedded Tomcat servlet container'
+    dependsOn project.tasks.portalProperties
 
     doLast {
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
@@ -117,6 +120,7 @@ task tomcatStop() {
 task tomcatClearLogs(type: Delete) {
     group 'Tomcat'
     description 'Delete all log files within Tomcat'
+    dependsOn project.tasks.portalProperties
 
     doFirst {
         String serverBase = rootProject.ext['buildProperties'].getProperty('server.base')
