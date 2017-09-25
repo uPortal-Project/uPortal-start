@@ -1,0 +1,42 @@
+import org.apache.pluto.util.assemble.Assembler
+import org.apache.pluto.util.assemble.AssemblerConfig
+import org.apache.pluto.util.assemble.AssemblerFactory
+import org.apache.commons.io.FilenameUtils
+
+task deployPortletApp() {
+   group 'Portal'
+   description 'Deploys portlet application to Tomcat. Requires -Dwarpath=/path/to/warfile.war'
+   doLast {
+      String warpath = System.getProperty('warpath')
+      if (warpath == null || warpath.isEmpty()) {
+        throw new GradleException("warpath must be defined")
+      }
+
+      File warfile = new File(warpath)
+      File destinationDir = new File(buildDir, 'tmp')
+      destinationDir.mkdir()
+      logger.lifecycle("[mkdir] Created dir: ${destinationDir}")
+
+      File serverBase = new File(project.rootProject.ext['buildProperties'].getProperty('server.base'))
+      File deployDir = new File (serverBase, "webapps/${FilenameUtils.removeExtension(warfile.getName())}")
+      File archiveOutput = new File(destinationDir, warfile.getName())
+
+      AssemblerConfig config = new AssemblerConfig()
+      config.setSource(warfile)
+      config.setDestination(archiveOutput)
+      Assembler assembler = AssemblerFactory.getFactory().createAssembler(config)
+      assembler.assemble(config)
+      logger.lifecycle("[pluto] Plutoizing portlet: ${archiveOutput}")
+
+      project.copy {
+          with project.copySpec {
+              from project.zipTree(archiveOutput)
+          }
+          into deployDir
+      }
+      logger.lifecycle("[copy] Moving ${archiveOutput} to ${deployDir}")
+
+      archiveOutput.delete()
+      logger.lifecycle("[delete] Deleting: ${archiveOutput}")
+   }
+}
