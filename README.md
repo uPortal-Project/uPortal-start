@@ -76,6 +76,7 @@ running the following command:
   - [How To Deploy uPortal Technology to Tomcat](#how-to-deploy-uportal-technology-to-tomcat)
   - [How To Create and Initialize the Database Schema](#how-to-create-and-initialize-the-database-schema)
   - [How To Start Tomcat](#how-to-start-tomcat)
+  - [How To Create a Custom Skin](#how-to-create-a-custom-skin)
   - [How To Configure Your Deployment](#how-to-configure-your-deployment)
 
 ### How To Set Up Everything the First Time
@@ -212,7 +213,8 @@ You can stop the Tomcat server using with this command:
     $ ./gradlew tomcatStop
 ```
 ### First Time Running uPortal via uPortal-start
-Assuming all the defaults were left:
+
+Assuming all the defaults were left untouched:
 * The URL to access uPortal is:  <http://localhost:8080/uPortal/>
 * Using the example credentials, you can bypass CAS when testing locally.  Available default logins / URLs:
   * admin: <http://localhost:8080/uPortal/Login?userName=admin&password=admin>
@@ -222,6 +224,22 @@ Assuming all the defaults were left:
   * guest <http://localhost:8080/uPortal/render.userLayoutRootNode.uP>
 * The default tomcat install is:  _uPortal-start/.gradle/tomcat_
 * The logs to watch for issues are located in:  _uPortal-start/.gradle/tomcat/logs_
+
+### How To Create a Custom Skin
+
+uPortal-start provides a Gradle task that can get you started on the right foot when you're ready to
+create a custom skin.  Use this command to generate a new skin for uPortal Respondr:
+
+```console
+    $ ./gradlew skinGenerate -DskinName={name}
+```
+
+You _must_ specify a name for your skin.  A valid skin name contains between 3 and 20 alphanumeric
+characters.
+
+Your skin files will be placed inside `overlays/uPortal/src/main/webapp/media/skins/respondr`.  You
+can adjust many common settings in `variables.less`;  use `skin.less` to define CSS rules (in LESS
+syntax) that override the default uPortal/Respondr CSS.
 
 ### How To Configure Your Deployment
 
