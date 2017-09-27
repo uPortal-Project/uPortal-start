@@ -59,7 +59,7 @@ task tomcatInstall() {
         //  Configure our settings by overlaying etc/tomcat
         copy {
             from 'etc/tomcat'
-            into "${serverHome}"
+            into serverHome
         }
 
         // Add shared.loader dependencies

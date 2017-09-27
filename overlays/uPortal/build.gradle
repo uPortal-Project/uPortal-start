@@ -26,10 +26,52 @@ war {
 /*
  * Skinning Support
  */
+import java.util.regex.Pattern
+File skinsDir = new File ("${projectDir}/src/main/webapp/media/skins/respondr")
+task skinGenerate() {
+    group 'Skin'
+    description 'Genarate a new uPortal skin for Respondr;  pass -DskinName={name} (required) to specify a name'
+
+    doLast {
+        String skinName = System.getProperty('skinName');
+        if (skinName == null || skinName.isEmpty()) {
+            throw new GradleException('You must specify a skinName JVM argment to invoke the skinGenerate task')
+        }
+
+        // We have a name;  but is it valid?
+        if (!Pattern.matches(/[a-zA-Z0-9]{3,20}/, skinName)) {
+            throw new GradleException('A valid skinName contains between 3 and 20 alphanumeric characters')
+        }
+        File skinFile = file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}.less")
+        File skinDir = file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}")
+        if (skinFile.exists() || skinDir.exists()) {
+            throw new GradleException("Unable to generate a skin with the same neame as an existing skin:  ${skinName}")
+        }
+
+        skinsDir.mkdirs()
+
+        // First the ${skinName}.less file
+        copy {
+            from "${rootProject.projectDir}/etc/skin/skinName.less"
+            into skinsDir
+            rename { return "${skinName}.less" }
+            expand(skinName: skinName)
+        }
+
+        // Then the contents of the ${skinName} folder
+        copy {
+            from "${rootProject.projectDir}/etc/skin/skinName"
+            into skinDir
+            expand(skinName: skinName)
+        }
+
+        logger.lifecycle("Generated new skin ${skinName} at the following location:  ${skinsDir}")
+        logger.lifecycle("IMPORTANT!  To use the ${skinName} skin (instead of the default) change the 'PREFdynamicSkinName' preference in dynamic-respondr-skin")
+    }
+}
 
 // Set up resources from custom skins so we can compile with NodeJS & lessc
-File skinDir = new File ("${projectDir}/src/main/webapp/media/skins/respondr")
-if (skinDir.exists()) {
+if (skinsDir.exists()) {
     // Step 1:  Unpack the upstream uPortal.war into a work directory
     task prepareSkinResources(dependsOn: npmInstall) {
         String workDir = "${buildDir}/tmp/skin/uPortal"
@@ -45,7 +87,7 @@ if (skinDir.exists()) {
         // Step 2:  Add the skin resources from within src/main
         doLast {
             copy {
-                from skinDir
+                from skinsDir
                 into "${workDir}/media/skins/respondr"
             }
         }
@@ -58,9 +100,9 @@ if (skinDir.exists()) {
     }
 
     String skinTmpDir = "${buildDir}/tmp/skin/uPortal/media/skins/respondr/"
-    // Identify custom skins located in skinDir
-    logger.lifecycle "Preparing Gradle tasks to compile the following custom skin files defined in ${skinDir}"
-    List<String> skinFiles = new FileNameFinder().getFileNames(skinDir.path, '*.less')
+    // Identify custom skins located in skinsDir
+    logger.lifecycle "Preparing Gradle tasks to compile the following custom skin files defined in ${skinsDir}"
+    List<String> skinFiles = new FileNameFinder().getFileNames(skinsDir.path, '*.less')
     // Step 3:  Use NodeJS & lessc to compile custom skin(sz)
     skinFiles.eachWithIndex { it, index ->
         // Strip the path
@@ -76,7 +118,7 @@ if (skinDir.exists()) {
         tasks.findAll { task -> task.name.startsWith('compileLess') }
     }
 } else {
-    logger.lifecycle "Skipping prepareSkinResources;  no custom skin files defined in ${skinDir}"
+    logger.lifecycle "Skipping prepareSkinResources;  no custom skin files defined in ${skinsDir}"
 }
 
 /*

@@ -20,6 +20,8 @@ script:
   - ./gradlew -u -i -S hsqlStart
   - ./gradlew -u -i -S dataInit
   - ./gradlew -u -i -S hsqlStop
+  # test skin generation tool
+  - ./gradlew -u -i -S skinGenerate -DskinName=travis
 
 cache:
   directories:
