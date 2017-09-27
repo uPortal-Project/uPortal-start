@@ -9,12 +9,14 @@ import org.gradle.api.Project
 class PortalShellInvoker {
 
     void invoke(Project project, String scriptLocation, String... args) {
+        File serverBase = project.rootProject.file(project.rootProject.ext['buildProperties'].getProperty('server.base'))
+        File deployDir = new File (serverBase, "webapps/${project.name}")
 
         project.ant.setLifecycleLogLevel('INFO')
         project.ant.java(fork: true, failonerror: true, dir: project.rootProject.projectDir, classname: 'org.apereo.portal.shell.PortalShell') {
             classpath {
-                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/classes")
-                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/lib/*")
+                pathelement(location: "${deployDir}/WEB-INF/classes")
+                pathelement(location: "${deployDir}/WEB-INF/lib/*")
                 project.configurations.shell.files.each {
                     pathelement(location: it.absolutePath)
                 }

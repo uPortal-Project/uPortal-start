@@ -31,6 +31,9 @@ dataInit {
      * Drop (if present) then create the Hibernate-managed schema.
      */
     doLast {
+        File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
+        File deployDir = new File (serverBase, "webapps/${project.name}")
+
         /*
          * The following specifies failonerror=false because it will produce an exception like...
          *
@@ -43,12 +46,11 @@ dataInit {
          * The issue appears to stem from the fact that the CALENDAR_ID column is declared for
          * both subclasses, but differently, in CalendarConfiguration.hbm.xml.
          */
-
         ant.setLifecycleLogLevel('INFO')
         ant.java(fork: true, failonerror: false, dir: rootProject.projectDir, classname: 'org.jasig.portlet.calendar.util.SchemaCreator') {
             classpath {
-                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/classes")
-                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/lib/*")
+                pathelement(location: "${deployDir}/WEB-INF/classes")
+                pathelement(location: "${deployDir}/WEB-INF/lib/*")
                 project.configurations.impexp.files.each {
                     pathelement(location: it.absolutePath)
                 }
@@ -62,13 +64,15 @@ dataInit {
      * specified by 'implementation.entities.location'.
      */
     doLast {
+        File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
+        File deployDir = new File (serverBase, "webapps/${project.name}")
         String implementationEntitiesLocation = PortalShellInvoker.createGroovySafePath(rootProject.ext['buildProperties'].getProperty('implementation.entities.location'))
 
         ant.setLifecycleLogLevel('INFO')
         ant.java(fork: true, failonerror: true, dir: rootProject.projectDir, classname: 'org.danann.cernunnos.runtime.Main') {
             classpath {
-                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/classes")
-                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/lib/*")
+                pathelement(location: "${deployDir}/WEB-INF/classes")
+                pathelement(location: "${deployDir}/WEB-INF/lib/*")
                 project.configurations.impexp.files.each {
                     pathelement(location: it.absolutePath)
                 }

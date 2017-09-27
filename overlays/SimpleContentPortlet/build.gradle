@@ -31,11 +31,14 @@ dataInit {
      * Drop (if present) then create the Hibernate-managed schema.
      */
     doLast {
+        File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
+        File deployDir = new File (serverBase, "webapps/${project.name}")
+
         ant.setLifecycleLogLevel('INFO')
         ant.java(fork: true, failonerror: true, dir: rootProject.projectDir, classname: 'org.jasig.portlet.attachment.util.SchemaCreator') {
             classpath {
-                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/classes")
-                pathelement(location: "${project.buildDir}/${project.name}/WEB-INF/lib/*")
+                pathelement(location: "${deployDir}/WEB-INF/classes")
+                pathelement(location: "${deployDir}/WEB-INF/lib/*")
                 project.configurations.impexp.files.each {
                     pathelement(location: it.absolutePath)
                 }
