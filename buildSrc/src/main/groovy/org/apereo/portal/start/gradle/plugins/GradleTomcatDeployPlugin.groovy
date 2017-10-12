@@ -11,6 +11,7 @@ class GradleTomcatDeployPlugin implements Plugin<Project> {
             group 'Tomcat'
             description 'Removes this project from the integrated Tomcat servlet container'
             dependsOn project.rootProject.tasks.portalProperties
+            mustRunAfter project.rootProject.tasks.tomcatInstall
 
             doFirst {
                 File serverBase = project.rootProject.file(project.rootProject.ext['buildProperties'].getProperty('server.base'))
@@ -39,7 +40,6 @@ class GradleTomcatDeployPlugin implements Plugin<Project> {
                     }
                     into deployDir
                 }
-
             }
         }
     }
