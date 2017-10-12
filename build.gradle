@@ -1,5 +1,9 @@
 import org.gradle.internal.os.OperatingSystem
 
+plugins {
+  id 'cz.malohlava' version '1.0.3'
+}
+
 ext {
     /*
      * We need to define the buildProperties extended property here in order for the
