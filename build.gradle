@@ -1,5 +1,11 @@
 import org.gradle.internal.os.OperatingSystem
 
+plugins {
+  // Records all tasks in task graph, generates `build/reports/visteg.dot`
+  // dot file can be converted to an image using graphviz. `dot -Tsvg -O -v visteg.dot`
+  id 'cz.malohlava' version '1.0.3'
+}
+
 ext {
     /*
      * We need to define the buildProperties extended property here in order for the
