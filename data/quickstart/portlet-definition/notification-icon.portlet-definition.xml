@@ -23,7 +23,7 @@
     <title>Notification Icon</title>
     <name>Notification Icon</name>
     <fname>notification-icon</fname>
-    <desc>Icon-based launcher for the Apereo Notification portlet designed for the pre-header region of the page</desc>
+    <desc>Icon-based launcher for the Apereo Notification portlet designed for the eyebrow region of the page</desc>
     <type>Portlet</type>
     <timeout>5000</timeout>
     <portlet-descriptor>
