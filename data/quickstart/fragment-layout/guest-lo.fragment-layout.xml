@@ -35,7 +35,7 @@
         <folder ID="s40" hidden="true" immutable="true" name="Customize folder" type="customize" unremovable="true">
             <channel fname="personalization-gallery" unremovable="false" hidden="false" immutable="false" ID="n42"/>
         </folder>
-        <folder ID="s100" hidden="false" immutable="true" name="Pre Header folder" type="pre-header" unremovable="true">
+        <folder ID="s100" hidden="false" immutable="true" name="Eyebrow folder" type="eyebrow" unremovable="true">
             <channel fname="login-launcher" unremovable="false" hidden="false" immutable="false" ID="n8"/>
         </folder>
         <folder ID="s1000" hidden="false" immutable="false" name="Welcome" type="regular" unremovable="false">
