@@ -43,6 +43,7 @@
         </folder>
         <folder ID="s400" hidden="false" immutable="true" name="Pre Content folder" type="pre-content" unremovable="true">
             <channel fname="tips" unremovable="false" hidden="false" immutable="false" ID="n410"/>
+            <channel fname="feedback-navigation" unremovable="true" hidden="true" immutable="false" ID="n420"/>
         </folder>
         <folder id="s500" hidden="false" immutable="true" name="Legal Footer" type="footer-second" unremovable="true">
             <channel fname="legal-footer" unremovable="true" hidden="false" immutable="false" ID="n510"/>
