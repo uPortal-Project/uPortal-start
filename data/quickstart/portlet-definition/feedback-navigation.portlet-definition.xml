@@ -31,7 +31,7 @@
         <ns2:portletName>cms</ns2:portletName>
     </portlet-descriptor>
     <category>Services</category>
-    <group>Everyone</group>
+    <group>Authenticated Users</group>
     <permissions>
         <permission system="UP_PORTLET_SUBSCRIBE" activity="BROWSE">
             <group>Everyone</group>
@@ -77,9 +77,11 @@
         <name>content</name>
         <readOnly>false</readOnly>
         <value>
-            &lt;link rel=&quot;stylesheet&quot; href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot;&gt;
+        <![CDATA[
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-            &lt;div style=&quot;float:right&quot;&gt;&lt;a href=&quot;/uPortal/p/feedback&quot;&gt;Your feedback is important to us!&lt;/a&gt; &lt;i aria-hidden=&quot;true&quot; class=&quot;material-icons&quot; style=&quot;font-size:15px&quot; alt=&quot;Feedback icon&quot;&gt;feedback&lt;/i&gt;&lt;/div&gt;
+            <div style="float:right"><a href="/uPortal/p/feedback">Your feedback is important to us!</a> <i aria-hidden="true" class="material-icons" style="font-size:15px" alt="Feedback icon">feedback</i></div>
+        ]]>
         </value>
     </portlet-preference>
 </portlet-definition>
