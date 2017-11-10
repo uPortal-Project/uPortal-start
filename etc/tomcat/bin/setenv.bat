@@ -19,7 +19,7 @@ echo.%CATALINA_OPTS%|findstr /C:"-XX:+UseSerialGC" /C:"-XX:+UseParallelGC" /C:"-
 if not errorlevel 1 (
     echo Already declared a garbage collector
 ) else (
-    set CATALINA_OPTS=%CATALINA_OPTS% -XX:UseG1GC
+    set CATALINA_OPTS=%CATALINA_OPTS% -XX:+UseG1GC
 )
 
 rem We need to send a 'portal.home' system property to the JVM;  use the value of PORTAL_HOME, if
