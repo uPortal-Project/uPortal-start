@@ -1,5 +1,5 @@
 dependencies {
-    runtime 'org.apereo.uportal:uportal-home:7.1.0@war'
+    runtime "org.apereo.uportal:uportal-home:${uPortalHomeVersion}@war"
 }
 
 war {
