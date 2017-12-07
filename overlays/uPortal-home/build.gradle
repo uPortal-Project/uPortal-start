@@ -1,0 +1,7 @@
+dependencies {
+    runtime 'org.apereo.uportal:uportal-home:7.1.0@war'
+}
+
+war {
+    archiveName 'uPortal-home.war'
+}
