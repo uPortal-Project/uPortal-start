@@ -3,8 +3,9 @@
  * gradle.properties;  but we can make that happen, since we have
  * some properties in common.
  */
+String gradlePropsLocation = new File('gradle.properties').exists() ? 'gradle.properties' : '../gradle.properties'
 Properties gradleProperties = new Properties()
-gradleProperties.load(new FileInputStream('gradle.properties'))
+gradleProperties.load(new FileInputStream(gradlePropsLocation))
 ext {
     gradleProperties.each { name, value ->
         set(name, value)
