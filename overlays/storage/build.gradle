@@ -1,0 +1,7 @@
+dependencies {
+    runtime "edu.wisc.my:key-value-store:${keyValueStoreVersion}@war"
+}
+
+war {
+    archiveName 'storage.war'
+}

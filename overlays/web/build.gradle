@@ -3,5 +3,5 @@ dependencies {
 }
 
 war {
-    archiveName 'uPortal-home.war'
+    archiveName 'web.war'
 }
