@@ -67,6 +67,7 @@ define(['angular'], function(angular) {
           'MISC_URLS': {
             'feedbackURL': '/uPortal/p/feedback',
             'whatsNewURL': '/web/features',
+            'myuwHome': '/cas/login?service=http://localhost:8080/uPortal/Login',
           },
           'APP_BETA_FEATURES': [
             {
