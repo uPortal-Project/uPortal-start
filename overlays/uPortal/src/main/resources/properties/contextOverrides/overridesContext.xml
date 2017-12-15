@@ -24,4 +24,10 @@
        xsi:schemaLocation="
            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
+    <!--
+     | Beans in the following file define the Rendering Pipeline for uPortal-home, though they are
+     | disabled by default.  If you're not using uPortal-home, you can safely remove this element.
+     +-->
+    <import resource="classpath:/properties/optionalContext/uPortalHomeRenderingPipelineContext.xml" />
+
 </beans>

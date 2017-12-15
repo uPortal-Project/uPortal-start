@@ -1,5 +1,5 @@
 dependencies {
-    runtime "edu.wisc.my:key-value-store:${keyValueStoreVersion}@war"
+    runtime "edu.wisc.my.apps:key-value-store:${keyValueStoreVersion}@war"
 }
 
 war {
