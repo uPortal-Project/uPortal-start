@@ -26,11 +26,28 @@
     <activity>
         <name>Browse</name>
         <fname>BROWSE</fname>
-        <desc>View the target portlet or category of portlets in the Marketplace
-            (as in, browse marketplace entry).</desc>
+        <desc>Find the target portlet or category of portlets in the Customize Drawer, the
+              Marketplace, or using the search UI</desc>
         <targetProvider>channelsAndCategoriesTargetProvider</targetProvider>
     </activity>
-
+    <activity>
+        <name>Browse Approved</name>
+        <fname>BROWSE_APPROVED</fname>
+        <desc>Find uPortal content in the APPROVED lifecycle state</desc>
+        <targetProvider>channelsAndCategoriesTargetProvider</targetProvider>
+    </activity>
+    <activity>
+        <name>Browse Created</name>
+        <fname>BROWSE_CREATED</fname>
+        <desc>Find uPortal content in the CREATED lifecycle state</desc>
+        <targetProvider>channelsAndCategoriesTargetProvider</targetProvider>
+    </activity>
+    <activity>
+        <name>Browse Expired</name>
+        <fname>BROWSE_EXPIRED</fname>
+        <desc>Find uPortal content in the EXPIRED lifecycle state</desc>
+        <targetProvider>channelsAndCategoriesTargetProvider</targetProvider>
+    </activity>
     <activity>
         <name>Subscribe</name>
         <fname>SUBSCRIBE</fname>
