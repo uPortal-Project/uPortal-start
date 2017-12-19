@@ -5,26 +5,24 @@ matrix:
     - os: linux
       dist: trusty
       jdk: oraclejdk8
-      sudo: required
     - os: linux
       dist: trusty
       jdk: openjdk8
-      sudo: required
     - os: osx
       osx_image: xcode9.1 # OSX 10.12, Oracle Java 8
 
 script:
   # test embedded tomcat
-  - ./gradlew -u -i -S tomcatInstall
-  - ./gradlew -u -i -S tomcatStart
-  - ./gradlew -u -i -S tomcatStop
-  - ./gradlew -u -i -S tomcatClearLogs
+  - ./gradlew -u -i -S --no-daemon --no-parallel --no-build-cache tomcatInstall
+  - ./gradlew -u -i -S --no-daemon --no-parallel --no-build-cache tomcatStart
+  - ./gradlew -u -i -S --no-daemon --no-parallel --no-build-cache tomcatStop
+  - ./gradlew -u -i -S --no-daemon --no-parallel --no-build-cache tomcatClearLogs
   # test HSQL
-  - ./gradlew -u -i -S hsqlStart
-  - ./gradlew -u -i -S dataInit
-  - ./gradlew -u -i -S hsqlStop
+  - ./gradlew -u -i -S --no-daemon --no-parallel --no-build-cache hsqlStart
+  - ./gradlew -u -i -S --no-daemon --no-parallel --no-build-cache dataInit
+  - ./gradlew -u -i -S --no-daemon --no-parallel --no-build-cache hsqlStop
   # test skin generation tool
-  - ./gradlew -u -i -S skinGenerate -DskinName=travis
+  - ./gradlew -u -i -S --no-daemon --no-parallel --no-build-cache skinGenerate -DskinName=travis
 
 cache:
   directories:

@@ -3,22 +3,22 @@ environment:
 os: Visual Studio 2017 # Windows Server 2016
 install:
   - java -version
-  - gradlew.bat --version
+  - gradlew.bat --no-daemon --version
 build: off
 test_script:
   # install and build source
-  - gradlew.bat -u -i -S build
+  - gradlew.bat -u -i -S --no-daemon --no-parallel --no-build-cache build
   # test embedded tomcat
-  - gradlew.bat -u -i -S tomcatInstall
-  - gradlew.bat -u -i -S tomcatStart
-  - gradlew.bat -u -i -S tomcatStop
-  - gradlew.bat -u -i -S tomcatClearLogs
+  - gradlew.bat -u -i -S --no-daemon --no-parallel --no-build-cache tomcatInstall
+  - gradlew.bat -u -i -S --no-daemon --no-parallel --no-build-cache tomcatStart
+  - gradlew.bat -u -i -S --no-daemon --no-parallel --no-build-cache tomcatStop
+  - gradlew.bat -u -i -S --no-daemon --no-parallel --no-build-cache tomcatClearLogs
   # test HSQL
-  - gradlew.bat -u -i -S hsqlStart
-  - gradlew.bat -u -i -S dataInit
-  - gradlew.bat -u -i -S hsqlStop
+  - gradlew.bat -u -i -S --no-daemon --no-parallel --no-build-cache hsqlStart
+  - gradlew.bat -u -i -S --no-daemon --no-parallel --no-build-cache dataInit
+  - gradlew.bat -u -i -S --no-daemon --no-parallel --no-build-cache hsqlStop
   # test skin generation tool
-  - gradlew.bat -u -i -S skinGenerate -DskinName=appveyor
+  - gradlew.bat -u -i -S --no-daemon --no-parallel --no-build-cache skinGenerate -DskinName=appveyor
 cache:
   - .gradle
   - C:\Users\appveyor\.gradle
