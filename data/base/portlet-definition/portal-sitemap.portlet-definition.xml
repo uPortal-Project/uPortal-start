@@ -20,23 +20,20 @@
 
 -->
 <portlet-definition xmlns="https://source.jasig.org/schemas/uportal/io/portlet-definition" xmlns:ns2="https://source.jasig.org/schemas/uportal" xmlns:ns3="https://source.jasig.org/schemas/uportal/io/permission-owner" xmlns:ns4="https://source.jasig.org/schemas/uportal/io/stylesheet-descriptor" xmlns:ns5="https://source.jasig.org/schemas/uportal/io/portlet-type" xmlns:ns6="https://source.jasig.org/schemas/uportal/io/user" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4.0" xsi:schemaLocation="https://source.jasig.org/schemas/uportal/io/portlet-definition https://source.jasig.org/schemas/uportal/io/portlet-definition/portlet-definition-4.0.xsd">
-    <title>Site map</title>
-    <name>Site map</name>
-    <fname>layout-sitemap</fname>
-    <desc>A quick view of all your tabs and channels</desc>
+    <title>Sitemap</title>
+    <name>Sitemap</name>
+    <fname>sitemap</fname>
+    <desc>Sitemap that appears near the bottom of the page for all users</desc>
     <type>Portlet</type>
     <timeout>30000</timeout>
     <portlet-descriptor>
         <ns2:isFramework>true</ns2:isFramework>
-        <ns2:portletName>Sitemap</ns2:portletName>
+        <ns2:portletName>JspInvoker</ns2:portletName>
     </portlet-descriptor>
-    <category>uPortal</category>
-    <parameter>
-        <name>disableDynamicTitle</name>
-        <value>true</value>
-    </parameter>
-    <parameter>
-        <name>iconUrl</name>
-        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/apps/preferences-system-windows.png</value>
-    </parameter>
+    <group>Everyone</group>
+    <portlet-preference>
+        <name>JspInvokerPortletController.viewLocation</name>
+        <readOnly>false</readOnly>
+        <value>/jsp/Invoker/sitemap</value>
+    </portlet-preference>
 </portlet-definition>
