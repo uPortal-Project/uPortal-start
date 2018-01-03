@@ -136,32 +136,32 @@ task tomcatClearLogs(type: Delete) {
     }
 }
 
-task tomcatZip(type: Zip) {
-    group 'Tomcat'
-    description 'Create a zip file of Tomcat (base) with uPortal/portlets'
-
+task _tomcatCopy(type: Copy) {
+    // copy spec for Zip and Tar
     String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
     FileTree tomcat = fileTree(dir: "${serverBase}",
         excludes: [ 'logs/**/*', 'temp/**/*', 'work/**/*'])
     from tomcat
-    into 'tomcat'
+    includeEmptyDirs true
     destinationDir  file('.')
-    baseName "tomcat-uportal"
-    //archiveName("tomcat-uportal.zip")
+}
 
+task tomcatZip(type: Zip) {
+    group 'Tomcat'
+    description 'Create a zip file of Tomcat (base) with uPortal/portlets'
+
+    with _tomcatCopy
+    baseName "tomcat-uportal"
+    into 'tomcat'
 }
 
 task tomcatTar(type: Tar) {
     group 'Tomcat'
     description 'Create a .tar.gz file of Tomcat (base) with uPortal/portlets'
 
-    String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
-    FileTree tomcat = fileTree(dir: "${serverBase}",
-        excludes: [ 'logs/**/*', 'temp/**/*', 'work/**/*'])
-    from tomcat
-    into 'tomcat'
-    destinationDir file('.')
+    with _tomcatCopy
     baseName "tomcat-uportal"
+    into 'tomcat'
     compression Compression.GZIP
     extension 'tgz'
 
