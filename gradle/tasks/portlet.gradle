@@ -6,7 +6,6 @@ import org.apache.commons.io.FilenameUtils
 task deployPortletApp() {
     group 'Tomcat'
     description 'Deploys a portlet application war file to Tomcat. Requires -Dwarpath=/path/to/warfile.war'
-    dependsOn project.tasks.portalProperties
 
     doLast {
         String warpath = System.getProperty('warpath')

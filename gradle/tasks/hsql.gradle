@@ -15,7 +15,6 @@ dependencies {
 task hsqlStart {
     group 'HSQL'
     description 'Start the embedded hsql server'
-    dependsOn project.tasks.portalProperties
 
     doLast {
         logger.lifecycle('Starting embedded HSQLDB uPortal database')
@@ -49,7 +48,6 @@ task hsqlStart {
 task hsqlOpen {
     group 'HSQL'
     description 'Launch the HSQL Database Manager connected to the default HSQL database'
-    dependsOn project.tasks.portalProperties
 
     doLast {
         logger.lifecycle('Starting the HSQLDB Database Manager, connected to the default HSQL database [uPortal]')
@@ -78,7 +76,6 @@ task hsqlOpen {
 task hsqlStop {
     group 'HSQL'
     description 'Stop the embedded hsql server'
-    dependsOn project.tasks.portalProperties
 
     doLast {
         logger.lifecycle('Stopping embedded HSQLDB uPortal database')
