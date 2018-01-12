@@ -147,7 +147,8 @@ task tomcatZip {
             zipfileset (
                 dir: "${serverBase}",
                 prefix: 'tomcat',
-                excludes: 'logs/**/*, temp/**/*, work/**/*')
+                excludes: 'logs/**/*, temp/**/*, work/**/*'
+            )
         }
     }
 }
@@ -159,11 +160,12 @@ task tomcatTar {
 
     doLast {
         String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
-        ant.tar(destfile: 'tomcat-uportal.tgz', compression: 'gzip', longfile:'gnu') {
+        ant.tar(destfile: 'tomcat-uportal.tgz', compression: 'gzip', longfile: 'gnu') {
             tarfileset (
                 dir: "${serverBase}",
                 prefix: 'tomcat',
-                excludes: 'logs/**/*, temp/**/*, work/**/*')
+                excludes: 'logs/**/*, temp/**/*, work/**/*'
+            )
         }
     }
 }
