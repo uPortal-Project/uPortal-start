@@ -136,33 +136,34 @@ task tomcatClearLogs(type: Delete) {
     }
 }
 
-task _tomcatCopy(type: Copy) {
-    // copy spec for Zip and Tar
-    String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
-    FileTree tomcat = fileTree(dir: "${serverBase}",
-        excludes: [ 'logs/**/*', 'temp/**/*', 'work/**/*'])
-    from tomcat
-    includeEmptyDirs true
-    destinationDir  file('.')
+task tomcatZip {
+    group 'Tomcat'
+    description 'Create a zip file of Tomcat (base) with uPortal and portlets'
+    dependsOn project.tasks.portalProperties
+
+    doLast {
+        String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
+        ant.zip(destfile: 'tomcat-uportal.zip') {
+            zipfileset (
+                dir: "${serverBase}",
+                prefix: 'tomcat',
+                excludes: 'logs/**/*, temp/**/*, work/**/*')
+        }
+    }
 }
 
-task tomcatZip(type: Zip) {
+task tomcatTar {
     group 'Tomcat'
-    description 'Create a zip file of Tomcat (base) with uPortal/portlets'
+    description 'Create a .tar.gz file of Tomcat (base) with uPortal and portlets'
+    dependsOn project.tasks.portalProperties
 
-    with _tomcatCopy
-    baseName "tomcat-uportal"
-    into 'tomcat'
-}
-
-task tomcatTar(type: Tar) {
-    group 'Tomcat'
-    description 'Create a .tar.gz file of Tomcat (base) with uPortal/portlets'
-
-    with _tomcatCopy
-    baseName "tomcat-uportal"
-    into 'tomcat'
-    compression Compression.GZIP
-    extension 'tgz'
-
+    doLast {
+        String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
+        ant.tar(destfile: 'tomcat-uportal.tgz', compression: 'gzip', longfile:'gnu') {
+            tarfileset (
+                dir: "${serverBase}",
+                prefix: 'tomcat',
+                excludes: 'logs/**/*, temp/**/*, work/**/*')
+        }
+    }
 }
