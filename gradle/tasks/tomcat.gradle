@@ -135,3 +135,39 @@ task tomcatClearLogs(type: Delete) {
         }
     }
 }
+
+task tomcatZip {
+    group 'Tomcat'
+    description 'Create a zip file of Tomcat (base) with uPortal and portlets'
+    dependsOn tomcatInstall
+    dependsOn allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
+
+    doLast {
+        String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
+        ant.zip(destfile: 'tomcat-uportal.zip') {
+            zipfileset (
+                dir: "${serverBase}",
+                prefix: 'tomcat',
+                excludes: 'logs/**/*, temp/**/*, work/**/*'
+            )
+        }
+    }
+}
+
+task tomcatTar {
+    group 'Tomcat'
+    description 'Create a .tar.gz file of Tomcat (base) with uPortal and portlets'
+    dependsOn tomcatInstall
+    dependsOn allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
+
+    doLast {
+        String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
+        ant.tar(destfile: 'tomcat-uportal.tgz', compression: 'gzip', longfile: 'gnu') {
+            tarfileset (
+                dir: "${serverBase}",
+                prefix: 'tomcat',
+                excludes: 'logs/**/*, temp/**/*, work/**/*'
+            )
+        }
+    }
+}
