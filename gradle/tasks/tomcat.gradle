@@ -139,7 +139,8 @@ task tomcatClearLogs(type: Delete) {
 task tomcatZip {
     group 'Tomcat'
     description 'Create a zip file of Tomcat (base) with uPortal and portlets'
-    dependsOn project.tasks.portalProperties
+    dependsOn tomcatInstall
+    dependsOn allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
 
     doLast {
         String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
@@ -156,7 +157,8 @@ task tomcatZip {
 task tomcatTar {
     group 'Tomcat'
     description 'Create a .tar.gz file of Tomcat (base) with uPortal and portlets'
-    dependsOn project.tasks.portalProperties
+    dependsOn tomcatInstall
+    dependsOn allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
 
     doLast {
         String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
