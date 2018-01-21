@@ -1,9 +1,13 @@
 import org.gradle.internal.os.OperatingSystem
+import com.bmuschko.gradle.docker.tasks.image.*
 
 plugins {
-  // Records all tasks in task graph, generates `build/reports/visteg.dot`
-  // dot file can be converted to an image using graphviz. `dot -Tsvg -O -v visteg.dot`
-  id 'cz.malohlava' version '1.0.3'
+    // Records all tasks in task graph, generates `build/reports/visteg.dot`
+    // dot file can be converted to an image using graphviz. `dot -Tsvg -O -v visteg.dot`
+    id 'cz.malohlava' version '1.0.3'
+
+    // This requires docker to be installed and for Gradle to have access to the docker process
+    id 'com.bmuschko.docker-remote-api' version '3.2.2'
 }
 
 ext {
@@ -32,3 +36,70 @@ apply from: rootProject.file('gradle/tasks/hsql.gradle')
 apply from: rootProject.file('gradle/tasks/portal.gradle')
 apply from: rootProject.file('gradle/tasks/portlet.gradle')
 apply from: rootProject.file('gradle/tasks/tomcat.gradle')
+
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.container.DockerRemoveContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStopContainer
+
+task dockerGradleClean(type: Delete) {
+  group 'Docker'
+  description 'Clear Gradle artifacts that are not stored in the build folder'
+  delete '.gradle'
+  delete 'overlays/uPortal/.gradle'
+  delete 'overlays/uPortal/node_modules'
+}
+
+task dockerBuildImage(type: DockerBuildImage) {
+    dependsOn getTasksByName('clean', true)
+    dependsOn dockerGradleClean
+
+    group 'Docker'
+    description 'Builds a docker image'
+
+    inputDir = file('.')
+    tag = 'apereo/uportal:latest'
+}
+
+task dockerRemoveContainer(type: DockerRemoveContainer) {
+    group 'Docker'
+    description 'Removes existing local docker container'
+
+    targetContainerId { 'uportal-local' }
+    onError { exception ->
+        // ignore exception if container does not exist otherwise throw it
+        if (!exception.message.contains('No such container'))
+            throw exception
+    }
+}
+
+task dockerCreateContainer(type: DockerCreateContainer) {
+    dependsOn dockerBuildImage
+    dependsOn dockerRemoveContainer
+
+    group 'Docker'
+    description 'Builds a local docker container'
+
+    targetImageId { dockerBuildImage.getImageId() }
+    containerName 'uportal-local'
+}
+
+task dockerStart(type: DockerStartContainer) {
+    mustRunAfter dockerCreateContainer
+
+    group 'Docker'
+    description 'Starts local uPortal docker container'
+
+    targetContainerId { 'uportal-local' }
+}
+
+task dockerStop(type: DockerStopContainer) {
+    mustRunAfter dockerCreateContainer
+    mustRunAfter dockerStart
+
+    group 'Docker'
+    description 'Stops local uPortal docker container'
+
+    targetContainerId { 'uportal-local' }
+}
