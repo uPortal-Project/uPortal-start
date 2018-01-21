@@ -4,6 +4,8 @@ plugins {
   // Records all tasks in task graph, generates `build/reports/visteg.dot`
   // dot file can be converted to an image using graphviz. `dot -Tsvg -O -v visteg.dot`
   id 'cz.malohlava' version '1.0.3'
+
+  id 'build-announcements'
 }
 
 ext {

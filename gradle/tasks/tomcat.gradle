@@ -1,3 +1,5 @@
+apply plugin: 'announce'
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -96,6 +98,12 @@ task tomcatStart() {
                 arg(value: 'startup.bat')
             }
         }
+
+        ant.waitfor() {
+            http(url: 'http://localhost:8080/uPortal', followRedirects: false)
+        }
+
+        announce.announce('tomcat has start', 'local')
     }
 }
 
@@ -112,6 +120,11 @@ task tomcatStop() {
             if (isWindows) {
                 arg(value: '/c')
                 arg(value: 'shutdown.bat')
+            }
+        }
+        ant.waitfor() {
+            not() {
+                http(url: 'http://localhost:8080/uPortal', followRedirects: false)
             }
         }
     }
