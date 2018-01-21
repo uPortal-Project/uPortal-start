@@ -267,6 +267,24 @@ A sample `uPortal.properties` file -- with several commonly-adjusted settings de
 documented -- is available in the `etc/portal` directory of this project.  Feel free to customize
 that sample with institution-specific defaults in your fork of uPortal-start.
 
+### Creating a Docker deployment
+
+To create a docker image that can be externally deployed
+
+```console
+./gradlew portalInit dockerBuildImage
+```
+
+will produce an `apereo/uportal:latest` docker image that can be deployed.
+
+### Running docker locally
+
+```console
+./gradlew portalInit dockerCreateContainer dockerStart
+```
+
+will create and start a local uPortal docker container.
+
 [Apereo uPortal]: https://www.apereo.org/projects/uportal
 [uPortal 5.0 Manual]: https://jasig.github.io/uPortal
 [Java Development Kit]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
