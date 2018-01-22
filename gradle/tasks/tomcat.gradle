@@ -1,5 +1,3 @@
-apply plugin: 'announce'
-
 repositories {
     mavenLocal()
     mavenCentral()
@@ -103,7 +101,7 @@ task tomcatStart() {
             http(url: 'http://localhost:8080/uPortal', followRedirects: false)
         }
 
-        announce.announce('tomcat has start', 'local')
+        logger.lifecycle('Tomcat has finished loading webapps, local uPortal server is live')
     }
 }
 
