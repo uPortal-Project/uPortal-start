@@ -19,6 +19,21 @@ dependencies {
     shared "${portletApiDependency}"
 }
 
+/*
+ * Used by tasks in this file to avoid trying to start the Tomcat service twice, etc.
+ */
+private boolean verifyTomcatState(Project project, boolean verifyRunning) {
+    project.ant {
+        condition(property: 'tomcatIsRunning', value: true, else: false) {
+            socket(server: 'localhost', port: 8080)
+        }
+        if (Boolean.valueOf(tomcatIsRunning) != verifyRunning) {
+            logger.lifecycle("The embedded Tomcat servlet container ${verifyRunning ? 'is not currently' : 'is already'} running; nothing to do")
+            throw new StopExecutionException()
+        }
+    }
+}
+
 task tomcatInstall() {
     group 'Tomcat'
     description 'Downloads the Apache Tomcat servlet container and performs the necessary configuration steps'
@@ -87,6 +102,8 @@ task tomcatStart() {
     dependsOn project.tasks.portalProperties
 
     doLast {
+        verifyTomcatState(project, false)
+
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
         logger.lifecycle("Starting Tomcat servlet container in ${serverHome}")
         String executable = isWindows ? 'cmd' : './startup.sh'
@@ -111,6 +128,8 @@ task tomcatStop() {
     dependsOn project.tasks.portalProperties
 
     doLast {
+        verifyTomcatState(project, true)
+
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
         logger.lifecycle("Stopping Tomcat servlet container in ${serverHome}")
         String executable = isWindows ? 'cmd' : './shutdown.sh'
