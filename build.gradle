@@ -31,6 +31,6 @@ apply from: rootProject.file('gradle/tasks/properties.gradle')
  * uPortal CLI Tools
  */
 apply from: rootProject.file('gradle/tasks/hsql.gradle')
+apply from: rootProject.file('gradle/tasks/tomcat.gradle')
 apply from: rootProject.file('gradle/tasks/portal.gradle')
 apply from: rootProject.file('gradle/tasks/portlet.gradle')
-apply from: rootProject.file('gradle/tasks/tomcat.gradle')
