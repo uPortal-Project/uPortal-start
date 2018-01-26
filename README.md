@@ -288,14 +288,6 @@ Use one of the following Gradle tasks to build the image(s) you need:
 :warning: Always make sure both `tomcatInstall` and `tomcatDeploy` have run and their output is
 complete before invoking `dockerXxx` tasks.
 
-### Running docker locally
-
-```console
-./gradlew portalInit dockerCreateContainer dockerStart
-```
-
-will create and start a local uPortal docker container.
-
 [Apereo uPortal]: https://www.apereo.org/projects/uportal
 [uPortal 5.0 Manual]: https://jasig.github.io/uPortal
 [Java Development Kit]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
