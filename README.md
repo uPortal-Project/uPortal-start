@@ -267,15 +267,26 @@ A sample `uPortal.properties` file -- with several commonly-adjusted settings de
 documented -- is available in the `etc/portal` directory of this project.  Feel free to customize
 that sample with institution-specific defaults in your fork of uPortal-start.
 
-### Creating a Docker deployment
+### Creating a Docker Image
 
-To create a docker image that can be externally deployed
+uPortal-start provides baked-in support for building Docker images through its CLI.  It knows how
+to create three different images (for three different purposes):
+
+  - `apereo/uportal` is the basic, web server-only image
+  - `apereo/uportal-cli` is the image for running CLI commands from within a container (e.g. Import/Export)
+  - `apereo/uportal-quickstart` is an image that includes the embedded HSQL database and is suitable for evaluating uPortal
+
+Use one of the following Gradle tasks to build the image(s) you need:
 
 ```console
-./gradlew portalInit dockerBuildImage
+./gradlew dockerBuildImageWeb         // builds apereo/uportal
+./gradlew dockerBuildImageCli         // builds apereo/uportal-cli
+./gradlew dockerBuildImageQuickstart  // builds apereo/uportal-quickstart
+./gradlew dockerBuildImages           // builds all three images
 ```
 
-will produce an `apereo/uportal:latest` docker image that can be deployed.
+:warning: Always make sure both `tomcatInstall` and `tomcatDeploy` have run and their output is
+complete before invoking `dockerXxx` tasks.
 
 ### Running docker locally
 
