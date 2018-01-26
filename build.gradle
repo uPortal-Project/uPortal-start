@@ -1,13 +1,11 @@
 import org.gradle.internal.os.OperatingSystem
-import com.bmuschko.gradle.docker.tasks.image.*
 
 plugins {
     // Records all tasks in task graph, generates `build/reports/visteg.dot`
     // dot file can be converted to an image using graphviz. `dot -Tsvg -O -v visteg.dot`
     id 'cz.malohlava' version '1.0.3'
 
-    // This requires docker to be installed and for Gradle to have access to the docker process
-    id 'com.bmuschko.docker-remote-api' version '3.2.2'
+    id 'build-announcements'
 }
 
 ext {
@@ -33,90 +31,7 @@ apply from: rootProject.file('gradle/tasks/properties.gradle')
  * uPortal CLI Tools
  */
 apply from: rootProject.file('gradle/tasks/hsql.gradle')
+apply from: rootProject.file('gradle/tasks/tomcat.gradle')
 apply from: rootProject.file('gradle/tasks/portal.gradle')
 apply from: rootProject.file('gradle/tasks/portlet.gradle')
-apply from: rootProject.file('gradle/tasks/tomcat.gradle')
-
-import com.bmuschko.gradle.docker.tasks.container.*
-import com.bmuschko.gradle.docker.tasks.image.*
-
-task dockerCopyTomcatToBuild(dependsOn: portalProperties) {
-    mustRunAfter ':tomcatInstall'
-    mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
-
-    group 'Docker'
-    description 'Copy fully built tomcat where docker can find it'
-
-    doLast {
-        String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
-
-        copy {
-            from serverHome
-            into "${buildDir}/generated-sources/docker/tomcat"
-        }
-    }
-}
-
-task dockerCreateDockerfile(type: Dockerfile) {
-    group 'Docker'
-    description 'Create a dockerfile for uPortal'
-
-    destFile = project.file('build/generated-sources/docker/Dockerfile')
-    from 'openjdk:8-jdk-alpine'
-    copyFile 'tomcat', '.'
-  	entryPoint 'bin/catalina.sh', 'run'
-  	exposePort 8080
-}
-
-task dockerBuildImage(type: DockerBuildImage) {
-    dependsOn dockerCreateDockerfile
-    dependsOn dockerCopyTomcatToBuild
-
-    group 'Docker'
-    description 'Builds a docker image'
-
-    inputDir = dockerCreateDockerfile.destFile.parentFile
-    tag = 'apereo/uportal:latest'
-}
-
-task dockerRemoveContainer(type: DockerRemoveContainer) {
-    group 'Docker'
-    description 'Removes existing local docker container'
-
-    targetContainerId { "uportal-local" }
-    onError { exception ->
-        // ignore exception if container does not exist otherwise throw it
-        if (!exception.message.contains('No such container'))
-            throw exception
-    }
-}
-
-task dockerCreateContainer(type: DockerCreateContainer) {
-    dependsOn dockerBuildImage
-    dependsOn dockerRemoveContainer
-
-    group 'Docker'
-    description 'Builds a local docker container'
-
-    targetImageId { dockerBuildImage.getImageId() }
-    containerName 'uportal-local'
-}
-
-task dockerStart(type: DockerStartContainer) {
-    mustRunAfter dockerCreateContainer
-
-    group 'Docker'
-    description 'Starts local uPortal docker container'
-
-    targetContainerId { 'uportal-local' }
-}
-
-task dockerStop(type: DockerStopContainer) {
-    mustRunAfter dockerCreateContainer
-    mustRunAfter dockerStart
-
-    group 'Docker'
-    description 'Stops local uPortal docker container'
-
-    targetContainerId { 'uportal-local' }
-}
+apply from: rootProject.file('gradle/tasks/docker.gradle')
