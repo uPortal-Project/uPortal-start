@@ -1,5 +1,7 @@
 .git
-.gradle
 .gradletasknamecache
 *.jar
 **/build/
+
+# Would exclude .gradle completely, and un-exclude .gradle/tomcat, but the Gradle plugin doesn't support it
+.gradle/[^t]*

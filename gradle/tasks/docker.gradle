@@ -1,0 +1,59 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.bmuschko:gradle-docker-plugin:${gradleDockerPluginVersion}"
+    }
+}
+
+apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
+
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
+task dockerBuildImageWeb(type: DockerBuildImage) {
+    group 'Docker'
+    description 'Builds the basic web server-only Docker image'
+    // Change to 'dependsOn' when we get our up-to-date sorted
+    mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
+
+    dockerFile file('docker/Dockerfile')
+    inputDir rootProject.projectDir
+    tag "${dockerImageBaseName}:${dockerImageVersion}"
+
+}
+
+task dockerBuildImageCli(type: DockerBuildImage) {
+    group 'Docker'
+    description 'Builds the Docker image used to invoke Import/Export tasks from within a container'
+    // Change to 'dependsOn' when we get our up-to-date sorted
+    mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
+
+    dockerFile file('docker/Dockerfile-cli')
+    inputDir rootProject.projectDir
+    tag "${dockerImageBaseName}-cli:${dockerImageVersion}"
+
+}
+
+task dockerBuildImageQuickstart(type: DockerBuildImage) {
+    group 'Docker'
+    description 'Builds the uPortal Quickstart Docker image'
+    // Change to 'dependsOn' when we get our up-to-date sorted
+    mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
+    mustRunAfter dockerBuildImageCli
+
+    dockerFile file('docker/Dockerfile-quickstart')
+    buildArgs = [ 'uPortalCliTag': dockerImageVersion ]
+    inputDir rootProject.projectDir
+    tag "${dockerImageBaseName}-quickstart:${dockerImageVersion}"
+
+}
+
+task dockerBuildImages {
+    group 'Docker'
+    description 'All-in-one Gradle task for building all the Docker images:  uportal, uportal-cli, and uportal-quickstart'
+    dependsOn dockerBuildImageWeb
+    dependsOn dockerBuildImageCli
+    dependsOn dockerBuildImageQuickstart
+}
