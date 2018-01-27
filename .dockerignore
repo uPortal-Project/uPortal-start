@@ -3,7 +3,5 @@
 *.jar
 **/build/
 
-# Should exclude the whole .gradle and un-exclude .gradle/tomcat, but the Gradle plugin doesn't support it
-.gradle/4*
-.gradle/buildOutputCleanup
-.gradle/hsqldb
+# Would exclude .gradle completely, and un-exclude .gradle/tomcat, but the Gradle plugin doesn't support it
+.gradle/[^t]*

@@ -269,6 +269,8 @@ that sample with institution-specific defaults in your fork of uPortal-start.
 
 ### Creating a Docker Image
 
+:warning: Support for Docker in uPortal-start requires Docker version 17.05 or above.
+
 uPortal-start provides baked-in support for building Docker images through its CLI.  It knows how
 to create three different images (for three different purposes):
 
@@ -286,7 +288,7 @@ Use one of the following Gradle tasks to build the image(s) you need:
 ```
 
 :warning: Always make sure both `tomcatInstall` and `tomcatDeploy` have run and their output is
-complete before invoking `dockerXxx` tasks.
+intact before invoking any of the `dockerBuildImage<type>` tasks.
 
 [Apereo uPortal]: https://www.apereo.org/projects/uportal
 [uPortal 5.0 Manual]: https://jasig.github.io/uPortal

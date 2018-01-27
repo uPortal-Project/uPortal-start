@@ -20,7 +20,7 @@ task dockerBuildImageWeb(type: DockerBuildImage) {
 
     dockerFile file('docker/Dockerfile')
     inputDir rootProject.projectDir
-    tag 'apereo/uportal'
+    tag "${dockerImageBaseName}:${dockerImageVersion}"
 
 }
 
@@ -32,7 +32,7 @@ task dockerBuildImageCli(type: DockerBuildImage) {
 
     dockerFile file('docker/Dockerfile-cli')
     inputDir rootProject.projectDir
-    tag 'apereo/uportal-cli'
+    tag "${dockerImageBaseName}-cli:${dockerImageVersion}"
 
 }
 
@@ -44,8 +44,9 @@ task dockerBuildImageQuickstart(type: DockerBuildImage) {
     mustRunAfter dockerBuildImageCli
 
     dockerFile file('docker/Dockerfile-quickstart')
+    buildArgs = [ 'uPortalCliTag': dockerImageVersion ]
     inputDir rootProject.projectDir
-    tag 'apereo/uportal-quickstart'
+    tag "${dockerImageBaseName}-quickstart:${dockerImageVersion}"
 
 }
 
