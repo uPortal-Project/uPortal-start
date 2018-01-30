@@ -15,3 +15,7 @@ EXPOSE 8080
 
 # Containers based on this image are expected to invoke the Gradle-based CLI
 ENTRYPOINT ["./quickstart.sh"]
+
+# The container is healthy if Tomcat can serve the error page (does not redirect) within 3 seconds
+HEALTHCHECK --start-period=5m --interval=1m --timeout=3s \
+    CMD wget --quiet --tries=1 --spider http://localhost:8080/uPortal/500.html || exit 1
