@@ -36,24 +36,24 @@ task dockerBuildImageCli(type: DockerBuildImage) {
 
 }
 
-task dockerBuildImageQuickstart(type: DockerBuildImage) {
+task dockerBuildImageDemo(type: DockerBuildImage) {
     group 'Docker'
-    description 'Builds the uPortal Quickstart Docker image'
+    description 'Builds the uPortal Demo Docker image'
     // Change to 'dependsOn' when we get our up-to-date sorted
     mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
     mustRunAfter dockerBuildImageCli
 
-    dockerFile file('docker/Dockerfile-quickstart')
+    dockerFile file('docker/Dockerfile-demo')
     buildArgs = [ 'uPortalCliTag': dockerImageVersion ]
     inputDir rootProject.projectDir
-    tag "${dockerImageBaseName}-quickstart:${dockerImageVersion}"
+    tag "${dockerImageBaseName}-demo:${dockerImageVersion}"
 
 }
 
 task dockerBuildImages {
     group 'Docker'
-    description 'All-in-one Gradle task for building all the Docker images:  uportal, uportal-cli, and uportal-quickstart'
+    description 'All-in-one Gradle task for building all the Docker images:  uportal, uportal-cli, and uportal-demo'
     dependsOn dockerBuildImageWeb
     dependsOn dockerBuildImageCli
-    dependsOn dockerBuildImageQuickstart
+    dependsOn dockerBuildImageDemo
 }
