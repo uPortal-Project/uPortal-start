@@ -1,11 +1,11 @@
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
-  // Records all tasks in task graph, generates `build/reports/visteg.dot`
-  // dot file can be converted to an image using graphviz. `dot -Tsvg -O -v visteg.dot`
-  id 'cz.malohlava' version '1.0.3'
+    // Records all tasks in task graph, generates `build/reports/visteg.dot`
+    // dot file can be converted to an image using graphviz. `dot -Tsvg -O -v visteg.dot`
+    id 'cz.malohlava' version '1.0.3'
 
-  id 'build-announcements'
+    id 'build-announcements'
 }
 
 ext {
@@ -34,3 +34,4 @@ apply from: rootProject.file('gradle/tasks/hsql.gradle')
 apply from: rootProject.file('gradle/tasks/tomcat.gradle')
 apply from: rootProject.file('gradle/tasks/portal.gradle')
 apply from: rootProject.file('gradle/tasks/portlet.gradle')
+apply from: rootProject.file('gradle/tasks/docker.gradle')
