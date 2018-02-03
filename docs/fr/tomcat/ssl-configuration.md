@@ -82,7 +82,7 @@ Ajouter l'attribut `address` au connecteur HTTPS:
            clientAuth="false" sslProtocol="TLS" />
 ```
 
-Il est important de considérer une valeur correcte pour l'attribut `address` dans le connecteur HTTPS décrit ci-dessus. Si vous ne spécifiez pas l'attribut `address` sur un` Connector`, Tomcat se reliera à la valeur par défaut `0.0.0.0`, qui est une adresse spéciale qui se translate TOUTES les adresses IP liées pour l'hôte. Il n'est pas rare d'avoir plusieurs adresses IP liées à l'hôte exécutant votre instance uPortal/Tomcat, et si vous ne spécifiez pas l'adresse IP spécifique à écouter, vous pouvez ouvrir involontairement le connecteur HTTPS sur l'une de ces adresses.
+Il est important de considérer une valeur correcte pour l'attribut `address` dans le connecteur HTTPS décrit ci-dessus. Si vous ne spécifiez pas l'attribut `address` sur un` Connector`, Tomcat se reliera à la valeur par défaut `0.0.0.0`, qui est une adresse spéciale qui se transforme en TOUTES les adresses IP liées à l'hôte. Il n'est pas rare d'avoir plusieurs adresses IP liées à l'hôte exécutant votre instance uPortal/Tomcat, et si vous ne spécifiez pas l'adresse IP spécifique à écouter, vous pouvez ouvrir involontairement le connecteur HTTPS sur l'une de ces adresses.
 
 Une fois que vous avez sauvegardé vos modifications dans `server.xml`, redémarrer simplement Tomcat :
 

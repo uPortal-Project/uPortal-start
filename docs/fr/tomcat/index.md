@@ -18,7 +18,7 @@ Voir aussi
 
 ### 2. Extraction
 
-Détarer le package comme suit :
+Extraire le package comme suit :
 
 ```shell_session
 tar -zxvf apache-tomcat-8.0.33.tar.gz
@@ -69,9 +69,9 @@ TOMCAT_HOME/bin/shutdown.sh
 
 Télécharger [Apache Tomcat 8.x](http://tomcat.apache.org/download-80.cgi) pour Windows.
 
-### 2. Dézipper
+### 2. Désarchiver
 
-Dézipper le téléchargement dans un répertoire adéquat. Par exemple, vous pouvez dézipper le fichier dans le répertoire `C:\`. Ceci va créer un répertoire comme ceci `C:\apache-tomcat-8.x` contenant tous les fichiers de Tomcat.
+Désarchiver le téléchargement dans un répertoire adéquat. Par exemple, vous pouvez extraire le fichier dans le répertoire `C:\`. Ceci va créer un répertoire du type `C:\apache-tomcat-8.x` contenant tous les fichiers de Tomcat.
 
 ### 3. Modifier vos variables d'environnement
 
@@ -83,7 +83,7 @@ JAVA_HOME : C:\Program Files\Java\jdk1.x
 Pour Windows (cela peut varier selon les versions), vous pouvez créer ces variables d'environnement en procédant comme suit: 
 cliquer avec le bouton droit sur 'Poste de travail', sélectionnez dans propriétés l'onglet Avancé. 
 Puis cliquer sur Variables d'environnement et sous Variables système, cliquer sur Nouveau. 
-De là, entrer le nom et la valeur de `JAVA_HOME` s'il n'est pas déjà créé.
+À partir d'ici, entrer le nom et la valeur de `JAVA_HOME` s'il n'est pas déjà créé.
 
 ### 4. Démarrer Tomcat
 

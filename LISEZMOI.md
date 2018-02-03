@@ -69,7 +69,7 @@ en exécutant la commande suivante :
 
 ### Liste des Exemples :
 
-  - [Comment configurer tout pour la première fois](#comment-configurer-tout-pour-la-première-fois)
+  - [Comment tout configurer pour la première fois](#comment-tout-configurer-pour-la-première-fois)
   - [Comment installer Tomcat](#comment-installer-tomcat)
   - [Comment démarrer la base de données intégrée](#comment-démarrer-la-base-de-données-intégrée)
   - [Comment déployer la technologie uPortal sur Tomcat](#comment-déployer-la-technologie-uPortal-sur-tomcat)
@@ -78,7 +78,7 @@ en exécutant la commande suivante :
   - [Comment créer une Skin personnalisée](#comment-créer-une-skin-personnalisée)
   - [Comment configurer votre déploiement](#comment-configurer-votre-déploiement)
 
-### Comment configurer tout pour la première fois
+### Comment tout configurer pour la première fois
 
 Les exemples restants (ci-dessous) illustrent comment effectuer les tâches uPortal les plus courantes 
 individuellement; mais il y a un moyen facile de toutes les faire à la fois quand vous débutez.
@@ -94,7 +94,7 @@ Cette commande effectue les étapes suivantes :
   - Démarre l'instance HSQLDB intégrée (`hsqlStart`)
   - Télécharge, installe et configure le conteneur de servlet Tomcat intégré (`tomcatInstall`)
   - Déploie toutes les applications Web d'uPortal sur Tomcat (`tomcatDeploy`)
-  - Créé le schéma de base de données et importe à la fois les ensembles de données de base et celles implémentées (`dataInit`)
+  - Créé le schéma de base de données et importe à la fois les données basiques et personnalisées par implémentation (`dataInit`)
 
 :warning:  Après cette commande, votre instance HSQLDB sera en cours d'exécution. C'est normalement une bonne chose,
 mais n'oubliez pas de l'arrêter si vous en avez besoin.
@@ -146,7 +146,7 @@ Vous pouvez arrêter l'instance HSQLDB avec la commande suivante :
     $ ./gradlew hsqlStop
 ```
 
-Vous pouvez lancer l'application HSQL DB Manager avec la commande suivante :
+Vous pouvez lancer l'application HSQLDB Manager avec la commande suivante :
 
 ```console
     $ ./gradlew hsqlOpen
@@ -154,7 +154,7 @@ Vous pouvez lancer l'application HSQL DB Manager avec la commande suivante :
 
 ### Comment déployer la technologie uPortal sur Tomcat
 
-Quand (Chaque fois que) vous exécutez la tâche `tomcatInstall`, le conteneur Tomcat est vide. Vous devez 
+Quand (Chaque fois que) vous exécutez la tâche `tomcatInstall`, le conteneur tomcat sera vidé. Vous devez 
 "builder" votre application uPortal et la déployer sur Tomcat avant de pouvoir la voir 
 fonctionner.
 
@@ -180,7 +180,7 @@ C'est un excellent moyen de gagner du temps lorsque vous travaillez sur un sous-
 uPortal-start fournit plusieurs outils CLI (Interface en ligne de commande) qui vous permettent de gérer 
 la base de données du portail. La plus importante d'entre elles est la tâche `dataInit`.
 
-Utilisez la commande suivante pour créer le schéma de base de données et remplissez-la avec les 
+Utiliser la commande suivante pour créer le schéma de base de données et alimenter la avec les 
 _données de base du portail_ ainsi que le _jeu de données de votre propre implémentation_ :
 
 ```console
@@ -188,7 +188,7 @@ _données de base du portail_ ainsi que le _jeu de données de votre propre impl
 ```
 
 :warning: Cette commande permet également de supprimer si nécessaire le schéma de base de données existant (créé au préalable).
-Vous souhaiterez probablement effectuer cette tâche sur la base de données du portail de production une seule fois (au début). 
+Probablement vous effectuerez cette tâche en production une seule fois (au début). 
 Dans le cas de déploiements hors production, toutefois, l'utilisation de `dataInit` pour une « réinitialisation 
 complète de la base de données » est assez courante. 
 
@@ -225,7 +225,7 @@ En assumant que tous les paramètres par défaut sont conservés :
 
 ### Comment créer une Skin personnalisée
 
-uPortal-start fournit une tâche Gradle qui vous permet de démarrer du bon pied lorsque vous êtes prêt à 
+uPortal-start fournit une tâche Gradle qui vous permet de démarrer correctement lorsque vous êtes prêt à 
 créer une Skin personnalisée. Utilisez cette commande pour générer une nouvelle Skin pour uPortal Respondr :
 
 ```console
@@ -259,9 +259,9 @@ Les deux fichiers (si vous les utilisez) doivent être placés dans le répertoi
 défaut de `portal.home` est '`${catalina.base}`/portal', mais vous pouvez spécifier votre propre emplacement 
 en définissant une variable d'environnement `PORTAL_HOME`.
 
-Un exemple de fichier `uPortal.properties` - avec plusieurs paramètres couramment définis définis et 
+Un exemple de fichier `uPortal.properties` - avec plusieurs paramètres couramment définis et 
 documentés - est disponible dans le répertoire `etc/portal` de ce projet. N'hésitez pas à personnaliser 
-cet exemple avec des valeurs spécifiques à  votre institution dans votre fork de uPortal-start.
+cet exemple avec des valeurs spécifiques à votre institution dans votre fork de uPortal-start.
 
 ### Création d'une image Docker
 

@@ -2,7 +2,7 @@
 
 Optionnel.
 
-Il y a une pléthore de raisons pour lesquelles vous pourriez avoir besoin ou envie d'exécuter Apache HTTP Server en front de uPortal.
+Il y a pléthore de raisons pour lesquelles vous pourriez avoir besoin ou envie d'exécuter Apache HTTP Server en front de uPortal.
 
 + Votre implémentation de Single Sign On nécessite l'utilisation d'un module Apache (par exemple Shibboleth)
 + Vous souhaitez équilibrer la charge de plusieurs instances de Tomcat et n'avez pas de technologie d'équilibrage de charge existante

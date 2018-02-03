@@ -2,7 +2,7 @@
 
 uPortal est configuré pour utiliser une base de données HSQL par défaut.
 
-**Cette configuration de base de données ne convient pas aux déploiements de production et est mieux adoptée à des fins de test.**
+**Cette configuration de base de données ne convient pas aux déploiements de production mais est mieux adaptée à des fins de test.**
 
 uPortal prend en charge un certain nombre de bases de données de production populaires et vous pouvez configurer la base de données en suivant les exemples publiés sous Configuration de la base de données de production.
 
