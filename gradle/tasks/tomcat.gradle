@@ -122,6 +122,34 @@ task tomcatStart() {
     }
 }
 
+task tomcatStartWithDebugger() {
+    group 'Tomcat'
+    description 'Start the embedded Tomcat servlet container with remote debugging'
+    dependsOn project.tasks.portalProperties
+
+    doLast {
+        verifyTomcatState(project, false)
+
+        String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
+        logger.lifecycle("Starting Tomcat servlet container in ${serverHome}")
+        String executable = isWindows ? 'cmd' : './catalina.sh'
+        ant.exec(dir: "${serverHome}/bin", executable: executable, spawn: true) {
+            if (isWindows) {
+                arg(value: '/c')
+                arg(value: 'catalina.bat')
+            }
+            arg(value: 'jpda')
+            arg(value: 'start')
+        }
+
+        ant.waitfor() {
+            http(url: 'http://localhost:8080/uPortal', followRedirects: false)
+        }
+
+        logger.lifecycle('Tomcat has finished loading webapps, local uPortal server is live')
+    }
+}
+
 task tomcatStop() {
     group 'Tomcat'
     description 'Stop the embedded Tomcat servlet container'
