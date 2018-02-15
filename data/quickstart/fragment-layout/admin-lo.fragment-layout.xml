@@ -41,52 +41,22 @@
       </structure-attribute>
       <folder ID="s8" hidden="false" immutable="false" name="Column" type="regular" unremovable="false">
         <structure-attribute>
-          <name>width</name>
-          <value>17%</value>
-        </structure-attribute>
-        <channel fname="user-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n143"/>
-        <channel fname="tenant-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n129"/>
-        <channel fname="register-portal-launcher" unremovable="false" hidden="false" immutable="false" ID="n104"/>
-      </folder>
-      <folder ID="s10" hidden="false" immutable="false" name="Column" type="regular" unremovable="false">
-        <structure-attribute>
-          <name>width</name>
-          <value>17%</value>
-        </structure-attribute>
-        <channel fname="group-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n66"/>
-        <channel fname="announcements-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n41"/>
-      </folder>
-      <folder ID="s15" hidden="false" immutable="false" name="Column" type="regular" unremovable="false">
-        <structure-attribute>
-          <name>width</name>
-          <value>16%</value>
+          <name>flexColumns</name>
+          <value>6</value>
         </structure-attribute>
         <channel fname="portlet-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n93"/>
-        <channel fname="emergency-alert-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n59"/>
-      </folder>
-      <folder ID="s20" hidden="false" immutable="false" name="Column" type="regular" unremovable="false">
-        <structure-attribute>
-          <name>width</name>
-          <value>16%</value>
-        </structure-attribute>
+        <channel fname="user-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n143"/>
+        <channel fname="group-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n66"/>
         <channel fname="permission-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n83"/>
-        <channel fname="resource-aggregation-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n116"/>
-      </folder>
-      <folder ID="s26" hidden="false" immutable="false" name="Column" type="regular" unremovable="false">
-        <structure-attribute>
-          <name>width</name>
-          <value>17%</value>
-        </structure-attribute>
-        <channel fname="import-export-launcher" unremovable="false" hidden="false" immutable="false" ID="n74"/>
+        <channel fname="tenant-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n129"/>
         <channel fname="cache-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n48"/>
-      </folder>
-      <folder ID="s33" hidden="false" immutable="false" name="Column" type="regular" unremovable="false">
-        <structure-attribute>
-          <name>width</name>
-          <value>17%</value>
-        </structure-attribute>
         <channel fname="dlm-fragment-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n53"/>
         <channel fname="audit-dlm-fragments-launcher" unremovable="false" hidden="false" immutable="false" ID="n44"/>
+        <channel fname="resource-aggregation-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n116"/>
+        <channel fname="import-export-launcher" unremovable="false" hidden="false" immutable="false" ID="n74"/>
+        <channel fname="announcements-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n41"/>
+        <channel fname="emergency-alert-administration-launcher" unremovable="false" hidden="false" immutable="false" ID="n59"/>
+        <channel fname="register-portal-launcher" unremovable="false" hidden="false" immutable="false" ID="n104"/>
       </folder>
     </folder>
   </folder>

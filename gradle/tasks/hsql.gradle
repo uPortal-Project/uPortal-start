@@ -1,3 +1,5 @@
+import org.gradle.api.Project
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -12,12 +14,29 @@ dependencies {
     hsqldb "org.hsqldb:sqltool:${hsqldbVersion}"  // Needed for stopping the embedded HSQLDB
 }
 
+/*
+ * Used by tasks in this file to avoid trying to start the HSQL service twice, etc.
+ */
+private boolean verifyHsqlState(Project project, boolean verifyRunning) {
+    project.ant {
+        condition(property: 'hsqlIsRunning', value: true, else: false) {
+            socket(server: 'localhost', port: 8887)
+        }
+        if (Boolean.valueOf(hsqlIsRunning) != verifyRunning) {
+            logger.lifecycle("The embedded HSQLDB uPortal database ${verifyRunning ? 'is not currently' : 'is already'} running; nothing to do")
+            throw new StopExecutionException()
+        }
+    }
+}
+
 task hsqlStart {
     group 'HSQL'
     description 'Start the embedded hsql server'
     dependsOn project.tasks.portalProperties
 
     doLast {
+        verifyHsqlState(project, false)
+
         logger.lifecycle('Starting embedded HSQLDB uPortal database')
 
         String classpathSeparatorCharacter = isWindows ? ';' : ':'
@@ -42,14 +61,56 @@ task hsqlStart {
             arg(value: '--port')
             arg(value: '8887')
         }
+
+        ant.waitfor() {
+            socket(server: 'localhost', port: 8887)
+        }
     }
 }
 
+task hsqlStop {
+    group 'HSQL'
+    description 'Stop the embedded hsql server'
+    dependsOn project.tasks.portalProperties
+
+    doLast {
+        verifyHsqlState(project, true)
+
+        logger.lifecycle('Stopping embedded HSQLDB uPortal database')
+
+        String classpathSeparatorCharacter = isWindows ? ';' : ':'
+        String classpath = '';
+        configurations.hsqldb.resolve().each {
+            if (classpath.length() != 0) {
+                classpath += classpathSeparatorCharacter
+            }
+            classpath += it.getAbsolutePath()
+        }
+
+        ant.exec(executable: 'java', spawn: true) {
+            arg(value: '-cp')
+            arg(value: classpath)
+            arg(value: 'org.hsqldb.cmdline.SqlTool')
+            arg(value: '--rcFile')
+            arg(value: 'etc/hsql/hsqldb.sqltool.rc')
+            arg(value: '--sql')
+            arg(value: 'shutdown compact;')
+            arg(value: 'uPortalDb')
+        }
+
+        ant.waitfor() {
+            not() {
+                socket(server: 'localhost', port: 8887)
+            }
+        }
+    }
+}
 
 task hsqlOpen {
     group 'HSQL'
     description 'Launch the HSQL Database Manager connected to the default HSQL database'
     dependsOn project.tasks.portalProperties
+    dependsOn hsqlStart
 
     doLast {
         logger.lifecycle('Starting the HSQLDB Database Manager, connected to the default HSQL database [uPortal]')
@@ -71,36 +132,6 @@ task hsqlOpen {
             arg(value: 'jdbc:hsqldb:hsql://localhost:8887/uPortal')
             arg(value: '--user')
             arg(value: 'SA')
-        }
-    }
-}
-
-task hsqlStop {
-    group 'HSQL'
-    description 'Stop the embedded hsql server'
-    dependsOn project.tasks.portalProperties
-
-    doLast {
-        logger.lifecycle('Stopping embedded HSQLDB uPortal database')
-
-        String classpathSeparatorCharacter = isWindows ? ';' : ':'
-        String classpath = '';
-        configurations.hsqldb.resolve().each {
-            if (classpath.length() != 0) {
-                classpath += classpathSeparatorCharacter
-            }
-            classpath += it.getAbsolutePath()
-        }
-
-        ant.exec(executable: 'java', spawn: true) {
-            arg(value: '-cp')
-            arg(value: classpath)
-            arg(value: 'org.hsqldb.cmdline.SqlTool')
-            arg(value: '--rcFile')
-            arg(value: 'etc/hsql/hsqldb.sqltool.rc')
-            arg(value: '--sql')
-            arg(value: 'shutdown compact;')
-            arg(value: 'uPortalDb')
         }
     }
 }
