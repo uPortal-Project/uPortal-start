@@ -102,7 +102,7 @@ task tomcatStart() {
     dependsOn ':portalProperties'
 
     /*
-     * When chain tasks together -- which is often convenient -- there are some other tasks that
+     * When we chain tasks together -- which is often convenient -- there are some other tasks that
      * may potentially be included in the Task Graph that really need to complete before we start
      * this one.
      */
@@ -180,7 +180,7 @@ task tomcatClearLogs(type: Delete) {
 task tomcatZip {
     group 'Tomcat'
     description 'Create a zip file of Tomcat (base) with uPortal and portlets'
-    mustRunAfter tomcatInstall
+    mustRunAfter ':tomcatInstall'
     mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
 
     doLast {
@@ -198,7 +198,7 @@ task tomcatZip {
 task tomcatTar {
     group 'Tomcat'
     description 'Create a .tar.gz file of Tomcat (base) with uPortal and portlets'
-    mustRunAfter tomcatInstall
+    mustRunAfter ':tomcatInstall'
     mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
 
     doLast {
