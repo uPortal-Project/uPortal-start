@@ -37,7 +37,7 @@ private boolean verifyTomcatState(Project project, boolean verifyRunning) {
 task tomcatInstall() {
     group 'Tomcat'
     description 'Downloads the Apache Tomcat servlet container and performs the necessary configuration steps'
-    dependsOn project.tasks.portalProperties
+    dependsOn ':portalProperties'
 
     doLast {
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
@@ -99,7 +99,18 @@ task tomcatInstall() {
 task tomcatStart() {
     group 'Tomcat'
     description 'Start the embedded Tomcat servlet container'
-    dependsOn project.tasks.portalProperties
+    dependsOn ':portalProperties'
+
+    /*
+     * When chain tasks together -- which is often convenient -- there are some other tasks that
+     * may potentially be included in the Task Graph that really need to complete before we start
+     * this one.
+     */
+    mustRunAfter ':tomcatInstall'
+    mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
+    mustRunAfter ':deployPortletApp'
+    mustRunAfter ':hsqlStart'
+    mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('dataInit') } }
 
     doLast {
         verifyTomcatState(project, false)
@@ -125,7 +136,7 @@ task tomcatStart() {
 task tomcatStop() {
     group 'Tomcat'
     description 'Stop the embedded Tomcat servlet container'
-    dependsOn project.tasks.portalProperties
+    dependsOn ':portalProperties'
 
     doLast {
         verifyTomcatState(project, true)
@@ -150,7 +161,7 @@ task tomcatStop() {
 task tomcatClearLogs(type: Delete) {
     group 'Tomcat'
     description 'Delete all log files within Tomcat'
-    dependsOn project.tasks.portalProperties
+    dependsOn ':portalProperties'
 
     doFirst {
         String serverBase = rootProject.ext['buildProperties'].getProperty('server.base')
@@ -169,8 +180,8 @@ task tomcatClearLogs(type: Delete) {
 task tomcatZip {
     group 'Tomcat'
     description 'Create a zip file of Tomcat (base) with uPortal and portlets'
-    dependsOn tomcatInstall
-    dependsOn allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
+    mustRunAfter tomcatInstall
+    mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
 
     doLast {
         String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
@@ -187,8 +198,8 @@ task tomcatZip {
 task tomcatTar {
     group 'Tomcat'
     description 'Create a .tar.gz file of Tomcat (base) with uPortal and portlets'
-    dependsOn tomcatInstall
-    dependsOn allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
+    mustRunAfter tomcatInstall
+    mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
 
     doLast {
         String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
