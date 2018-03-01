@@ -28,11 +28,11 @@
     </description>
        
   <!-- Ticket Registry -->
-  <bean id="ticketRegistryValue" class="org.jasig.cas.ticket.registry.DefaultTicketRegistry" />
+  <bean id="ticketRegistryValue" class="org.apereo.cas.ticket.registry.DefaultTicketRegistry" />
 	
 	<!--Quartz -->
 	<!-- TICKET REGISTRY CLEANER -->
-	<bean id="ticketRegistryCleaner" class="org.jasig.cas.ticket.registry.support.DefaultTicketRegistryCleaner"
+	<bean id="ticketRegistryCleaner" class="org.apereo.cas.ticket.registry.support.DefaultTicketRegistryCleaner"
 		p:ticketRegistry-ref="ticketRegistry" />
 	
 	<bean id="jobDetailTicketRegistryCleaner" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"

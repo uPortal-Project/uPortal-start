@@ -106,7 +106,7 @@
         the parameters posted to the login servlet including
         cleartext authentication credentials
     -->
-    <logger name="org.jasig.cas.web.flow" additivity="true">
+    <logger name="org.apereo.cas.web.flow" additivity="true">
         <level value="INFO" />
         <appender-ref ref="cas" />
     </logger>

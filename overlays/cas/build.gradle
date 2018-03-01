@@ -6,8 +6,8 @@ dependencies {
         exclude group: 'xerces', module: 'xercesImpl'
     }
     runtime "net.sf.ehcache:ehcache-core:${ehcacheVersion}"
-    runtime "org.jasig.cas:cas-server-webapp:${casServerVersion}@war"
-    runtime("org.jasig.cas:cas-server-extension-clearpass:${casServerVersion}") {
+    runtime "org.apereo.cas:cas-server-webapp:${casServerVersion}@war"
+    runtime("org.apereo.cas:cas-server-extension-clearpass:${casServerVersion}") {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'javax.xml', module: 'xmldsig'
     }
@@ -19,7 +19,7 @@ dependencies {
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
     compile configurations.jdbc
 
-    compileOnly("org.jasig.cas:cas-server-core:${casServerVersion}") {
+    compileOnly("org.apereo.cas:cas-server-core:${casServerVersion}") {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'javax.xml', module: 'xmldsig'
     }
@@ -30,7 +30,7 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: 'org.easymock', name: 'easymock', version: '3.4'
-    testCompile("org.jasig.cas:cas-server-core:${casServerVersion}") {
+    testCompile("org.apereo.cas:cas-server-core:${casServerVersion}") {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'javax.xml', module: 'xmldsig'
     }

@@ -22,11 +22,11 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.jasig.cas.authentication.principal.Service;
-import org.jasig.cas.services.RegisteredService;
-import org.jasig.cas.services.ServicesManager;
-import org.jasig.cas.web.support.ArgumentExtractor;
-import org.jasig.cas.web.support.WebUtils;
+import org.apereo.cas.authentication.principal.Service;
+import org.apereo.cas.services.RegisteredService;
+import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.web.support.ArgumentExtractor;
+import org.apereo.cas.web.support.WebUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.theme.AbstractThemeResolver;
 
