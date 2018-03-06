@@ -38,6 +38,5 @@
     <literal>student-lo</literal>
     <literal>tenant-admin-lo</literal>
     <literal>welcome-lo</literal>
-    <group>Subscribable Fragments</group>
   </children>
 </group>
