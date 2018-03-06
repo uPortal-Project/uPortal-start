@@ -8,4 +8,5 @@ dependencies {
 
 war {
     archiveName 'jasig-widget-portlets.war'
+    exclude 'WEB-INF/lib/hsqldb-*.jar'
 }

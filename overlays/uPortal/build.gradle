@@ -21,6 +21,7 @@ node {
 
 war {
     archiveName 'uPortal.war'
+    exclude 'WEB-INF/lib/hsqldb-*.jar'
 }
 
 /*
