@@ -27,6 +27,5 @@
   <children>
     <literal>admin-lo</literal>
     <literal>fragmentTemplate</literal>
-    <group>Subscribable Fragments</group>
   </children>
 </group>
