@@ -4,6 +4,7 @@ apply plugin: GradlePlutoPlugin
 
 dependencies {
     runtime "org.jasig.portlet:jasig-widget-portlets:${jasigWidgetPortletVersion}@war"
+    compile configurations.jdbc
 }
 
 war {
