@@ -21,6 +21,13 @@ node {
 
 war {
     archiveName 'uPortal.war'
+    /*
+     * Before uPortal v5.1.0, the HSQL driver jar was included in the
+     * uPortal artifact from Apereo. The following exclusion prevents
+     * dataInit/dataImport failures due to multiple versions of the HSQL driver.
+     *
+     * See https://github.com/Jasig/uPortal-start/pull/120
+     */
     exclude 'WEB-INF/lib/hsqldb-*.jar'
 }
 

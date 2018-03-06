@@ -9,5 +9,12 @@ dependencies {
 
 war {
     archiveName 'jasig-widget-portlets.war'
+    /*
+     * The HSQL driver jar is currently included in the jasig-widget-portlets
+     * artifact from Apereo. The following exclusion prevents surprises due
+     * to multiple versions of the HSQL driver.
+     *
+     * See https://github.com/Jasig/uPortal-start/pull/120
+     */
     exclude 'WEB-INF/lib/hsqldb-*.jar'
 }
