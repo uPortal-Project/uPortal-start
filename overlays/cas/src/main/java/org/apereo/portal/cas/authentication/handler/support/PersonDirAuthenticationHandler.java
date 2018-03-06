@@ -14,9 +14,9 @@
  */
 package org.apereo.portal.cas.authentication.handler.support;
 
-import org.jasig.cas.authentication.handler.AuthenticationException;
-import org.jasig.cas.authentication.handler.support.AbstractUsernamePasswordAuthenticationHandler;
-import org.jasig.cas.authentication.principal.UsernamePasswordCredentials;
+import org.apereo.cas.authentication.handler.AuthenticationException;
+import org.apereo.cas.authentication.handler.support.AbstractUsernamePasswordAuthenticationHandler;
+import org.apereo.cas.authentication.principal.UsernamePasswordCredentials;
 import org.jasypt.digest.config.SimpleDigesterConfig;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
@@ -69,7 +69,7 @@ public class PersonDirAuthenticationHandler extends AbstractUsernamePasswordAuth
     }
 
     /* (non-Javadoc)
-     * @see org.jasig.cas.authentication.handler.support.AbstractUsernamePasswordAuthenticationHandler#authenticateUsernamePasswordInternal(org.jasig.cas.authentication.principal.UsernamePasswordCredentials)
+     * @see org.apereo.cas.authentication.handler.support.AbstractUsernamePasswordAuthenticationHandler#authenticateUsernamePasswordInternal(org.apereo.cas.authentication.principal.UsernamePasswordCredentials)
      */
     @Override
     protected boolean authenticateUsernamePasswordInternal(UsernamePasswordCredentials credentials)

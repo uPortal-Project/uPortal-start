@@ -50,13 +50,13 @@
 		| need to change in context.
 		+-->
 	<bean id="authenticationManager"
-		class="org.jasig.cas.authentication.AuthenticationManagerImpl">
+		class="org.apereo.cas.authentication.AuthenticationManagerImpl">
 
 		<!-- Uncomment the metadata populator to allow clearpass to capture and cache the password
 		     This switch effectively will turn on clearpass.
 		<property name="authenticationMetaDataPopulators">
 		   <list>
-		      <bean class="org.jasig.cas.extension.clearpass.CacheCredentialsMetaDataPopulator">
+		      <bean class="org.apereo.cas.extension.clearpass.CacheCredentialsMetaDataPopulator">
 		         <constructor-arg index="0" ref="credentialsCache" />
 		      </bean>
 		   </list>
@@ -88,7 +88,7 @@
 					| need to change this bean declaration (or add additional declarations) to declare a CredentialsToPrincipalResolver that supports the
 					| Credentials you are using.
 					+-->
-				<bean class="org.jasig.cas.authentication.principal.UsernamePasswordCredentialsToPrincipalResolver" >
+				<bean class="org.apereo.cas.authentication.principal.UsernamePasswordCredentialsToPrincipalResolver" >
 					<property name="attributeRepository" ref="attributeRepository" />
 				</bean>
 				<!--
@@ -100,7 +100,7 @@
 					| receive a proxy callback, you will need to change this bean declaration (or add additional declarations).
 					+-->
 				<bean
-					class="org.jasig.cas.authentication.principal.HttpBasedServiceCredentialsToPrincipalResolver" />
+					class="org.apereo.cas.authentication.principal.HttpBasedServiceCredentialsToPrincipalResolver" />
 			</list>
 		</property>
 
@@ -116,7 +116,7 @@
 					| This is the authentication handler that authenticates services by means of callback via SSL, thereby validating
 					| a server side SSL certificate.
 					+-->
-				<bean class="org.jasig.cas.authentication.handler.support.HttpBasedServiceCredentialsAuthenticationHandler"
+				<bean class="org.apereo.cas.authentication.handler.support.HttpBasedServiceCredentialsAuthenticationHandler"
 					p:httpClient-ref="httpClient" >
 					<!-- THIS IS NOT SECURE.  PLEASE CHANGE BEFORE DEPLOYING TO PRODUCTION ENVIRONMENTS. -->
 					<property name="requireSecure" value="false"/>
@@ -185,10 +185,10 @@
 	 -->
 	<bean
 		id="serviceRegistryDao"
-        class="org.jasig.cas.services.InMemoryServiceRegistryDaoImpl">
+        class="org.apereo.cas.services.InMemoryServiceRegistryDaoImpl">
             <property name="registeredServices">
                 <list>
-                    <bean class="org.jasig.cas.services.RegexRegisteredService">
+                    <bean class="org.apereo.cas.services.RegexRegisteredService">
                         <property name="id" value="0" />
                         <property name="name" value="HTTP and IMAP" />
                         <property name="description" value="Allows HTTP(S) and IMAP(S) protocols" />
@@ -201,7 +201,7 @@
                     Note that example.com must be replaced with the domain you wish to permit.
                     -->
                     <!--
-                    <bean class="org.jasig.cas.services.RegexRegisteredService">
+                    <bean class="org.apereo.cas.services.RegexRegisteredService">
                         <property name="id" value="1" />
                         <property name="name" value="HTTP and IMAP on example.com" />
                         <property name="description" value="Allows HTTP(S) and IMAP(S) protocols on example.com" />
@@ -215,10 +215,10 @@
 
     <bean id="auditTrailManager" class="com.github.inspektr.audit.support.Slf4jLoggingAuditTrailManager" />
     
-    <bean id="healthCheckMonitor" class="org.jasig.cas.monitor.HealthCheckMonitor">
+    <bean id="healthCheckMonitor" class="org.apereo.cas.monitor.HealthCheckMonitor">
 	    <property name="monitors">
 	      <list>
-	        <bean class="org.jasig.cas.monitor.MemoryMonitor"
+	        <bean class="org.apereo.cas.monitor.MemoryMonitor"
 	            p:freeMemoryWarnThreshold="10" />
         <!--
           NOTE
@@ -227,7 +227,7 @@
             * JpaTicketRegistry
           Remove this monitor if you use an unsupported registry.
         -->
-	        <bean class="org.jasig.cas.monitor.SessionMonitor"
+	        <bean class="org.apereo.cas.monitor.SessionMonitor"
 	            p:ticketRegistry-ref="ticketRegistry"
 	            p:serviceTicketCountWarnThreshold="5000"
 	            p:sessionCountWarnThreshold="100000" />

@@ -18,7 +18,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.easymock.EasyMock;
-import org.jasig.cas.authentication.principal.UsernamePasswordCredentials;
+import org.apereo.cas.authentication.principal.UsernamePasswordCredentials;
 import org.junit.Test;
 
 /**
