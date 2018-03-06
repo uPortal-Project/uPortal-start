@@ -9,5 +9,20 @@ dependencies {
 
 war {
     archiveName 'NotificationPortlet.war'
+    /*
+     * For uPortal 5 (and beyond), the Community Best Practice for WAR files published to Maven
+     * Central is that they should *not* contain JDBC driver jars;  all such WAR files are
+     * implemented locally by "overlaying" them, and it is the responsibility of they overlaying
+     * project (here uPortal-start) to provide them with the appropriate drivers.  When the
+     * published artifacts already contain drivers, the danger of conflicting versions is very
+     * high.
+     *
+     * Nevertheless, earlier versions of uPortal and Apereo portlets *do* contain JDBC drivers,
+     * specifically HSQLDB.  The following exclusion prevents the copy of this driver contained
+     * within the published WAR file from being deployed.  Please remove this line when the
+     * published artifact reliably omits the HSQLDB driver.
+     *
+     * See https://github.com/Jasig/uPortal-start/pull/120
+     */
     exclude 'WEB-INF/lib/hsqldb-*.jar'
 }
