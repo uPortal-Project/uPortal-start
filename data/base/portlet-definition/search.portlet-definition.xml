@@ -65,4 +65,12 @@
         <readOnly>false</readOnly>
         <value>/p/$fname/max</value>
     </portlet-preference>
+    <!-- Choose between the standard Search portlet or REST Search. Currently the difference is that
+         Search portlet (RESTSearch = false) includes results from portlet content, while REST Search only matches portlet
+         metadata (e.g. title, description). Search portlet has a greater performance impact, while
+         REST Search has newer UI. -->
+    <portlet-preference>
+        <name>RESTSearch</name>
+        <value>true</value>
+    </portlet-preference>
 </portlet-definition>
