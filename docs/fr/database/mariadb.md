@@ -10,7 +10,7 @@ uPortal prend en charge un certain nombre de bases de données de production et 
 Editer le fichier /etc/mysql/mariadb.conf.d/50-server.cnf. (ici pour Debian 9)
 Dans la partie mysqld ajouter les éléements suivant :
 
-```shell
+```properties
 default-storage-engine=INNODB
 lower_case_table_names=1
 innodb-large-prefix=1
@@ -29,7 +29,7 @@ innodb_log_buffer_size=64M
 ```
 
 ## Étape 2 : Configurer l'utilisateur et la base de donnée
-```shell
+```properties
 mysql -uroot -p
 
 MariaDB [(none)]> create database uportal CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -41,11 +41,11 @@ GRANT ALL PRIVILEGES ON portlets.* TO 'portail'@'localhost';
 ## Étape 3 : Configurer Uportal 
 
 # Editer uPortal-start/gradle.properties 
-```shell
+```properties
 mysqldbVersion=5.1.45
 ```
 # Editer uPortal-start/overlays/build.gradle
-```shell
+```gradle
 dependencies {
         /*
          * Add additional JDBC driver jars to the 'jdbc' configuration below;
@@ -65,7 +65,7 @@ dependencies {
 # Editer uPortal-start/etc/portal/global.properties 
 
 Dans la partie Database Connection
-```shell
+```properties
 hibernate.connection.driver_class=com.mysql.jdbc.Driver
 hibernate.connection.url=jdbc:mysql://localhost/portlets
 hibernate.connection.username=uportal
@@ -75,7 +75,7 @@ hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 ```
 # Editer uPortal-start/etc/portal/uPortal.properties
 
-```shell
+```properties
 hibernate.connection.driver_class=com.mysql.jdbc.Driver
 hibernate.connection.url=jdbc:mysql://localhost/uportal
 hibernate.connection.username=uportal
@@ -85,9 +85,10 @@ hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 ```
 
 ## Étape 4 : Initialisation de la Base de Donnée
-
+```shell
 ./gradlew dataInit
-
+```
 ## Étape 5 : Déploiement de uPortal
-
+```shell
 ./gradlew tomcatDeploy
+```
