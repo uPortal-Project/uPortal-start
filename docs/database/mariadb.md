@@ -7,7 +7,7 @@ This database configuration is not suitable for production deployments but is be
 uPortal supports a number of production databases and you can configure the MariaDB database.
 
 ## Step 1: MariaDB server setup
-Edit the file /etc/mysql/mariadb.conf.d/50-server.cnf. (Debian 9)
+Edit the file /etc/mysql/mariadb.conf.d/60-server.cnf. (Debian 9)
 In the [mysqld] part add the following items :
 
 ```properties
