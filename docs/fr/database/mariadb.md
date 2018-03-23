@@ -7,8 +7,8 @@ uPortal est configuré pour utiliser une base de données HSQL par défaut.
 uPortal prend en charge un certain nombre de bases de données de production et vous pouvez configurer la base de données MariaDB.
 
 ## Étape 1 : Paramétrage du server MariaDB
-Editer le fichier /etc/mysql/mariadb.conf.d/50-server.cnf. (ici pour Debian 9)
-Dans la partie mysqld ajouter les éléements suivant :
+Editer le fichier /etc/mysql/mariadb.conf.d/60-server.cnf. (ici pour Debian 9)
+Dans la partie mysqld ajouter les éléments suivant :
 
 ```properties
 default-storage-engine=INNODB
