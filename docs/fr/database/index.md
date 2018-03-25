@@ -96,6 +96,7 @@ Sélectionner la base de données ci-dessous pour des notes et des exemples de c
 + [Hypersonic](hypersonic.md)
 + [Microsoft SQL Server](ms-sqlserver.md)
 + [MySQL](mysql.md)
++ [MariaDB] (mariadb.md)
 + [Oracle RDBMS](oracle.md)
 + [PostgreSQL](postgresql.md)
 + [Sybase](sybase.md)
