@@ -21,6 +21,13 @@ ext {
     isWindows = OperatingSystem.current().isWindows()
 }
 
+allprojects {
+    def targetJavaVersion = JavaVersion.VERSION_1_8;
+    def currentJavaVersion = JavaVersion.current();
+    if (currentJavaVersion != targetJavaVersion) 
+        throw new GradleException("Incorrect Java version; required is ${targetJavaVersion}, but found ${currentJavaVersion}");
+}
+
 /*
  * Load the buildProperties collection, which is used by the CLI Tools.
  * (NOTE:  This item must come first.)
