@@ -1,4 +1,5 @@
 # uPortal Start Manual
 
-* [Database Configuration](database)
-* [Tomcat Configuration](tomcat)
+* [Database Configuration](database/index.md)
+* [Tomcat Configuration](tomcat/index.md)
+* [Integrations](integrations/index.md)
