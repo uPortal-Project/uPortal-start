@@ -16,7 +16,6 @@ in the following property:
 
 ```properties
 cors.allowed.origins=https://idp.myschool.edu, https://cas.myschool.edu
-
 ```
 
 In the above example, two services are whitelisted. In an actual case,
@@ -30,3 +29,5 @@ must be specified.
 In the above example, two services are whitelisted. In an actual case,
 only one of CAS or Shib would be in use. Also note that the protocol
 must be specified.
+
+See: [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
