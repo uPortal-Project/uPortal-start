@@ -112,7 +112,7 @@ task tomcatStart() {
                 arg(value: '/c')
                 arg(value: 'catalina.bat')
             }
-            if (project.hasProperty('with-jdba')) {
+            if (project.hasProperty('with-jpda')) {
                 arg(value: 'jpda')
             }
             arg(value: 'start')
