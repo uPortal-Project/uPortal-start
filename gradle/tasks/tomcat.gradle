@@ -180,6 +180,7 @@ task tomcatClearLogs(type: Delete) {
 task tomcatZip {
     group 'Tomcat'
     description 'Create a zip file of Tomcat (base) with uPortal and portlets'
+    dependsOn ':portalProperties'
     mustRunAfter ':tomcatInstall'
     mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
 
@@ -198,6 +199,7 @@ task tomcatZip {
 task tomcatTar {
     group 'Tomcat'
     description 'Create a .tar.gz file of Tomcat (base) with uPortal and portlets'
+    dependsOn ':portalProperties'
     mustRunAfter ':tomcatInstall'
     mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
 
