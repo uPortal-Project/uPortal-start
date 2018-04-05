@@ -21,13 +21,6 @@ ext {
     isWindows = OperatingSystem.current().isWindows()
 }
 
-allprojects {
-    def targetJavaVersion = JavaVersion.VERSION_1_8;
-    def currentJavaVersion = JavaVersion.current();
-    if (currentJavaVersion != targetJavaVersion) 
-        throw new GradleException("Incorrect Java version; required is ${targetJavaVersion}, but found ${currentJavaVersion}");
-}
-
 /*
  * Load the buildProperties collection, which is used by the CLI Tools.
  * (NOTE:  This item must come first.)
@@ -42,3 +35,11 @@ apply from: rootProject.file('gradle/tasks/tomcat.gradle')
 apply from: rootProject.file('gradle/tasks/portal.gradle')
 apply from: rootProject.file('gradle/tasks/portlet.gradle')
 apply from: rootProject.file('gradle/tasks/docker.gradle')
+
+/*
+ * Before compiling Java, ensure the Java version is correct.  
+ */
+apply plugin: 'java'
+compileJava {
+    dependsOn javaVersionCheck
+}

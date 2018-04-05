@@ -1,6 +1,24 @@
 import java.nio.file.Paths
 
 /*
+ * Allows a collection of Java versions to be supported.
+ * If the currect Java version is unsupported, it will stop the current task execution.
+ */
+task javaVersionCheck() {
+    group 'Verification'
+    description 'Ensures the current Java version is supported'
+    
+    doLast {
+        def supportedJavaVersions = [ JavaVersion.VERSION_1_8 ];
+        def currentJavaVersion = JavaVersion.current();
+        if (!supportedJavaVersions.contains(currentJavaVersion)) {
+            throw new GradleException("Incorrect Java version; found ${currentJavaVersion} but supported versions are:  ${supportedJavaVersions}");
+        }
+        logger.lifecycle("Java version OK:  ${currentJavaVersion}" )
+    }
+}
+
+/*
  * Loads the buildProperties collection, which is used by the uPortal-start CLI tools.  All of
  * these properties support (pretty much) the same flexible options for setting them.  In order of
  * priority (top priority first), they are:
@@ -16,7 +34,7 @@ import java.nio.file.Paths
 task portalProperties() {
     group 'Portal'
     description 'Loads properties for the CLI tools for Packaging, Deploying, and Database Import/Export'
-
+    
     doLast() {
 
         /*
