@@ -6,86 +6,73 @@ uPortal is configured to use a file-based HSQL database by default.
 
 uPortal does support a number of popular production-class databases and you can configure the database by following the examples posted under Production Database Configuration.
 
-## Step 1: Configure the Database Filter      
+## Step 1: Capture the database driver version
 
-In the `filters` folder, locate the default `local.properties` file under `uPortal-4.1/filters/local.properties` and configure the Database Connection Settings
+After determining the driver's Maven coordinates, open `gradle.properties` file, and add the driver version coordinate
+as a property value.
 
-```shell
-# HSQL Configuration
-environment.build.hsql.port=8887
+For example, the MS SQL Server driver version is captured in `mssqlJdbcVersion` below:
 
-# Database Connection Settings (Uncomment the Maven Filters section in rdbm.properties)
-environment.build.hibernate.connection.driver_class=org.hsqldb.jdbc.JDBCDriver
-environment.build.hibernate.connection.url=jdbc:hsqldb:hsql://localhost:${environment.build.hsql.port}/uPortal
+```groovy
+jasyptVersion=1.9.2
+mssqlJdbcVersion=6.2.1.jre8
+personDirectoryVersion=1.8.5
+```
+
+## Step 2: Add the database driver dependency
+
+Open `overlays/build.gradle` file, and add the driver coordinates below
+the hsqldb coordinates around line 46. Make sure to use the version property defined in the first step.
+
+As an example, a driver for SQL Server is added:
+
+```groovy
+    dependencies {
+        /*
+         * Add additional JDBC driver jars to the 'jdbc' configuration below;
+         * do not remove the hsqldb driver jar that is already listed.
+         */
+        jdbc "org.hsqldb:hsqldb:${hsqldbVersion}"
+        jdbc "com.microsoft.sqlserver:mssql-jdbc:${mssqlJdbcVersion}"
+ 
+        ...
+    }
+```
+
+## Step 3: Capture generic details
+
+While credentials and database URL should not be saved to your repo, driver class, dialect and validation query
+can usually be persisted without security concerns.
+
+In `etc/portal/global.properties`, save database details that are consistent across environments:
+
+```groovy
+environment.build.hibernate.connection.driver_class=com.microsoft.sqlserver.jdbc.SQLServerDriver
+environment.build.hibernate.connection.url=jdbc:sqlserver://localhost:1433;
 environment.build.hibernate.connection.username=sa
 environment.build.hibernate.connection.password=
-environment.build.hibernate.dialect=org.hibernate.dialect.HSQLDialect
-environment.build.hibernate.connection.validationQuery=select 1 from INFORMATION_SCHEMA.SYSTEM_USERS
+environment.build.hibernate.dialect=org.hibernate.dialect.SQLServerDialect
+environment.build.hibernate.connection.validationQuery=select 1
 ```
 
-## Step 2: Add the database driver  
+## Step 4: Copy `global.properties` to local environment location and add credentials and URL
 
-Open `uportal-db/pom.xml` file, uncomment and/or modify as needed the driver(s) of your choice.
+In uPortal 5, deployers are strongly encouraged to configure a local `portal.home` directory to keep configuration
+that is specific to the environment but should not be captured in a repo. In particular, database and other service
+credentials should not be captured. If `portal.home` is not configured, the default is the portal/ directory in Tomcat.
 
-Add the appropriate version properties to the root `pom.xml` file or enter the appropriate version below
+During `./gradlew portalInit` or `./gradlew tomcatInstall`, the files from the repo's `etc/portal/` directory are
+copied to `portal.home`. One of those two tasks is a pre-requisite to this step.
 
-```xml
-<dependencies>
-        <!-- Add any db drivers that are applicable to *any* of your environments -->
-	    <dependency>
-	        <groupId>org.hsqldb</groupId>
-	        <artifactId>hsqldb</artifactId>
-	        <version>${hsqldb.version}</version>
-	        <scope>compile</scope>
-	    </dependency>
-        <!--
-         | The following db drivers should be uncommented and/or modified as needed for server 
-         | deployments.  (Add all thaat are needed.)  Don't forget to add appropriate  .version 
-         | properties to the root pom.xml, or simply enter the appropriate version below.
-         +-->
-		<!--
-	    <dependency>
-            <groupId>postgresql</groupId>
-	        <artifactId>postgresql</artifactId>
-	        <version>${postgres.version}</version>
-	        <scope>compile</scope>
-	    </dependency>
-	    <dependency>
-	        <groupId>com.ibm.db2</groupId>
-	        <artifactId>db2-jdbc</artifactId>
-	        <version>${db2.version}</version>
-	        <scope>compile</scope>
-	    </dependency>
-        <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>sqljdbc4</artifactId>
-            <version>${mssql.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc6_g</artifactId>
-            <version>${oracle.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.sybase</groupId>
-            <artifactId>sybase-jconnect</artifactId>
-            <version>${sybase.version}</version>
-        </dependency>
-	    -->
-    </dependencies>
-```
+In `global.properties` in the `portal.home` directory, edit the connection details:
 
-## Step 3: Test the database configuration
-
-To test your database configuration from the command-line:
-
-```shell_session
-ant dbtest
+```groovy
+environment.build.hibernate.connection.driver_class=com.microsoft.sqlserver.jdbc.SQLServerDriver
+environment.build.hibernate.connection.url=[actual URL for this server]
+environment.build.hibernate.connection.username=[actual user for this db]
+environment.build.hibernate.connection.password=[actual password for this db]
+environment.build.hibernate.dialect=org.hibernate.dialect.SQLServerDialect
+environment.build.hibernate.connection.validationQuery=select 1
 ```
 
 ## uPortal Production Database Configuration 
