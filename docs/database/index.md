@@ -34,7 +34,9 @@ As an example, a driver for SQL Server is added:
          */
         jdbc "org.hsqldb:hsqldb:${hsqldbVersion}"
         jdbc "com.microsoft.sqlserver:mssql-jdbc:${mssqlJdbcVersion}"
-
+ 
+        ...
+    }
 ```
 
 ## Step 3: Capture generic details
