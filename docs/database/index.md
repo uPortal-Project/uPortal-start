@@ -83,7 +83,7 @@ Select the database below for notes and examples of configuration.
 + [Hypersonic](hypersonic.md)
 + [Microsoft SQL Server](ms-sqlserver.md)
 + [MySQL](mysql.md)
-+ [MariaDB] (mariadb.md)
++ [MariaDB](mariadb.md)
 + [Oracle RDBMS](oracle.md)
 + [PostgreSQL](postgresql.md)
 + [Sybase](sybase.md)

@@ -2,7 +2,7 @@
 
 uPortal is configured to use a default HSQL database.
 
-This database configuration is not suitable for production deployments but is better suited for testing purposes.**
+**This database configuration is not suitable for production deployments but is better suited for testing purposes.**
 
 uPortal supports a number of production databases and you can configure the MariaDB database.
 
@@ -40,11 +40,11 @@ GRANT ALL PRIVILEGES ON portlets.* TO 'portail'@'localhost';
 ```
 ## Step 3: Configure Uportal 
 
-# Edit uPortal-start/gradle.properties 
+### Edit uPortal-start/gradle.properties 
 ```properties
 mysqldbVersion=5.1.45
 ```
-# Edit uPortal-start/overlays/build.gradle
+### Edit uPortal-start/overlays/build.gradle
 ```gradle
 dependencies {
         /*
@@ -62,7 +62,7 @@ dependencies {
 
 ```
 
-# Edit uPortal-start/etc/portal/global.properties 
+### Edit uPortal-start/etc/portal/global.properties 
 
 In the Database Connection section
 ```properties
@@ -73,7 +73,7 @@ hibernate.connection.password=uportal
 hibernate.connection.validationQuery=select 1
 hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 ```
-# Edit uPortal-start/etc/portal/uPortal.properties
+### Edit uPortal-start/etc/portal/uPortal.properties
 
 ```properties
 hibernate.connection.driver_class=com.mysql.jdbc.Driver
@@ -84,11 +84,11 @@ hibernate.connection.validationQuery=select 1
 hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 ```
 
-## Étape 4 : Initialization of the Database
+## Step 4 : Initialization of the Database
 ```shell
 ./gradlew dataInit
 ```
-## Étape 5 : Deployment of uPortal
+## Step 5 : Deployment of uPortal
 ```shell
 ./gradlew tomcatDeploy
 ```
