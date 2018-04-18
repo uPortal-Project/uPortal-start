@@ -22,4 +22,4 @@ Dans l'exemple ci-dessus, deux services sont ajoutés à la liste blanche. Dans 
 un seul CAS ou Shib serait utilisé. Notez également que le protocole
 doit être spécifié.
 
-Voir : [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+Voir : [CORS](https://developer.mozilla.org/fr/docs/Web/HTTP/Access_control_CORS)
