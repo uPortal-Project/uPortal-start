@@ -18,11 +18,11 @@ $JAVA_HOME/bin/keytool -genkey -alias tomcat -keyalg RSA
 + Vous serez invité à entrer le "mot de passe du keystore" qui a la valeur par défaut `changeit`.
 + Les prochaines invites de commandes seront utilisées pour générer un certificat auto-signé pour votre nouvelle clé privée. Si vous êtes familier avec openssl, les champs vous sont présentés dans l'ordre inverse:
 + Quel est votre nom et prénom? (Cela correspond à CN et doit correspondre au nom de domaine que vos clients utiliseront pour accéder à votre instance uPortal. Exemple : <strong>yourhost.university.edu</strong>)
-+ Quel est le nom de votre unité organisationnelle? (OU, Exemple : <strong>Direction des systèmes d'information </ strong>)
-+ Quel est le nom de votre organisation? (O, Exemple : <strong>Université de quelquepart </ strong>)
-+ Quel est le nom de votre ville ou localité? (L, Exemple : <strong>Quelque part</ strong>)
-+ Quel est le nom de votre état ou province? (ST, exemple : <strong>Toulouse</ strong>)
-+ Quel est le code de pays à deux lettres pour cette unité? (C, Exemple : <strong>FR</ strong>)
++ Quel est le nom de votre unité organisationnelle? (OU, Exemple : <strong>Direction des systèmes d'information </strong>)
++ Quel est le nom de votre organisation? (O, Exemple : <strong>Université de quelquepart </strong>)
++ Quel est le nom de votre ville ou localité? (L, Exemple : <strong>Quelque part</strong>)
++ Quel est le nom de votre état ou province? (ST, exemple : <strong>Toulouse</strong>)
++ Quel est le code de pays à deux lettres pour cette unité? (C, Exemple : <strong>FR</strong>)
 + Il vous sera demandé de confirmer vos choix, tapez `yes` et appuyez sur Entrée pour accepter.
 + `Entrer le mot de passe pour &lt;tomcat &gt;` est la question suivante, NE taper PAS un mot de passe différent de celui de votre keystore. Tomcat ne prend pas en charge les clés dans les fichiers de clés qui ont des valeurs de mot de passe différentes de celles du fichier de clés lui-même. Appuyez simplement sur Entrée pour continuer.
 

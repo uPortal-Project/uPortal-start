@@ -40,11 +40,11 @@ GRANT ALL PRIVILEGES ON portlets.* TO 'portail'@'localhost';
 ```
 ## Étape 3 : Configurer Uportal 
 
-# Editer uPortal-start/gradle.properties 
+### Éditer uPortal-start/gradle.properties 
 ```properties
 mysqldbVersion=5.1.45
 ```
-# Editer uPortal-start/overlays/build.gradle
+### Éditer uPortal-start/overlays/build.gradle
 ```gradle
 dependencies {
         /*
@@ -62,7 +62,7 @@ dependencies {
 
 ```
 
-# Editer uPortal-start/etc/portal/global.properties 
+### Éditer uPortal-start/etc/portal/global.properties 
 
 Dans la partie Database Connection
 ```properties
@@ -73,7 +73,7 @@ hibernate.connection.password=uportal
 hibernate.connection.validationQuery=select 1
 hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 ```
-# Editer uPortal-start/etc/portal/uPortal.properties
+### Éditer uPortal-start/etc/portal/uPortal.properties
 
 ```properties
 hibernate.connection.driver_class=com.mysql.jdbc.Driver
