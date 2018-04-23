@@ -1,10 +1,4 @@
-# MariaDB Database Configuration
-
-uPortal is configured to use a default HSQL database.
-
-**This database configuration is not suitable for production deployments but is better suited for testing purposes.**
-
-uPortal supports a number of production databases and you can configure the MariaDB database.
+# Configuration with MariaDB Database
 
 ## Step 1: MariaDB server setup
 Edit the file /etc/mysql/mariadb.conf.d/60-server.cnf. (Debian 9)
@@ -32,10 +26,11 @@ innodb_log_buffer_size=64M
 ```properties
 mysql -uroot -p
 
-MariaDB [(none)]> create database uportal CHARACTER SET utf8 COLLATE utf8_general_ci;
-MariaDB [(none)]> create database portlets CHARACTER SET utf8 COLLATE utf8_general_ci;
 CREATE USER 'uportal'@'localhost' IDENTIFIED BY 'uportal';
+create database uportal CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT ALL PRIVILEGES ON uportal.* TO 'portail'@'localhost';
+# If you want to install portlets on an other database
+create database portlets CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT ALL PRIVILEGES ON portlets.* TO 'portail'@'localhost';
 ```
 ## Step 3: Configure Uportal 
@@ -50,16 +45,10 @@ dependencies {
         /*
          * Add additional JDBC driver jars to the 'jdbc' configuration below;
          * do not remove the hsqldb driver jar that is already listed.
-         *
+         */
         jdbc "org.hsqldb:hsqldb:${hsqldbVersion}"
-        */
         jdbc "mysql:mysql-connector-java:${mysqldbVersion}"
         
-        /*
-         * These are nearly the same uPortal dependencies declared by uPortal-webapp;
-         * perhaps we should create a uPortal-all module to bundle them all as transitives.
-         */
-
 ```
 
 ### Edit uPortal-start/etc/portal/global.properties 
@@ -71,9 +60,10 @@ hibernate.connection.url=jdbc:mysql://localhost/portlets
 hibernate.connection.username=uportal
 hibernate.connection.password=uportal
 hibernate.connection.validationQuery=select 1
-hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+hibernate.dialect = org.apereo.portal.utils.MySQL5InnoDBCompressedDialect
 ```
 ### Edit uPortal-start/etc/portal/uPortal.properties
+**this step is needed only if you install portlets on a different database**
 
 ```properties
 hibernate.connection.driver_class=com.mysql.jdbc.Driver
@@ -81,7 +71,7 @@ hibernate.connection.url=jdbc:mysql://localhost/uportal
 hibernate.connection.username=uportal
 hibernate.connection.password=uportal
 hibernate.connection.validationQuery=select 1
-hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+hibernate.dialect = org.apereo.portal.utils.MySQL5InnoDBCompressedDialect
 ```
 
 ## Step 4 : Initialization of the Database
