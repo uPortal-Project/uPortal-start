@@ -23,16 +23,22 @@ innodb_log_buffer_size=64M
 ```
 
 ## Step 2: Configure the user and database
-```properties
-mysql -uroot -p
 
+Connect to the database server.
+```SQL
 CREATE USER 'uportal'@'localhost' IDENTIFIED BY 'uportal';
-create database uportal CHARACTER SET utf8 COLLATE utf8_general_ci;
+create database uportal CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 GRANT ALL PRIVILEGES ON uportal.* TO 'portail'@'localhost';
-# If you want to install portlets on an other database
-create database portlets CHARACTER SET utf8 COLLATE utf8_general_ci;
-GRANT ALL PRIVILEGES ON portlets.* TO 'portail'@'localhost';
+# If you want to install portlets on a specific database
+# create database portlet CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+# GRANT ALL PRIVILEGES ON portlets.* TO 'portail'@'localhost';
 ```
+
+With MariaDb and Mysql the default character set should be set to `utf8mb4` instead of `utf8` as the mysql UTF-8 encoding is only a support of 3-bytes UTF-8 unicode encoding.
+The 3-bytes part is not a full UTF-8 support, this won't support Asian characters and emoticones files. [See here for more details](https://dev.mysql.com/doc/refman/5.5/en/charset-unicode.html)
+
+Also the collation `utf8mb4_unicode_520_ci` is a new best algorithm for ordering UTF-8 values, but you can stay on 'utf8_unicode_ci' [see the mysql documentation for details](https://dev.mysql.com/doc/refman/5.6/en/charset-collation-names.html)
+
 ## Step 3: Configure Uportal 
 
 ### Edit uPortal-start/gradle.properties 
@@ -62,17 +68,7 @@ hibernate.connection.password=uportal
 hibernate.connection.validationQuery=select 1
 hibernate.dialect = org.apereo.portal.utils.MySQL5InnoDBCompressedDialect
 ```
-### Edit uPortal-start/etc/portal/uPortal.properties
-**this step is needed only if you install portlets on a different database**
-
-```properties
-hibernate.connection.driver_class=com.mysql.jdbc.Driver
-hibernate.connection.url=jdbc:mysql://localhost/uportal
-hibernate.connection.username=uportal
-hibernate.connection.password=uportal
-hibernate.connection.validationQuery=select 1
-hibernate.dialect = org.apereo.portal.utils.MySQL5InnoDBCompressedDialect
-```
+You should copy/paste this configuration for each customized database portlet/uPortal context [see global datasource documentation](index.md#step-5-specific-portlet-uportal-database-configuration-optional)
 
 ## Step 4 : Initialization of the Database
 ```shell

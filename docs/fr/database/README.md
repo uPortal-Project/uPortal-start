@@ -75,6 +75,17 @@ environment.build.hibernate.dialect=org.hibernate.dialect.SQLServerDialect
 environment.build.hibernate.connection.validationQuery=select 1
 ```
 
+## Étape 5: Configuration spécifique portlet / uPortal (optionel)
+
+La configuration utilisée par défaut pour déployer toutes les applications vient du fichier `global.properties` dans le répertoire `portal.home`.
+Mais il est tout à fait possible de définir une configuration par application/portlet, le fichier `global.properties` sera toujours utilisé mais il peut être surchargé par un fichier spécifique s'il est trouvé.
+
+Pour la base de données uPortal il sera nécessaire de recopier les mêmes propriétés de base de données du fichier `global.properties` dans le fichier `uPortal.properties`.
+Pour chaque portlet il faudra aussi redéfinir les mêmes propriétés en les ajoutant dans un fichier `specific-portlet.properties` du répertoire `portal.home`, où `specific-portlet.properties` est le nom du fichier défini dans les source de configurations de contexte spring du portlet.
+Par exemple, pour `NewsReaderPortlet` le fichier sera `news-reader.properties`, le nom du fichier à définir se trouvera [dans le projet NewsReaderPortlet ici.](https://github.com/Jasig/NewsReaderPortlet/blob/master/src/main/resources/context/databaseContext.xml)
+
+Remarque: Aussi ces fichiers peuvent être utilisés pour définir d'autres propriétés !
+
 ## Configuration de la base de données de production uPortal
 
 Sélectionner la base de données ci-dessous pour des notes et des exemples de configuration.
