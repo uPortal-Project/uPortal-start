@@ -117,12 +117,16 @@ task tomcatStart() {
 
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
         logger.lifecycle("Starting Tomcat servlet container in ${serverHome}")
-        String executable = isWindows ? 'cmd' : './startup.sh'
+        String executable = isWindows ? 'cmd' : './catalina.sh'
         ant.exec(dir: "${serverHome}/bin", executable: executable, spawn: true) {
             if (isWindows) {
                 arg(value: '/c')
-                arg(value: 'startup.bat')
+                arg(value: 'catalina.bat')
             }
+            if (project.hasProperty('with-jpda')) {
+                arg(value: 'jpda')
+            }
+            arg(value: 'start')
         }
 
         ant.waitfor() {
