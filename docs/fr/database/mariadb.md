@@ -23,15 +23,15 @@ innodb_log_buffer_size=64M
 ```
 
 ## Étape 2 : Configurer l'utilisateur et la base de donnée
-```properties
-mysql -uroot -p
 
+Se connecter au serveur de base de données.
+```SQL
 CREATE USER 'uportal'@'localhost' IDENTIFIED BY 'uportal';
 create database uportal CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT ALL PRIVILEGES ON uportal.* TO 'portail'@'localhost';
-# Si vous souhaitez installer les portlets sur une autre base de données spécifique.
-create database portlets CHARACTER SET utf8 COLLATE utf8_general_ci;
-GRANT ALL PRIVILEGES ON portlets.* TO 'portail'@'localhost';
+# Si vous souhaitez installer les portlets sur une base de données spécifique.
+# create database portlet CHARACTER SET utf8 COLLATE utf8_general_ci;
+# GRANT ALL PRIVILEGES ON portlet.* TO 'portail'@'localhost';
 ```
 ## Étape 3 : Configurer Uportal 
 
@@ -62,17 +62,8 @@ hibernate.connection.password=uportal
 hibernate.connection.validationQuery=select 1
 hibernate.dialect = org.apereo.portal.utils.MySQL5InnoDBCompressedDialect
 ```
-### Éditer uPortal-start/etc/portal/uPortal.properties
-**Cette étape est nécessaire uniquement si vous souhaitez dissocier l'installation des portlets sur une autre base de données.'**
 
-```properties
-hibernate.connection.driver_class=com.mysql.jdbc.Driver
-hibernate.connection.url=jdbc:mysql://localhost/uportal
-hibernate.connection.username=uportal
-hibernate.connection.password=uportal
-hibernate.connection.validationQuery=select 1
-hibernate.dialect = org.apereo.portal.utils.MySQL5InnoDBCompressedDialect
-```
+Vous devez copier/coller cette configuration pour chaque personnalisation d'accès à la base de données des contextes portlets / uPortal [cf configuration générale des bases de données](index.md#step-5-specific-portlet-uportal-database-configuration-optional)
 
 ## Étape 4 : Initialisation de la Base de Donnée
 ```shell
