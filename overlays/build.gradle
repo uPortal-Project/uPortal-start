@@ -46,6 +46,13 @@ subprojects {
         jdbc "org.hsqldb:hsqldb:${hsqldbVersion}"
 
         /*
+         * This dependency is needed for mysql/mariadb to be able to use the dialect org.apereo.portal.utils.MySQL5InnoDBCompressedDialect
+         */
+        compile("org.jasig.portal:uPortal-utils-core:${uPortalVersion}") {
+            transitive = false
+        }
+
+        /*
          * These are nearly the same uPortal dependencies declared by uPortal-webapp;
          * perhaps we should create a uPortal-all module to bundle them all as transitives.
          */
