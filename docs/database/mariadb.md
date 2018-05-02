@@ -1,5 +1,7 @@
 # Configuration with MariaDB Database
 
+As working example you can watch on travis configuration test in `uPortal-start/.travis/conf/database/mariadb/`
+
 ## Step 1: MariaDB server setup
 Edit the file /etc/mysql/mariadb.conf.d/60-server.cnf. (Debian 9)
 In the [mysqld] part add the following items :
