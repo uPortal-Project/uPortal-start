@@ -85,11 +85,11 @@ For Windows (different versions may vary) you can create these environment varia
 
 ### 4. Start Tomcat
 
-Try starting up Tomcat by running the `C:\apache-tomcat-8.x\bin\startup.bat` batch file. 
+Try starting up Tomcat by running the `C:\apache-tomcat-8.x\bin\startup.bat` batch file.
 
 ### 5. Verify in Browser
 
-Point your browser to http://localhost:8080 and you should see the default Tomcat home page. 
+Point your browser to http://localhost:8080 and you should see the default Tomcat home page.
 
 ### 6. Shut down Tomcat again
 
@@ -131,7 +131,7 @@ uPortal and the typical collection of portlets take a lot of space. Tomcat 8.5 i
 
 ### JVM Heap Configuration
 
-uPortal requires a larger than standard `PermGen` space (Java 7 only) and more heap than may be allocated by default. A good conservative set of heap settings are 
+uPortal requires a larger than standard `PermGen` space (Java 7 only) and more heap than may be allocated by default. A good conservative set of heap settings are
 
 ```
 -XX:MaxPermSize=384m (Java 7 only) -Xmx2048m
@@ -148,7 +148,7 @@ JAVA_OPTS="$JAVA_OPTS -XX:+PrintCommandLineFlags -XX:MaxPermSize=384m -Xms1024m 
 Several uPortal webapps write to their deployed webapps folder to add dynamic content to the portal (altering the Respondr Dynamic Skin and managing Attachments uploaded to uPortal are two use cases). Insure the process Tomcat is running as has write access to `CATALINA_BASE/webapps/*` directories. Typically this is done by having the same account tomcat is running as be the same account you use to build and deploy uPortal.
 
 
-### GZipping HTML 
+### GZipping HTML
 
 (Optional but STRONGLY SUGGESTED unless doing it with Apache httpd or external appliance).
 
@@ -159,7 +159,7 @@ GZipping of HTML content can be performed via Tomcat. To enable this functionali
 ```xml
 <Connector port="8080" protocol="HTTP/1.1"
   connectionTimeout="20000" redirectPort="8443"
-  compression="on" 
+  compression="on"
   compressableMimeType="text/html,text/xml,text/plain,text/css,text/javascript,application/javascript"/>
 ```
 
@@ -204,9 +204,9 @@ javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake_failure
 
 One solution is to set the protocols used by Java when making SSL connections. You can do this by adding the following property to `JAVA_OPTS` (or `CATALINA_OPTS` if using that):
 
-Oracle Java7: `-Dhttps.protocols="TLSv1,TLSv1.1,TLSv1.2"` 
+Oracle Java7: `-Dhttps.protocols="TLSv1,TLSv1.1,TLSv1.2"`
 
-Your CAS server must be configured to use one of the mentioned protocols or the handshake will fail. If your test CAS server is publicly accessible, you can view which protocols it supports by [testing its domain name via SSL Labs](https://www.ssllabs.com/ssltest/). 
+Your CAS server must be configured to use one of the mentioned protocols or the handshake will fail. If your test CAS server is publicly accessible, you can view which protocols it supports by [testing its domain name via SSL Labs](https://www.ssllabs.com/ssltest/).
 
 If you run into troubles:
 
