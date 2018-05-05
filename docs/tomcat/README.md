@@ -11,6 +11,7 @@ See also
 
 + [Fronting Tomcat with httpd](fronting-with-httpd.md)
 + [Using SSL](ssl-configuration.md)
++ [Debugging with JPDA](ssl-configuration.md)
 
 ## Linux/Unix Installation
 
