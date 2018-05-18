@@ -218,3 +218,22 @@ task tomcatTar {
         }
     }
 }
+
+task tomcatInstallShared() {
+    group 'Tomcat'
+    description 'Add shared.loader dependencies'
+    dependsOn ':portalProperties'
+
+    doLast {
+        String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
+
+        File tomcatSharedDir = new File("${serverHome}/shared/lib")
+
+        tomcatSharedDir.deleteDir()
+
+        copy {
+            from configurations.shared
+            into tomcatSharedDir
+        }
+    }
+}
