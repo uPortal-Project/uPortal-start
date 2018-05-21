@@ -41,6 +41,12 @@
 #
 #server.base=
 
+# (Optional) Webapps directory on which uPortal and portlets apps are deployed.
+# This property permit to deploy all apps on a customized directory.
+# Default value is on ${server.base}/webapps
+#
+#server.webapps=
+
 # Location of Base Data Set;  base data is imported before entities specified
 # in implementation.entities.location (below) and does not commonly require
 # adopter customization.
