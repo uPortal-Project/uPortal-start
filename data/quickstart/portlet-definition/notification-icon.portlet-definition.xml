@@ -24,11 +24,11 @@
     <name>Notification Icon</name>
     <fname>notification-icon</fname>
     <desc>Icon-based launcher for the Apereo Notification portlet designed for the eyebrow region of the page</desc>
-    <type>Portlet</type>
+    <type>Advanced CMS</type>
     <timeout>5000</timeout>
     <portlet-descriptor>
-        <ns2:webAppName>/NotificationPortlet</ns2:webAppName>
-        <ns2:portletName>NotificationIcon</ns2:portletName>
+        <ns2:webAppName>/SimpleContentPortlet</ns2:webAppName>
+        <ns2:portletName>cms</ns2:portletName>
     </portlet-descriptor>
     <group>Authenticated Users</group>
     <parameter>
@@ -76,9 +76,13 @@
         <value>true</value>
     </parameter>
     <portlet-preference>
-        <name>DemoNotificationService.locations</name>
+        <name>content</name>
         <readOnly>false</readOnly>
-        <value>demo/demoNotificationResponse2.json</value>
-        <value>demo/demoNotificationResponse.json</value>
+        <value>
+            <![CDATA[
+                <notification-icon></notification-icon>
+                <script type="text/javascript" src="/NotificationPortlet/scripts/notification-component-icon.js"></script>
+            ]]>
+        </value>
     </portlet-preference>
 </portlet-definition>
