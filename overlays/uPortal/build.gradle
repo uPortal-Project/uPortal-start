@@ -148,6 +148,8 @@ ext {
 }
 
 dataInit {
+    description 'Drop and recreate uPortal tables and reimport data'
+
     /*
      * Add to the scriptFile commands that drop then create then load the legacy database
      * tables and data (i.e. non-Hibernate stuff that's still based on tables.xml and data.xml)
@@ -235,6 +237,8 @@ portalShellBuildHelper.dataImport('data-import',
 }
 
 dataImport {
+    description 'Adds to or updates the portal database for the entities defined in the specified XML file(s). Requires -Dfile={path-to-file} or -Ddir={path-to-directory}'
+
     doLast {
         // Validate inputs
         Map<String,String> args = [
@@ -282,6 +286,8 @@ portalShellBuildHelper.dataImport("data-import",
 }
 
 dataExport {
+    description 'Creates XML files representing the requested entities and writes them to the specified file system location. Parameters: -Ddir={path-to-directory} -Dtype={entity-type} [-Dsysid={entity-identifier}]'
+
     doLast {
         // Three -D arguments may be passed;  all are optional
         String dir = System.getProperty('dir') ?: "${buildDir}/export"
@@ -311,6 +317,8 @@ portalShellBuildHelper.dataExport('data-export',
 }
 
 dataDelete {
+    description 'Deletes the specified entity. Requires -Dtype={entity-type} and -Dsysid={id}'
+
     doLast {
         // Validate inputs
         Map<String,String> args = [
@@ -346,6 +354,8 @@ portalShellBuildHelper.dataDelete('data-delete',
 }
 
 dataList {
+    description 'With no arguments (-Dtype={entity-type}) lists all supported portal data types and the operations (export, delete) supported for each. '
+
     doLast {
         // Is there a -Dtype= argument passed?
         String type = System.getProperty('type') ?: ' '
