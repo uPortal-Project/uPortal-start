@@ -55,6 +55,7 @@
           <value>40%</value>
         </structure-attribute>
         <channel fname="calendar" unremovable="false" hidden="false" immutable="false" ID="n13"/>
+        <channel fname="esup-filemanager-demo" unremovable="false" hidden="false" immutable="false" ID="n14"/>
       </folder>
     </folder>
   </folder>

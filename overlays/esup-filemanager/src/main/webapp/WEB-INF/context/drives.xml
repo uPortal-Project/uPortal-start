@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+  <!--
+     For examples see the project repository :https://github.com/uPortal-contrib/esup-filemanager/blob/master/src/main/webapp/WEB-INF/context/drives.xml
+  -->
+
+
+  <!-- drivesCategories lets you organize the tree of your drives .
+       On the root you can have categories and on each categories you can have drives.
+       Drives are defined bellow : values of 'drives' property must map to a FSAccess bean.
+  -->
+  <util:map id="drivesCategories">
+    <entry key="Shared">
+      <bean class="org.esupportail.portlet.filemanager.beans.DrivesCategory">
+        <property name="icon" value="/esup-filemanager/img/drives/house.png" />
+        <property name="drives">
+          <list>
+            <value>FTP - readonly</value>
+          </list>
+        </property>
+      </bean>
+    </entry>
+    <entry key="Homedir">
+      <bean class="org.esupportail.portlet.filemanager.beans.DrivesCategory">
+        <property name="icon" value="/esup-filemanager/img/drives/drive_user.png" />
+        <property name="drives">
+          <list>
+            <value>local rw</value>
+          </list>
+        </property>
+      </bean>
+    </entry>
+  </util:map>
+
+  <!-- this drive doesn't use authentication
+   it is displayed to all people
+  -->
+  <bean  class="org.esupportail.portlet.filemanager.services.vfs.VfsAccessImpl" lazy-init="true">
+    <property name="driveName" value="local rw"/>
+    <property name="icon" value="/esup-filemanager/img/drives/root.png" />
+    <property name="uri" value="file://#{systemProperties['java.io.tmpdir']}"/>
+    <property name="evaluator">
+      <bean class="org.esupportail.portlet.filemanager.services.evaluators.UserRoleEvaluator" >
+        <property name="group" value="Authenticated Users" />
+      </bean>
+    </property>
+    <property name="resourceUtils" ref="resourceUtils"/>
+  </bean>
+
+
+
+  <!-- Stock2Cas uses proxy cas authentication
+       sftpSetUserDirIsRoot is set to use user directory as root
+
+       Note also this drive is displayed only for people who has
+       attribute affiliation matches (regex) (.*)student(.*)
+       and compsante = unecomposante ...
+  -->
+  <bean class="org.esupportail.portlet.filemanager.services.vfs.VfsAccessImpl" scope="session" lazy-init="true">
+    <property name="driveName" value="FTP - readonly"/>
+    <property name="icon" value="/esup-filemanager/img/drives/root.png" />
+    <property name="uri" value="ftp://ftp.gnu.org/"/>
+    <property name="resourceUtils" ref="resourceUtils"/>
+  </bean>
+
+
+
+</beans>

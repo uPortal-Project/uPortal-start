@@ -1,0 +1,11 @@
+import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
+
+apply plugin: GradlePlutoPlugin
+
+dependencies {
+    runtime "org.esupportail.portlet.filemanager:esup-filemanager:${esupFilemanagerPortletVersion}@war"
+}
+
+war {
+    archiveName 'esup-filemanager.war'
+}
