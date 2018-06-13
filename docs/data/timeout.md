@@ -19,3 +19,6 @@ Below is an example for Staff with a timeout of 8 hours.
   </target>
 </permission-set>
 ```
+
+A user can confirm their timeout value by checking the session API endpoint at
+`/uPortal/api/session.json`.
