@@ -1,40 +1,34 @@
-# Using uPortal with Oracle
+# Using uPortal with PostgreSQL
 
-## Step 1: Obtain the Driver
+## Step 1: Identify the driver version
 
-Since the Oracle JDBC driver is not available in the central Maven repository, it must be placed into the local repository of each machine on which you wish to build uPortal.
+The PostgreSQL driver is available in [The Central Repository.](https://search.maven.org)
 
-As an alternative to this, you could set up a maven repository for use by multiple machines.
+Search for package `org.postgresql.postgresql` and note the latest available version.
 
-[Download](http://www.oracle.com/technetwork/database/features/jdbc/index-091264.html) the correct Oracle JDBC driver for your server. Once you have the jar, it needs to be installed into the local Maven repository using the following command
+## Step 2: Configure the database connection properties
 
-```shell
-mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc -Dversion=<version> -Dpackaging=jar -DgeneratePom=true -Dfile=ojdbc.jar
-```
+Modify `etc/portal/global.properties` to connect to an existing Postgres database.
 
-The `groupId`, `artifactId` and `version` specified in this command are up to you, but they should match the JAR vendor, name and version to avoid confusion down the road.
-
-## Step 2: Configure the Database Connection Properties
-
-Configure the Database Connection in `etc/portal/global.properties`
+For example, connect to a database named `uportal5` owned by user `admin` with password `secret` as follows:
 
 ```properties
-hibernate.connection.driver_class=oracle.jdbc.OracleDriver
-hibernate.connection.url=jdbc:oracle:thin:@//oracle.example.edu:1521/instance
-hibernate.connection.username=
-hibernate.connection.password=
-hibernate.connection.validationQuery=select 1 from dual
-hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
+hibernate.connection.driver_class=org.postgresql.Driver
+hibernate.connection.url=jdbc:postgresql://localhost:5432/uportal5
+hibernate.connection.username=admin
+hibernate.connection.password=secret
+hibernate.connection.validationQuery=select version();
+hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 ```
 
 ## Step 3: Add the database driver
 
 In `overlays/build.gradle` add the following line below the line for hsqldb
 ```gradle
-jdbc "com.oracle:ojdbc:${oracleJdbcVersion}"
+jdbc "org.postgresql:postgresql:${postgresqlDriverVersion}"
 ```
 
-`${oracleJdbcVersion}` can be defined `gradle.properties`. Otherwise, substitute `${oracleJdbcVersion}` with the version number used in step 1.
+`${postgresqlDriverVersion}` can be defined in `gradle.properties`. Otherwise, substitute `${postgresqlDriverVersion}` with the version number found in step 1.
 
 ## Step 4: Build and Deploy
 
