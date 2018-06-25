@@ -3,8 +3,6 @@ set CATALINA_OPTS=%CATALINA_OPTS% -XX:+PrintCommandLineFlags
 
 rem Discourage address map swapping by setting Xms and Xmx to the same value
 rem http://confluence.atlassian.com/display/DOC/Garbage+Collector+Performance+Issues
-set CATALINA_OPTS=%CATALINA_OPTS% -Xms64m
-set CATALINA_OPTS=%CATALINA_OPTS% -Xmx512m
 
 rem Prevent "Unrecognized Name" SSL warning
 set CATALINA_OPTS=%CATALINA_OPTS% -Djsse.enableSNIExtension=false
@@ -20,6 +18,22 @@ if not errorlevel 1 (
     echo Already declared a garbage collector
 ) else (
     set CATALINA_OPTS=%CATALINA_OPTS% -XX:+UseG1GC
+)
+
+rem Check if heap space allocation is already set
+rem If it is, leave it be
+echo.%CATALINA_OPTS%|findstr /C:"-Xms"
+if not errorlevel 1 (
+    echo Already declared a garbage collector
+) else (
+    set CATALINA_OPTS=%CATALINA_OPTS% -Xms64m
+)
+
+echo.%CATALINA_OPTS%|findstr /C:"-Xmx"
+if not errorlevel 1 (
+    echo Already declared a garbage collector
+) else (
+    set CATALINA_OPTS=%CATALINA_OPTS% -Xmx512m
 )
 
 rem We need to send a 'portal.home' system property to the JVM;  use the value of PORTAL_HOME, if
