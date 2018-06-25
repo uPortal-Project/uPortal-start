@@ -24,14 +24,14 @@ rem Check if heap space allocation is already set
 rem If it is, leave it be
 echo.%CATALINA_OPTS%|findstr /C:"-Xms"
 if not errorlevel 1 (
-    echo Already declared a garbage collector
+    echo Already declared a minimum value for heap space
 ) else (
     set CATALINA_OPTS=%CATALINA_OPTS% -Xms64m
 )
 
 echo.%CATALINA_OPTS%|findstr /C:"-Xmx"
 if not errorlevel 1 (
-    echo Already declared a garbage collector
+    echo Already declared a maximum value for heap space
 ) else (
     set CATALINA_OPTS=%CATALINA_OPTS% -Xmx512m
 )
