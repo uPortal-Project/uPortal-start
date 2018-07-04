@@ -66,10 +66,6 @@
         <value>false</value>
     </parameter>
     <parameter>
-        <name>printable</name>
-        <value>true</value>
-    </parameter>
-    <parameter>
         <name>secure</name>
         <value>false</value>
     </parameter>
