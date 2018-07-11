@@ -50,9 +50,9 @@ dependencies {
         /*
          * Add additional JDBC driver jars to the 'jdbc' configuration below;
          * do not remove the hsqldb driver jar that is already listed.
-         *
+         */
         jdbc "org.hsqldb:hsqldb:${hsqldbVersion}"
-        */
+        
         jdbc "mysql:mysql-connector-java:${mysqldbVersion}"
         /*
          * NOTE: If jdbc "mysql:mysql-connector-java:${mysqldbVersion}" does not work then you can 
