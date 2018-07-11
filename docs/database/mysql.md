@@ -29,14 +29,14 @@ innodb_log_buffer_size=64M
 ```
 
 ## Step 2: Configure the user and database
-```properties
+```open Command Prompt with MySql path C:\Program Files\MySQL\MySQL Server 5.7\bin, and run mysql as below
+```from Linux you can run Terminal and go to MySQL server directory and run the same as below
 mysql -uroot -p
 
-MariaDB [(none)]> create database uportal CHARACTER SET utf8 COLLATE utf8_general_ci;
-MariaDB [(none)]> create database portlets CHARACTER SET utf8 COLLATE utf8_general_ci;
-CREATE USER 'uportal'@'localhost' IDENTIFIED BY 'uportal';
-GRANT ALL PRIVILEGES ON uportal.* TO 'uportal'@'localhost';
-GRANT ALL PRIVILEGES ON portlets.* TO 'uportal'@'localhost';
+mysql> create database uportal CHARACTER SET utf8 COLLATE utf8_general_ci;
+mysql> CREATE USER 'uportal'@'localhost' IDENTIFIED BY 'uportal';
+mysql> GRANT ALL PRIVILEGES ON uportal.* TO 'uportal'@'localhost';
+
 ```
 ## Step 3: Configure Uportal 
 
