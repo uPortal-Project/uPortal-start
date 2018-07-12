@@ -78,16 +78,6 @@ hibernate.connection.password=uportal
 hibernate.connection.validationQuery=select 1
 hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 ```
-### Edit uPortal-start/etc/portal/uPortal.properties
-
-```properties
-hibernate.connection.driver_class=com.mysql.jdbc.Driver
-hibernate.connection.url=jdbc:mysql://localhost:3306/uportal?useSSL=false
-hibernate.connection.username=uportal
-hibernate.connection.password=uportal
-hibernate.connection.validationQuery=select 1
-hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
-```
 
 ## Step 4 : Initialization of the Database and Deployment of uPortal
 ```shell
