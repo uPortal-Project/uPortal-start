@@ -89,11 +89,7 @@ hibernate.connection.validationQuery=select 1
 hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 ```
 
-## Step 4 : Initialization of the Database
+## Step 4 : Initialization of the Database and Deployment of uPortal
 ```shell
-./gradlew dataInit
-```
-## Step 5 : Deployment of uPortal
-```shell
-./gradlew tomcatDeploy
+./gradlew portalInit
 ```
