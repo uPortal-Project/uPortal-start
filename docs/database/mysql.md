@@ -55,12 +55,6 @@ dependencies {
         
         jdbc "mysql:mysql-connector-java:${mysqldbVersion}"
         /*
-         * NOTE: If jdbc "mysql:mysql-connector-java:${mysqldbVersion}" does not work then you can 
-         * use the following
-         *
-         * compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.13'
-         */
-        /*
          * These are nearly the same uPortal dependencies declared by uPortal-webapp;
          * perhaps we should create a uPortal-all module to bundle them all as transitives.
          */
