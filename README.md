@@ -78,6 +78,7 @@ running the following command:
   - [How To Start Tomcat](#how-to-start-tomcat)
   - [How To Create a Custom Skin](#how-to-create-a-custom-skin)
   - [How To Configure Your Deployment](#how-to-configure-your-deployment)
+  - [How To Customize Text](#how-to-customize-text)
 
 ### How To Set Up Everything the First Time
 
