@@ -278,9 +278,9 @@ Most of the text strings displayed in the portal are in the
 You can override this
 file by **_copying the entire file_** to the **uPortal-start** project and putting it in a
 directory named `i18n` under `overlays/uPortal/src/main/resources/properties`.
-
 The full filepath should be
 `overlays/uPortal/src/main/resources/properties/i18n/Messages.properties`.
+
 You can make changes to text and rebuild the uPortal-start project without
 having to modify the uPortal project.
 
