@@ -267,6 +267,22 @@ A sample `uPortal.properties` file -- with several commonly-adjusted settings de
 documented -- is available in the `etc/portal` directory of this project.  Feel free to customize
 that sample with institution-specific defaults in your fork of uPortal-start.
 
+### How To Customize Text
+
+Most of the text strings displayed in the portal are in the
+[uPortal](https://github.com/Jasig/uPortal) project, defined in
+`Messages.properties` in the directory
+`uPortal-webapp/src/main/resources/properties/i18n`.
+
+You can override this
+file by **_copying the entire file_** to the **uPortal-start** project and putting it in a
+directory named `i18n` under `overlays/uPortal/src/main/resources/properties`.
+
+The full filepath should be
+`overlays/uPortal/src/main/resources/properties/i18n/Messages.properties`.
+You can make changes to text and rebuild the uPortal-start project without
+having to modify the uPortal project.
+
 ### Creating a Docker Image
 
 :warning: Support for Docker in uPortal-start requires Docker version 17.05 or above.
