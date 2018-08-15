@@ -41,6 +41,16 @@ apply from: rootProject.file('gradle/tasks/portlet.gradle')
 apply from: rootProject.file('gradle/tasks/docker.gradle')
 
 /*
+ * If gradle/tasks/custom.gradle exists, tasks from that
+ * file will be made available
+ */
+File customTasks = rootProject.file('gradle/tasks/custom.gradle')
+
+if(customTasks.isFile()) {
+    apply from: customTasks
+}
+
+/*
  * Before compiling Java, ensure the Java version is correct.
  */
 apply plugin: 'java'
