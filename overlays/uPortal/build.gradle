@@ -81,6 +81,16 @@ task skinGenerate() {
             expand(skinName: skinName)
         }
 
+        // Copy skinList.xml if it does not exist
+        File skinListFile = file("${projectDir}/src/main/webapp/media/skins/respondr/skinList.xml")
+        File respondrDir = file("${projectDir}/src/main/webapp/media/skins/respondr")
+        if (!skinListFile.exists()) {
+            copy {
+                from "${rootProject.projectDir}/etc/skin/skinList.xml"
+                into respondrDir
+            }
+        }
+
         logger.lifecycle("Generated new skin ${skinName} at the following location:  ${skinsDir}")
         logger.lifecycle("IMPORTANT!  To use the ${skinName} skin (instead of the default) change the 'PREFdynamicSkinName' preference in dynamic-respondr-skin")
     }
