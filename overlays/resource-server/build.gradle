@@ -1,0 +1,20 @@
+/*
+ * NOTE:  This bundled app is a more recent copy of the ResourceServingWebapp.
+ *
+ * For releases beginning with 1.1.0, the resource-server-content module removed some older versions
+ * of several libraries.  uPortal, however, still depends on some of those libraries, and currently
+ * won't work without a copy of ResourceServingWebapp.  For webjar support, on the other hand, we
+ * need version 1.3.x.  So (for now) we will run two copies.
+ */
+
+dependencies {
+    runtime "org.jasig.resourceserver:resource-server-webapp:${resourceServer13Version}@war"
+
+    // Webjars included with resource-server
+    runtime 'org.webjars.npm:uportal__content-carousel:1.6.0@jar'
+    runtime 'org.webjars.npm:uportal__waffle-menu:1.6.0@jar'
+}
+
+war {
+    archiveName 'resource-server.war'
+}
