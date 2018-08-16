@@ -11,8 +11,8 @@ dependencies {
     runtime "org.jasig.resourceserver:resource-server-webapp:${resourceServer13Version}@war"
 
     // Webjars included with resource-server
-    runtime 'org.webjars.npm:uportal__content-carousel:1.6.0@jar'
-    runtime 'org.webjars.npm:uportal__waffle-menu:1.6.0@jar'
+    runtime "org.webjars.npm:uportal__content-carousel:${contentCarouselVersion}@jar"
+    runtime "org.webjars.npm:uportal__waffle-menu:${waffleMenuVersion}@jar"
 }
 
 war {
