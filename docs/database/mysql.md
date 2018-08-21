@@ -1,3 +1,4 @@
+
 # MySql 5.7 Database Configuration
 
 uPortal is configured to use a default HSQL database.

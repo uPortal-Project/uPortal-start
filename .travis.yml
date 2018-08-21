@@ -6,12 +6,112 @@ matrix:
       dist: trusty
       jdk: oraclejdk8
       sudo: required
+      env: DB=mariadb
+      addons:
+        mariadb: '10.1'
     - os: linux
       dist: trusty
       jdk: openjdk8
       sudo: required
+      env: DB=mariadb
+      addons:
+        mariadb: '10.1'
+    - os: linux
+      dist: trusty
+      jdk: oraclejdk8
+      sudo: required
+      env: DB=hsql
+    - os: linux
+      dist: trusty
+      jdk: openjdk8
+      sudo: required
+      env: DB=hsql
     - os: osx
       osx_image: xcode9.1 # OSX 10.12, Oracle Java 8
+      env: DB=hsql
+
+before_script:
+  - |
+    echo Start travis
+    echo Current dir is `pwd`
+    echo Home dir is `echo ~`
+    echo TRAVIS_BUILD_DIR is $TRAVIS_BUILD_DIR
+    if [ "$DB" = 'mariadb' ]; then
+      echo mysql conf `ls -la /etc/mysql/*`
+      sudo ls -l  /etc/mysql/my.cnf
+      sudo find / -name "mariadb.cnf" -exec ls -l \{\} \;
+      sudo find / -name "my.cnf" -exec ls -l \{\} \;
+      echo "show my.cnf"
+      sudo find / -name "my.cnf" -exec sudo cat \{\} \;
+      echo "show mariadb.cnf"
+      sudo find / -name "mariadb.cnf" -exec sudo cat \{\} \;
+      sudo ls -l /var/lib/mysql/
+    fi
+
+  - |
+    echo "Setting up database"
+    #if [ "$DB" = 'mysql' ] || [ "$DB" = 'mariadb' ] || [ "$DB" = 'postgresql' ]; then
+    if [ "$DB" = 'mariadb' ]; then
+      echo "setting MariaDB"
+      echo "Default variables before custom settings"
+      mysql -e 'SHOW VARIABLES;'
+      # needed for a fast stop and to apply change
+      mysql -e 'SET GLOBAL innodb_fast_shutdown = 0;'
+      sudo service mysql stop
+      # was used in 10.1.32 : cp ./.travis/conf/database/mariadb/mariadb-server.cnf ~/.my.cnf
+      # now the configuration is read into /etc/mysql/conf.d/
+      # we override the default mariadb.cnf as nothing important is provided
+      sudo cp ./.travis/conf/database/mariadb/mariadb-server.cnf /etc/mysql/conf.d/mariadb.cnf
+      # needed to remove with 10.1.35
+      sudo rm /var/lib/mysql/ibdata1
+      sudo rm /var/lib/mysql/ib_logfile0
+      sudo rm /var/lib/mysql/ib_logfile1
+      sudo service mysql start
+
+      sudo cat /var/log/mysql/error.log
+
+      echo "creating database uportal"
+      mysql -e 'DROP DATABASE IF EXISTS uportal;'
+      mysql -e 'CREATE DATABASE IF NOT EXISTS uportal DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;'
+      echo "grant privilegies for user travis on database uportal@localhost"
+      mysql -e 'GRANT ALL PRIVILEGES ON uportal.* TO travis@`127.0.0.1`;'
+      mysql -e 'SHOW CREATE DATABASE uportal;'
+
+      mysql -e 'DROP DATABASE IF EXISTS announcements;'
+      mysql -e 'CREATE DATABASE IF NOT EXISTS announcements DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;'
+      echo "grant privilegies for user travis on database announcements@localhost"
+      mysql -e 'GRANT ALL PRIVILEGES ON announcements.* TO travis@`127.0.0.1`;'
+      mysql -e 'SHOW CREATE DATABASE announcements;'
+
+      mysql -e 'DROP DATABASE IF EXISTS calendar;'
+      mysql -e 'CREATE DATABASE IF NOT EXISTS calendar DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;'
+      echo "grant privilegies for user travis on database calendar@localhost"
+      mysql -e 'GRANT ALL PRIVILEGES ON calendar.* TO travis@`127.0.0.1`;'
+      mysql -e 'SHOW CREATE DATABASE calendar;'
+
+      mysql -e 'DROP DATABASE IF EXISTS `news_reader`;'
+      mysql -e 'CREATE DATABASE IF NOT EXISTS `news_reader` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;'
+      echo "grant privilegies for user travis on database `news_reader`@localhost"
+      mysql -e 'GRANT ALL PRIVILEGES ON news_reader.* TO travis@`127.0.0.1`;'
+      mysql -e 'SHOW CREATE DATABASE `news_reader`;'
+
+      mysql -e 'DROP DATABASE IF EXISTS cms;'
+      mysql -e 'CREATE DATABASE IF NOT EXISTS cms DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;'
+      echo "grant privilegies for user travis on database cms@localhost"
+      mysql -e 'GRANT ALL PRIVILEGES ON travis.* TO cms@`127.0.0.1`;'
+      mysql -e 'SHOW CREATE DATABASE cms;'
+
+      mysql -e 'FLUSH PRIVILEGES;'
+      mysql -e 'SHOW GRANTS;'
+      #echo "USE mysql;\nUPDATE user SET password=PASSWORD('password') WHERE user='travis';\nFLUSH PRIVILEGES;\n" | mysql -u root
+      sudo service mysql restart
+      mysql -u travis -h 127.0.0.1 -e 'SELECT VERSION(); SELECT CURRENT_USER(); show databases;'
+      mysql -e 'SHOW VARIABLES;'
+
+      echo "show error.log"
+      sudo cat /var/log/mysql/error.log
+      echo "conf MariaDB done!"
+    fi
 
 script:
   # test embedded tomcat
@@ -19,10 +119,19 @@ script:
   - ./gradlew -u -i -S tomcatStart
   - ./gradlew -u -i -S tomcatStop
   - ./gradlew -u -i -S tomcatClearLogs
-  # test HSQL
-  - ./gradlew -u -i -S hsqlStart
-  - ./gradlew -u -i -S dataInit
-  - ./gradlew -u -i -S hsqlStop
+  - |
+    if [ "$DB" = 'hsql' ]; then
+      echo "testing on hsql..."
+      ./gradlew -u -i -S hsqlStart
+      ./gradlew -u -i -S dataInit
+      ./gradlew -u -i -S hsqlStop
+    fi
+    if [ "$DB" = 'mariadb' ]; then
+      echo "testing on MariaDB..."
+      echo -n "mysqldbVersion=5.1.45" >> gradle.properties
+      sed -i '/jdbc "org.hsqldb:hsqldb:/a jdbc "mysql:mysql-connector-java:${mysqldbVersion}"' ./overlays/build.gradle
+      ./gradlew -u -i -S dataInit -Dportal.home=./.travis/conf/database/mariadb
+    fi
   # test skin generation tool
   - ./gradlew -u -i -S skinGenerate -DskinName=travis
 

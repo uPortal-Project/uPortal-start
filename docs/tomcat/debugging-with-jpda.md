@@ -4,5 +4,5 @@ Tomcat has support for step through debugging through the Java Platform Debugger
 To enable JPDA add a flag when starting tomcat.
 
 ```sh
-./gradle tomcatInstall --with-jpda
+./gradlew tomcatStart --with-jpda
 ```

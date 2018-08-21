@@ -1,11 +1,6 @@
 # Display settings at startup
 CATALINA_OPTS="$CATALINA_OPTS -XX:+PrintCommandLineFlags"
 
-# Discourage address map swapping by setting Xms and Xmx to the same value
-# http://confluence.atlassian.com/display/DOC/Garbage+Collector+Performance+Issues
-CATALINA_OPTS="$CATALINA_OPTS -Xms64m"
-CATALINA_OPTS="$CATALINA_OPTS -Xmx512m"
-
 # Prevent "Unrecognized Name" SSL warning
 CATALINA_OPTS="$CATALINA_OPTS -Djsse.enableSNIExtension=false"
 
@@ -23,4 +18,18 @@ echo $CATALINA_OPTS | grep -e '-XX:+UseSerialGC' -e '-XX:+UseParallelGC' -e '-XX
 if [ $? -eq 1 ]
 then
     CATALINA_OPTS="$CATALINA_OPTS -XX:+UseG1GC"
+fi
+
+# Check to see if heap space allocation has been set
+# If there are already set values, leave them be
+echo $CATALINA_OPTS | grep -e '-Xms'
+if [ $? -eq 1]
+then
+    CATALINA_OPTS="$CATALINA_OPTS -Xms64m"
+fi
+ 
+echo $CATALINA_OPTS | grep -e '-Xmx'
+if [ $? -eq 1]
+then
+    CATALINA_OPTS="$CATALINA_OPTS -Xmx512m"
 fi

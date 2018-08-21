@@ -9,6 +9,7 @@ Below is an example for Staff with a timeout of 8 hours.
 
 ```xml
 <permission-set script="classpath://org/jasig/portal/io/import-permission_set_v3-1.crn">
+  <owner>UP_SYSTEM</owner>
   <principal-type>org.jasig.portal.groups.IEntityGroup</principal-type>
   <principal>
     <group>Staff</group>

@@ -39,6 +39,8 @@ dependencies {
     impexp configurations.jdbc
     impexp "${portletApiDependency}"
     impexp "${servletApiDependency}"
+
+    jdbc "org.jasig.portal:uPortal-hibernate3-dialects:${uPortalVersion}"
 }
 
 dataInit {

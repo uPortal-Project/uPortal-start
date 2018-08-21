@@ -1,10 +1,6 @@
-# Configuration de la Base de Données MariaDB
+# Configuration avec une Base de Données MariaDB
 
-uPortal est configuré pour utiliser une base de données HSQL par défaut.
-
-**Cette configuration de base de données ne convient pas aux déploiements de production mais est mieux adaptée à des fins de test.**
-
-uPortal prend en charge un certain nombre de bases de données de production et vous pouvez configurer la base de données MariaDB.
+En exemple fonctionnel vous pouvez regarder les fichiers de configuration des test travis dans `uPortal-start/.travis/conf/database/mariadb/`
 
 ## Étape 1 : Paramétrage du server MariaDB
 Editer le fichier /etc/mysql/mariadb.conf.d/60-server.cnf. (ici pour Debian 9)
@@ -29,15 +25,22 @@ innodb_log_buffer_size=64M
 ```
 
 ## Étape 2 : Configurer l'utilisateur et la base de donnée
-```properties
-mysql -uroot -p
 
-MariaDB [(none)]> create database uportal CHARACTER SET utf8 COLLATE utf8_general_ci;
-MariaDB [(none)]> create database portlets CHARACTER SET utf8 COLLATE utf8_general_ci;
+Se connecter au serveur de base de données.
+```SQL
 CREATE USER 'uportal'@'localhost' IDENTIFIED BY 'uportal';
+create database uportal CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 GRANT ALL PRIVILEGES ON uportal.* TO 'portail'@'localhost';
-GRANT ALL PRIVILEGES ON portlets.* TO 'portail'@'localhost';
+# If you want to install portlets on a specific database
+# create database portlet CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+# GRANT ALL PRIVILEGES ON portlets.* TO 'portail'@'localhost';
 ```
+
+Avec MariaDB et MySQL le jeu de caractère par défaut doit être défini à `utf8mb4` au lieu de `utf8` car l'encodage UTF-8 de MySQL n'est qu'un support sur 3 octets (3-bytes) de l'encodage unicode.
+La partie sur 3 octets n'est pas un support complet de l'UTF-8, cela ne supportera pas les caractères Asiatiques ainsi que les émoticones. [Regarder ici pour plus de détails](https://dev.mysql.com/doc/refman/5.5/en/charset-unicode.html)
+
+Aussi la collation `utf8mb4_unicode_520_ci` est un nouvel et bon algorithme pour ordonner les données en UTF-8, mais vous pouvez tout aussi bien rester sur 'utf8_unicode_ci' [Regarder la documentation MySQL pour les détails](https://dev.mysql.com/doc/refman/5.6/en/charset-collation-names.html)
+
 ## Étape 3 : Configurer Uportal 
 
 ### Éditer uPortal-start/gradle.properties 
@@ -50,15 +53,9 @@ dependencies {
         /*
          * Add additional JDBC driver jars to the 'jdbc' configuration below;
          * do not remove the hsqldb driver jar that is already listed.
-         *
-        jdbc "org.hsqldb:hsqldb:${hsqldbVersion}"
-        */
-        jdbc "mysql:mysql-connector-java:${mysqldbVersion}"
-        
-        /*
-         * These are nearly the same uPortal dependencies declared by uPortal-webapp;
-         * perhaps we should create a uPortal-all module to bundle them all as transitives.
          */
+        jdbc "org.hsqldb:hsqldb:${hsqldbVersion}"
+        jdbc "mysql:mysql-connector-java:${mysqldbVersion}"
 
 ```
 
@@ -71,18 +68,10 @@ hibernate.connection.url=jdbc:mysql://localhost/portlets
 hibernate.connection.username=uportal
 hibernate.connection.password=uportal
 hibernate.connection.validationQuery=select 1
-hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+hibernate.dialect = org.apereo.portal.utils.MySQL5InnoDBCompressedDialect
 ```
-### Éditer uPortal-start/etc/portal/uPortal.properties
 
-```properties
-hibernate.connection.driver_class=com.mysql.jdbc.Driver
-hibernate.connection.url=jdbc:mysql://localhost/uportal
-hibernate.connection.username=uportal
-hibernate.connection.password=uportal
-hibernate.connection.validationQuery=select 1
-hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
-```
+Vous devez copier/coller cette configuration pour chaque personnalisation d'accès à la base de données des contextes portlets / uPortal [cf configuration générale des bases de données](index.md#step-5-specific-portlet-uportal-database-configuration-optional)
 
 ## Étape 4 : Initialisation de la Base de Donnée
 ```shell
