@@ -20,17 +20,9 @@
 
 -->
 <group script="classpath://org/jasig/portal/io/import-group_membership_v3-2.crn">
-  <name>All categories</name>
+  <name>Quicklinks</name>
   <entity-type>org.apereo.portal.portlet.om.IPortletDefinition</entity-type>
   <creator>system</creator>
-  <description>All channel categories</description>
-  <children>
-    <group>Administration</group>
-    <group>Development</group>
-    <group>Featured</group>
-    <group>Information</group>
-    <group>Quicklinks</group>
-    <group>Tenant Portlets</group>
-    <group>uPortal</group>
-  </children>
+  <description>Portlets that may appear in an alternative navigation scheme, such as a Waffle Menu component</description>
+  <children/>
 </group>

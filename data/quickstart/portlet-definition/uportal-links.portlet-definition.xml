@@ -31,6 +31,7 @@
         <ns2:portletName>cms</ns2:portletName>
     </portlet-descriptor>
     <category>News</category>
+    <category>Quicklinks</category>
     <group>Everyone</group>
     <permissions>
         <permission system="UP_PORTLET_SUBSCRIBE" activity="BROWSE">

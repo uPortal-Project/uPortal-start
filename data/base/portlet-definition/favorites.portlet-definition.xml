@@ -30,6 +30,7 @@
         <ns2:isFramework>true</ns2:isFramework>
         <ns2:portletName>Favorites</ns2:portletName>
     </portlet-descriptor>
+    <category>Quicklinks</category>
     <category>uPortal</category>
     <group>Everyone</group>
     <permissions>

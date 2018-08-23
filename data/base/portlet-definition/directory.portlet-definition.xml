@@ -31,6 +31,7 @@
         <ns2:portletName>Directory</ns2:portletName>
     </portlet-descriptor>
     <category>Information</category>
+    <category>Quicklinks</category>
     <group>Authenticated Users</group>
     <permissions>
         <permission system="UP_PORTLET_SUBSCRIBE" activity="BROWSE">
