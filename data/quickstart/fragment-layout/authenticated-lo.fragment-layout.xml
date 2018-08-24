@@ -48,5 +48,8 @@
             <channel fname="personalization-gallery" unremovable="false" hidden="false" immutable="false" ID="n310"/>
             <channel fname="background-preference" unremovable="true" hidden="false" immutable="false" ID="n320"/>
         </folder>
+        <folder ID="s400" hidden="false" immutable="true" name="Post Content folder" type="post-content" unremovable="true">
+            <channel fname="favorites-carousel" unremovable="false" hidden="false" immutable="false" ID="n410"/>
+        </folder>
     </folder>
 </layout>
