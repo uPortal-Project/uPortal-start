@@ -80,7 +80,7 @@
     <readOnly>false</readOnly>
     <value>
         <![CDATA[
-            <script type="text/javascript" src="/resource-server/webjars/uportal__waffle-menu/1.8.0/build/static/js/waffle-menu.js"></script>
+            <script type="text/javascript" src="/resource-server/webjars/uportal__waffle-menu/1.9.1/build/static/js/waffle-menu.js"></script>
             <waffle-menu
                     url="/uPortal/api/v4-3/dlm/portletRegistry.json?category=Quicklinks"
                     style="font-size: 75%; position: relative; top: .25rem;" />
