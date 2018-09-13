@@ -70,7 +70,7 @@
                         type="portlet"
                         source="/uPortal/api/v4-3/dlm/portletRegistry.json?favorite=true"
                         slick-options='{ "slidesToShow": 6, "infinite": true, "arrows": true, "dots": true }'>
-                    <h3 slot="header">Favorites</h1>
+                    <h3 slot="header">Favorites</h3>
                     <div slot="empty">
                         <h4>You don't have any favorites yet!</h4>
                         <p>Use "Options &gt; Add to my favorites" to organize content here.</p>
