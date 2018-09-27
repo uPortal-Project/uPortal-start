@@ -65,7 +65,7 @@
         <value>
             <![CDATA[
                 <script src="https://unpkg.com/vue@2.5.16"></script>
-                <script type="text/javascript" src="/resource-server/webjars/uportal__content-carousel/1.11.1/dist/content-carousel.js"></script>
+                <script type="text/javascript" src="/resource-server/webjars/uportal__content-carousel/dist/content-carousel.js"></script>
                 <content-carousel
                         type="portlet"
                         source="/uPortal/api/v4-3/dlm/portletRegistry.json?favorite=true"
