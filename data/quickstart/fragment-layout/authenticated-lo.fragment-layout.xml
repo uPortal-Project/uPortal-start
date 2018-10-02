@@ -38,10 +38,11 @@
             <channel fname="personalization-gallery" unremovable="false" hidden="false" immutable="false" ID="n42"/>
         </folder> -->
         <folder ID="s100" hidden="false" immutable="true" name="Eyebrow folder" type="eyebrow" unremovable="true">
-            <channel fname="notification-icon" unremovable="false" hidden="false" immutable="false" ID="n110"/>
-            <channel fname="portal-greeting" unremovable="false" hidden="false" immutable="false" ID="n120"/>
-            <channel fname="logout-launcher" unremovable="false" hidden="false" immutable="false" ID="n130"/>
-            <channel fname="session-timeout" unremovable="false" hidden="false" immutable="false" ID="n140"/>
+            <channel fname="waffle-menu" unremovable="false" hidden="false" immutable="false" ID="n110"/>
+            <channel fname="notification-icon" unremovable="false" hidden="false" immutable="false" ID="n120"/>
+            <channel fname="portal-greeting" unremovable="false" hidden="false" immutable="false" ID="n130"/>
+            <channel fname="logout-launcher" unremovable="false" hidden="false" immutable="false" ID="n140"/>
+            <channel fname="session-timeout" unremovable="false" hidden="false" immutable="false" ID="n150"/>
         </folder>
         <folder ID="s300" hidden="false" immutable="true" name="Customize folder" type="customize" unremovable="true">
             <channel fname="personalization-gallery" unremovable="false" hidden="false" immutable="false" ID="n310"/>

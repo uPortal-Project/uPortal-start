@@ -36,11 +36,12 @@
     <group>Instructors</group>
     <group>Library</group>
     <group>News</group>
+    <group>Quicklinks</group>
     <group>Research</group>
     <group>Services</group>
     <group>Tenant Portlets</group>
     <group>Testing</group>
-    <group>Work</group>
     <group>uPortal</group>
+    <group>Work</group>
   </children>
 </group>
