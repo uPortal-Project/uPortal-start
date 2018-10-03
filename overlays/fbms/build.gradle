@@ -1,0 +1,70 @@
+import org.apereo.portal.start.gradle.plugins.GradleImportExportPlugin
+
+apply plugin: GradleImportExportPlugin
+
+dependencies {
+    runtime "org.jasig.portal.fbms:fbms-webapp:${fbmsVersion}@war"
+    compile configurations.jdbc
+}
+
+war {
+    archiveName 'fbms.war'
+}
+
+/*
+ * Import/Export Support
+ */
+
+import org.apereo.portal.start.shell.PortalShellInvoker
+
+dependencies {
+    impexp configurations.jdbc
+    impexp 'org.springframework.boot:spring-boot-starter-tomcat:2.0.3.RELEASE' // Version should match FBMS
+}
+
+dataInit {
+    /*
+     * Drop (if present) then create the Hibernate-managed schema.
+     */
+    doLast {
+        File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
+        File deployDir = new File (serverBase, "webapps/${project.name}")
+
+        ant.setLifecycleLogLevel('INFO')
+        ant.java(fork: true, failonerror: true, dir: rootProject.projectDir, classname: 'org.apereo.portal.fbms.ApereoFbmsApplication') {
+            classpath {
+                pathelement(location: "${deployDir}/WEB-INF/classes")
+                pathelement(location: "${deployDir}/WEB-INF/lib/*")
+                project.configurations.impexp.files.each {
+                    pathelement(location: it.absolutePath)
+                }
+            }
+            sysproperty(key: 'portal.home', value: project.rootProject.ext['buildProperties'].getProperty('portal.home'))
+            arg(value: '--init')
+            arg(value: '--spring.jpa.hibernate.ddl-auto=create')
+        }
+    }
+    /*
+     * Import database entities located anywhere within the folder
+     * specified by 'implementation.entities.location'.
+     */
+    doLast {
+        File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
+        File deployDir = new File (serverBase, "webapps/${project.name}")
+        String implementationEntitiesLocation = PortalShellInvoker.createGroovySafePath(rootProject.ext['buildProperties'].getProperty('implementation.entities.location'))
+
+        ant.setLifecycleLogLevel('INFO')
+        ant.java(fork: true, failonerror: true, dir: rootProject.projectDir, classname: 'org.apereo.portal.fbms.ApereoFbmsApplication') {
+            classpath {
+                pathelement(location: "${deployDir}/WEB-INF/classes")
+                pathelement(location: "${deployDir}/WEB-INF/lib/*")
+                project.configurations.impexp.files.each {
+                    pathelement(location: it.absolutePath)
+                }
+            }
+            sysproperty(key: 'portal.home', value: project.rootProject.ext['buildProperties'].getProperty('portal.home'))
+            arg(value: '--import')
+            arg(value: "${implementationEntitiesLocation}/fbms")
+        }
+    }
+}
