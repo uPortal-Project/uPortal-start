@@ -1,0 +1,23 @@
+{
+  "categories": [
+    {
+      "title": "Notifications",
+      "entries": [
+        {
+          "id": "modal-001",
+          "priority": 3,
+          "title": "Modal Notification Demo",
+          "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pretium nulla ac arcu semper condimentum. Mauris elit elit, vestibulum id vestibulum eu, accumsan id massa. Nam id arcu rutrum, semper nisi non, auctor velit. Nullam tincidunt placerat fringilla.",
+          "source": "Demo Service",
+          "states": {
+            "ISSUED": null,
+            "PUSHED": null,
+            "TEXTED": null,
+            "READ": null,
+            "COMPLETED": null
+          }
+        }
+      ]
+    }
+  ]
+}
