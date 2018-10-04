@@ -24,13 +24,12 @@
     <name>Notification Modal</name>
     <fname>notification-modal</fname>
     <desc>Apereo Notification Portlet</desc>
-    <type>Portlet</type>
+    <type>Advanced CMS</type>
     <timeout>5000</timeout>
     <portlet-descriptor>
-        <ns2:webAppName>/NotificationPortlet</ns2:webAppName>
-        <ns2:portletName>Notifications</ns2:portletName>
+        <ns2:webAppName>/SimpleContentPortlet</ns2:webAppName>
+        <ns2:portletName>cms</ns2:portletName>
     </portlet-descriptor>
-    <category>Information</category>
     <group>Authenticated Users</group>
     <parameter>
         <name>alternate</name>
@@ -41,20 +40,8 @@
         <value>false</value>
     </parameter>
     <parameter>
-        <name>chromeStyle</name>
-        <value>default</value>
-    </parameter>
-    <parameter>
-        <name>configurable</name>
-        <value>false</value>
-    </parameter>
-    <parameter>
         <name>disableDynamicTitle</name>
         <value>true</value>
-    </parameter>
-    <parameter>
-        <name>disablePortletEvents</name>
-        <value>false</value>
     </parameter>
     <parameter>
         <name>editable</name>
@@ -85,26 +72,19 @@
         <value>/uPortal/media/skins/icons/mobile/bullhorn.png</value>
     </parameter>
     <parameter>
-        <name>printable</name>
-        <value>false</value>
-    </parameter>
-    <parameter>
         <name>showChrome</name>
         <value>true</value>
     </parameter>
     <portlet-preference>
-        <name>DemoNotificationService.locations</name>
+        <name>content</name>
         <readOnly>false</readOnly>
-        <value>demo/modal-notification-response.json</value>
-    </portlet-preference>
-    <portlet-preference>
-        <name>HideNotificationServiceDecorator.hideDurationHours</name>
-        <!-- 365 days -->
-        <value>8760</value>
-    </portlet-preference>
-    <portlet-preference>
-        <name>NotificationController.viewName</name>
-        <readOnly>false</readOnly>
-        <value>modal</value>
+        <value>
+        <![CDATA[
+            <script src="https://unpkg.com/vue@2.5.16"></script>
+            <script type="text/javascript" src="/NotificationPortlet/scripts/notification-modal.js"></script>
+
+            <notification-modal filter="minPriority=1"></notification-modal>
+        ]]>
+        </value>
     </portlet-preference>
 </portlet-definition>

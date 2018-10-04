@@ -1,13 +1,13 @@
 {
   "categories": [
     {
-      "title": "Notifications",
+      "title": "Portal Message",
       "entries": [
         {
           "id": "modal-001",
-          "priority": 3,
-          "title": "Modal Notification Demo",
-          "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pretium nulla ac arcu semper condimentum. Mauris elit elit, vestibulum id vestibulum eu, accumsan id massa. Nam id arcu rutrum, semper nisi non, auctor velit. Nullam tincidunt placerat fringilla.",
+          "priority": 1,
+          "title": "Welcome to the Portal",
+          "body": "Welcome to the new student portal based on <a href=\"https://apereo.org/projects/uPortal\">uPortal 5</a>. There are several exciting new features included with this update. Please take a moment to familiarize yourself with the new content & options.",
           "source": "Demo Service",
           "states": {
             "ISSUED": null,
