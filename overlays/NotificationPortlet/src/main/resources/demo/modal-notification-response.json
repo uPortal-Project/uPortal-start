@@ -6,7 +6,7 @@
         {
           "id": "modal-001",
           "priority": 1,
-          "title": "Welcome to the Portal",
+          "title": "Student Portal Updates",
           "body": "Welcome to the new student portal based on <a href=\"https://apereo.org/projects/uPortal\">uPortal 5</a>. There are several exciting new features included with this update. Please take a moment to familiarize yourself with the new content & options.",
           "source": "Demo Service",
           "states": {
