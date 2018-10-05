@@ -97,7 +97,21 @@ task skinGenerate() {
 }
 
 // Set up resources from custom skins so we can compile with NodeJS & lessc
-if (skinsDir.exists()) {
+boolean taskIsDataImport = false;
+
+project.gradle.startParameter.taskNames.each { task ->
+    if(task.contains('dataImport')) {
+        taskIsDataImport = true;
+    }
+}
+
+if (taskIsDataImport) {
+    logger.lifecycle "Skipping prepareSkinResources;  dataImport doesn't require compiled skin(s)"
+}
+else if (!skinsDir.exists()) {
+    logger.lifecycle "Skipping prepareSkinResources;  no custom skin files defined in ${skinsDir}"
+}
+else {
     // Step 1:  Unpack the upstream uPortal.war into a work directory
     task prepareSkinResources(dependsOn: npmInstall) {
         String workDir = "${buildDir}/tmp/skin/uPortal"
@@ -143,8 +157,6 @@ if (skinsDir.exists()) {
     war.dependsOn {
         tasks.findAll { task -> task.name.startsWith('compileLess') }
     }
-} else {
-    logger.lifecycle "Skipping prepareSkinResources;  no custom skin files defined in ${skinsDir}"
 }
 
 /*
