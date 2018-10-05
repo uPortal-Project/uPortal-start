@@ -97,13 +97,9 @@ task skinGenerate() {
 }
 
 // Set up resources from custom skins so we can compile with NodeJS & lessc
-boolean taskIsDataImport = false;
-
-project.gradle.startParameter.taskNames.each { task ->
-    if(task.contains('dataImport')) {
-        taskIsDataImport = true;
-    }
-}
+boolean taskIsDataImport = project.gradle.startParameter.taskNames.any {
+  it.contains('dataImport')
+};
 
 if (taskIsDataImport) {
     logger.lifecycle "Skipping prepareSkinResources;  dataImport doesn't require compiled skin(s)"
