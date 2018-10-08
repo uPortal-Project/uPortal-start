@@ -48,5 +48,8 @@
             <channel fname="personalization-gallery" unremovable="false" hidden="false" immutable="false" ID="n310"/>
             <channel fname="background-preference" unremovable="true" hidden="false" immutable="false" ID="n320"/>
         </folder>
+        <folder ID="s400" hidden="false" immutable="true" name="Pre Content folder" type="pre-content" unremovable="true">
+            <channel fname="notification-modal" unremovable="false" hidden="false" immutable="false" ID="n410"/>
+        </folder>
     </folder>
 </layout>

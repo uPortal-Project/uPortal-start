@@ -1,0 +1,23 @@
+{
+  "categories": [
+    {
+      "title": "Portal Message",
+      "entries": [
+        {
+          "id": "modal-001",
+          "priority": 1,
+          "title": "Student Portal Updates",
+          "body": "Welcome to the new student portal based on <a href=\"https://apereo.org/projects/uPortal\">uPortal 5</a>. There are several exciting new features included with this update. Please take a moment to familiarize yourself with the new content & options.",
+          "source": "Demo Service",
+          "states": {
+            "ISSUED": null,
+            "PUSHED": null,
+            "TEXTED": null,
+            "READ": null,
+            "COMPLETED": null
+          }
+        }
+      ]
+    }
+  ]
+}
