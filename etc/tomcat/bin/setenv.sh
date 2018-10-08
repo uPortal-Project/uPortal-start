@@ -23,13 +23,13 @@ fi
 # Check to see if heap space allocation has been set
 # If there are already set values, leave them be
 echo $CATALINA_OPTS | grep -e '-Xms'
-if [ $? -eq 1]
+if [ $? -eq 1 ]
 then
     CATALINA_OPTS="$CATALINA_OPTS -Xms64m"
 fi
  
 echo $CATALINA_OPTS | grep -e '-Xmx'
-if [ $? -eq 1]
+if [ $? -eq 1 ]
 then
     CATALINA_OPTS="$CATALINA_OPTS -Xmx512m"
 fi
