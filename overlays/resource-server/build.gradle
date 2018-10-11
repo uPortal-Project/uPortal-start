@@ -12,6 +12,7 @@ dependencies {
 
     // Webjars included with resource-server
     runtime "org.webjars.npm:uportal__content-carousel:${contentCarouselVersion}@jar"
+    runtime "org.webjars.npm:uportal__form-builder:${formBuilderVersion}@jar"
     runtime "org.webjars.npm:uportal__waffle-menu:${waffleMenuVersion}@jar"
 }
 
