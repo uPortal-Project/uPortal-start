@@ -1,0 +1,11 @@
+import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
+
+apply plugin: GradlePlutoPlugin
+
+dependencies {
+    runtime "com.github.psi-probe:psi-probe-web:${psiProbeVersion}@war"
+}
+
+war {
+    archiveName 'psi-probe.war'
+}
