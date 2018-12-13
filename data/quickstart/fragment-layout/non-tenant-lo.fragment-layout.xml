@@ -20,7 +20,7 @@
 
 -->
 <layout xmlns:dlm="http://www.uportal.org/layout/dlm" script="classpath://org/jasig/portal/io/import-layout_v3-2.crn"
-        username="respondr-lo" >
+        username="non-tenant-lo" >
     <folder ID="s1" hidden="false" immutable="false" name="Root folder" type="root" unremovable="true">
         <!--
          | Hidden folders do not propagate to regular users, and fragment owner

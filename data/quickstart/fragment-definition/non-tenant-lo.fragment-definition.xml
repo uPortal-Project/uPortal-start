@@ -19,16 +19,12 @@
     under the License.
 
 -->
-<pags-group script="classpath://org/jasig/portal/io/import-pags-group_v4-1.crn">
-  <name>Respondr Theme Users</name>
-  <description>User Access by Theme</description>
-  <selection-test>
-    <test-group>
-      <test>
-        <attribute-name></attribute-name>
-        <tester-class>org.apereo.portal.groups.pags.testers.ThemeNameEqualsIgnoreCaseTester</tester-class>
-        <test-value>respondr</test-value>
-      </test>
-    </test-group>
-  </selection-test>
-</pags-group>
+<fragment-definition xmlns:dlm="http://org.apereo.portal.layout.dlm.config" script="classpath://org/jasig/portal/io/import-fragment-definition_v3-1.crn">
+  <dlm:fragment name="Non-Tenants" ownerID="non-tenant-lo" precedence="80">
+    <dlm:audience evaluatorFactory="org.apereo.portal.layout.dlm.providers.GroupMembershipEvaluatorFactory">
+      <paren mode="NOT">
+        <attribute mode="deepMemberOf" name="Tenants"/>
+      </paren>
+    </dlm:audience>
+  </dlm:fragment>
+</fragment-definition>
