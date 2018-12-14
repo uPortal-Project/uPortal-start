@@ -81,7 +81,7 @@
         <value>
             <![CDATA[
                 <script src="https://unpkg.com/vue@2.5.17/dist/vue.min.js"></script>
-                <script type="text/javascript" src="/NotificationPortlet/scripts/notification-icon.js"></script>
+                <script type="text/javascript" src="/NotificationPortlet/scripts/notification-icon.min.js"></script>
                 <notification-icon></notification-icon>
             ]]>
         </value>
