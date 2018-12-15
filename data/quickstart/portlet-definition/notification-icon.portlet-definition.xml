@@ -80,8 +80,9 @@
         <readOnly>false</readOnly>
         <value>
             <![CDATA[
+                <script src="/resource-server/webjars/vue/dist/vue.min.js"></script>
+                <script type="text/javascript" src="/NotificationPortlet/scripts/notification-icon.min.js"></script>
                 <notification-icon></notification-icon>
-                <script type="text/javascript" src="/NotificationPortlet/scripts/notification-component-icon.js"></script>
             ]]>
         </value>
     </portlet-preference>
