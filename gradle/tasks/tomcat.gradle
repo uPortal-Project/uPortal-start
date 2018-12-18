@@ -116,9 +116,11 @@ task tomcatStart() {
         verifyTomcatState(project, false)
 
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
+        String portalHome = rootProject.ext['buildProperties'].getProperty('portal.home')
         logger.lifecycle("Starting Tomcat servlet container in ${serverHome}")
         String executable = isWindows ? 'cmd' : './catalina.sh'
         ant.exec(dir: "${serverHome}/bin", executable: executable, spawn: true) {
+            env(key: "PORTAL_HOME", value: portalHome)
             if (isWindows) {
                 arg(value: '/c')
                 arg(value: 'catalina.bat')

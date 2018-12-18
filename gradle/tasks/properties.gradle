@@ -68,7 +68,8 @@ task portalProperties() {
         }
 
         /*
-         * Step Three:  if CATALINA_HOME, CATALINA_BASE, and/or PORTAL_HOME are set, honor them now.
+         * Step Three:  if CATALINA_HOME, CATALINA_BASE, and/or PORTAL_HOME environment variables
+         * are set, honor them now.
          */
         if (System.getenv('CATALINA_HOME')) {
             buildProperties.setProperty('server.home', System.getenv('CATALINA_HOME'))
