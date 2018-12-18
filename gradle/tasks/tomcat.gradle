@@ -120,7 +120,7 @@ task tomcatStart() {
         logger.lifecycle("Starting Tomcat servlet container in ${serverHome}")
         String executable = isWindows ? 'cmd' : './catalina.sh'
         ant.exec(dir: "${serverHome}/bin", executable: executable, spawn: true) {
-            env(key: "PORTAL_HOME", value: portalHome)
+            env(key: "PORTAL_HOME", value: new File(portalHome).getCanonicalPath()) // Must be absolute
             if (isWindows) {
                 arg(value: '/c')
                 arg(value: 'catalina.bat')
