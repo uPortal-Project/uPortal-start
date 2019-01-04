@@ -1,0 +1,15 @@
+
+{
+  "extends": [
+    "config:base",
+    ":rebaseStalePrs",
+    ":preserveSemverRanges",
+    ":semanticPrefixChore",
+    ":disableRateLimiting"
+  ],
+  "gradle": {
+    "enabled": true
+  },
+  "renovateFork": true,
+  "prConcurrentLimit": 5
+}
