@@ -23,13 +23,14 @@
     <title>Import Export Portlet</title>
     <name>Import Export Portlet</name>
     <fname>ImportExportPortlet</fname>
-    <desc>i</desc>
+    <desc>Import or export portal objects through the browser</desc>
     <type>Portlet</type>
     <timeout>50000</timeout>
     <portlet-descriptor>
         <ns2:isFramework>true</ns2:isFramework>
         <ns2:portletName>ImportExportPortlet</ns2:portletName>
     </portlet-descriptor>
+    <category>Administration</category>
     <category>Development</category>
     <group>Portal Administrators</group>
     <permissions>
@@ -43,6 +44,6 @@
     </parameter>
     <parameter>
         <name>iconUrl</name>
-        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/categories/applications-system.png</value>
+        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/actions/go-top.png</value>
     </parameter>
 </portlet-definition>

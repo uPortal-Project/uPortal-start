@@ -30,6 +30,7 @@
         <ns2:isFramework>true</ns2:isFramework>
         <ns2:portletName>PermissionsAdministration</ns2:portletName>
     </portlet-descriptor>
+    <category>Administration</category>
     <category>uPortal</category>
     <group>Portal Administrators</group>
     <permissions>
@@ -39,6 +40,6 @@
     </permissions>
     <parameter>
         <name>iconUrl</name>
-        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/categories/preferences-system.png</value>
+        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/emblems/emblem-readonly.png</value>
     </parameter>
 </portlet-definition>

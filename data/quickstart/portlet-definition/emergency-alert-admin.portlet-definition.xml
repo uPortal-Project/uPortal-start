@@ -30,6 +30,7 @@
         <ns2:webAppName>/NotificationPortlet</ns2:webAppName>
         <ns2:portletName>EmergencyAlertAdmin</ns2:portletName>
     </portlet-descriptor>
+    <category>Administration</category>
     <!-- Don't include in Demonstration category since Authenticated Users have BROWSE permission on it and
          the portlet would show up in Customize, Marketplace, and search.
     <category>Demonstration</category> -->
@@ -78,5 +79,9 @@
     <parameter>
         <name>mobileIconUrl</name>
         <value>/uPortal/media/skins/icons/mobile/emergency.png</value>
+    </parameter>
+    <parameter>
+        <name>iconUrl</name>
+        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/status/dialog-warning.png</value>
     </parameter>
 </portlet-definition>

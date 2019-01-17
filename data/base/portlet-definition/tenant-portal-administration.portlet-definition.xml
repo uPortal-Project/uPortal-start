@@ -30,7 +30,6 @@
         <ns2:isFramework>true</ns2:isFramework>
         <ns2:portletName>JspInvoker</ns2:portletName>
     </portlet-descriptor>
-    <category>Administration</category>
     <group>Tenant Administrators</group>
     <parameter>
         <name>configurable</name>

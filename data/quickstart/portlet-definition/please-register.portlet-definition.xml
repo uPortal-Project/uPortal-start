@@ -30,6 +30,7 @@
         <ns2:webAppName>/SimpleContentPortlet</ns2:webAppName>
         <ns2:portletName>cms</ns2:portletName>
     </portlet-descriptor>
+    <category>Administration</category>
     <category>Information</category>
     <group>Everyone</group>
     <permissions>
@@ -57,23 +58,23 @@
         <name>content</name>
         <readOnly>false</readOnly>
         <value>
-            
+
                 &lt;h2&gt;Please register&lt;/h2&gt;
-                
+
                 &lt;p&gt;
                     Please &lt;a href=&quot;http://www.apereo.org/uportal/deployments&quot;
-                    target=&quot;_blank&quot;&gt;list your deployment of uPortal alongside 
-                    the many others already registered&lt;/a&gt; so that the many 
-                    people who have made uPortal possible can know that their 
+                    target=&quot;_blank&quot;&gt;list your deployment of uPortal alongside
+                    the many others already registered&lt;/a&gt; so that the many
+                    people who have made uPortal possible can know that their
                     code is working for you as well.
                 &lt;/p&gt;
-                
+
                 &lt;p&gt;
-                    To list your deployment, please fill out 
-                    &lt;a href=&quot;https://spreadsheets.google.com/viewform?formkey=dHJIS3g5d0c3ajZXZVRwZUpPNWNXcHc6MQ&quot; 
+                    To list your deployment, please fill out
+                    &lt;a href=&quot;https://spreadsheets.google.com/viewform?formkey=dHJIS3g5d0c3ajZXZVRwZUpPNWNXcHc6MQ&quot;
                     target=&quot;_blank&quot;&gt;this short form&lt;/a&gt;.
                 &lt;/p&gt;
-            
+
         </value>
     </portlet-preference>
 </portlet-definition>

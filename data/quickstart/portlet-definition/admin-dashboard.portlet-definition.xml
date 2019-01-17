@@ -83,7 +83,9 @@
             <script src="https://unpkg.com/vue"></script>
             <script type="text/javascript" src="/resource-server/webjars/uportal__esco-content-menu/dist/esco.min.js"></script>
 
-            <esco-content-grid></esco-content-grid>
+            <esco-content-grid
+              portlet-api-url="/uPortal/api/v4-3/dlm/portletRegistry.json?category=Administration"
+            ></esco-content-grid>
         ]]>
     </value>
 </portlet-preference>

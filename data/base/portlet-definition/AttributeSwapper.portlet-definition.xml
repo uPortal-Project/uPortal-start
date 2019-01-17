@@ -23,7 +23,7 @@
     <title>Attribute Swapper</title>
     <name>Attribute Swapper</name>
     <fname>AttributeSwapper</fname>
-    <desc></desc>
+    <desc>Change the values of your user attributes in real time</desc>
     <type>Portlet</type>
     <timeout>600000</timeout>
     <portlet-descriptor>
@@ -39,6 +39,6 @@
     </permissions>
     <parameter>
         <name>iconUrl</name>
-        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/categories/applications-system.png</value>
+        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/status/software-update-available.png</value>
     </parameter>
 </portlet-definition>
