@@ -30,6 +30,7 @@
         <ns2:isFramework>true</ns2:isFramework>
         <ns2:portletName>UserAdministration</ns2:portletName>
     </portlet-descriptor>
+    <category>Administration</category>
     <category>uPortal</category>
     <group>Portal Administrators</group>
     <permissions>

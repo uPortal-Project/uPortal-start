@@ -39,6 +39,6 @@
     </permissions>
     <parameter>
         <name>iconUrl</name>
-        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/categories/applications-system.png</value>
+        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/devices/drive-harddisk.png</value>
     </parameter>
 </portlet-definition>

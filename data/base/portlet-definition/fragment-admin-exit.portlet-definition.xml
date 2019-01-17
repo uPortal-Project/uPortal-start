@@ -30,7 +30,6 @@
         <ns2:isFramework>true</ns2:isFramework>
         <ns2:portletName>ExitFragmentAdministration</ns2:portletName>
     </portlet-descriptor>
-    <category>Administration</category>
     <group>Fragment Owners</group>
     <group>Tenant Fragment Owners</group>
     <parameter>
