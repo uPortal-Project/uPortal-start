@@ -85,7 +85,9 @@
 
             <esco-content-grid
               portlet-api-url="/uPortal/api/v4-3/dlm/portletRegistry.json?category=Administration"
-            ></esco-content-grid>
+            >
+              <h1 slot="header-left">Administrator Dashboard</h1>
+            </esco-content-grid>
         ]]>
     </value>
 </portlet-preference>
