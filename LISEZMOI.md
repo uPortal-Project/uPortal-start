@@ -272,14 +272,14 @@ Il sait comment créer trois images différentes (à trois fins différentes) :
 
   - `apereo/uportal` est la base, une image du serveur web seulement
   - `apereo/uportal-cli` est l'image pour exécuter des commandes CLI à partir d'un conteneur (ex. : Import/Export)
-  - `apereo/uportal-quickstart` est une image qui inclut la base de données HSQL intégrée et convient pour évaluer uPortal
+  - `apereo/uportal-demo` est une image qui inclut la base de données HSQL intégrée et convient pour évaluer uPortal
 
 Utiliser l'une des tâches Gradle suivantes pour créer l'image dont vous avez besoin :
 
 ```console
 ./gradlew dockerBuildImageWeb         // builds apereo/uportal
 ./gradlew dockerBuildImageCli         // builds apereo/uportal-cli
-./gradlew dockerBuildImageQuickstart  // builds apereo/uportal-quickstart
+./gradlew dockerBuildImageDemo        // builds apereo/uportal-demo
 ./gradlew dockerBuildImages           // builds all three images
 ```
 

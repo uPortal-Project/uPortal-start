@@ -293,14 +293,14 @@ to create three different images (for three different purposes):
 
   - `apereo/uportal` is the basic, web server-only image
   - `apereo/uportal-cli` is the image for running CLI commands from within a container (e.g. Import/Export)
-  - `apereo/uportal-quickstart` is an image that includes the embedded HSQL database and is suitable for evaluating uPortal
+  - `apereo/uportal-demo` is an image that includes the embedded HSQL database and is suitable for evaluating uPortal
 
 Use one of the following Gradle tasks to build the image(s) you need:
 
 ```console
 ./gradlew dockerBuildImageWeb         // builds apereo/uportal
 ./gradlew dockerBuildImageCli         // builds apereo/uportal-cli
-./gradlew dockerBuildImageQuickstart  // builds apereo/uportal-quickstart
+./gradlew dockerBuildImageDemo        // builds apereo/uportal-demo
 ./gradlew dockerBuildImages           // builds all three images
 ```
 
