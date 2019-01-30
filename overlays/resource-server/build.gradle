@@ -15,6 +15,7 @@ dependencies {
     runtime "org.webjars.npm:uportal__esco-content-menu:${escoContentMenuVersion}@jar"
     runtime "org.webjars.npm:uportal__waffle-menu:${waffleMenuVersion}@jar"
     runtime "org.webjars.npm:vue:${vueVersion}@jar"
+    runtime "org.webjars.npm:outdatedbrowser:${outdatedbrowserVersion}@jar"
 }
 
 war {
