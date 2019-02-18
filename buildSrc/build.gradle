@@ -19,7 +19,10 @@ repositories {
 }
 
 dependencies {
-    compile "org.apache.portals.pluto:pluto-util:${plutoVersion}"
+    compile ("org.apache.portals.pluto:pluto-util:${plutoVersion}") {
+        exclude group: 'commons-io', module: 'commons-io'
+    }
+    compile "commons-io:commons-io:${commonsIoVersion}"
 
     compileOnly "org.jasig.portal:uPortal-tools:${uPortalVersion}"
 }
