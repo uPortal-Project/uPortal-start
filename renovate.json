@@ -8,8 +8,7 @@
     ":disableRateLimiting"
   ],
   "gradle": {
-    "enabled": true,
-    "fileMatch": ["\\.gradle$", "(^|/)gradle.properties$", "(^|/)buildSrc.*"]
+    "enabled": true
   },
   "renovateFork": true,
   "prConcurrentLimit": 5
