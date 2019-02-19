@@ -80,7 +80,7 @@
     <readOnly>false</readOnly>
     <value>
         <![CDATA[
-            <script src="https://unpkg.com/vue"></script>
+            <script src="/resource-server/webjars/vue/dist/vue.min.js"></script>
             <script type="text/javascript" src="/resource-server/webjars/uportal__esco-content-menu/dist/esco.min.js"></script>
 
             <esco-content-grid
