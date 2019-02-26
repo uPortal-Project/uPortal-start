@@ -17,7 +17,8 @@ class GradleImportExportPlugin implements Plugin<Project> {
         }
         project.task('dataImport') {
             group 'Data'
-            dependsOn project.rootProject.tasks.portalProperties, project.tasks.tomcatDeploy
+            dependsOn project.rootProject.tasks.portalProperties
+            mustRunAfter project.tasks.tomcatDeploy
             doFirst {
                 if (project.tasks.dataImport.actions.size() == 1) {
                     logger.lifecycle('No actions have been defined for this task in this project')
