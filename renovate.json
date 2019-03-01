@@ -10,6 +10,5 @@
   "gradle": {
     "enabled": true
   },
-  "renovateFork": true,
-  "prConcurrentLimit": 5
+  "renovateFork": true
 }
