@@ -82,7 +82,7 @@
             <![CDATA[
                 <script src="/resource-server/webjars/vue/dist/vue.min.js"></script>
                 <script type="text/javascript" src="/NotificationPortlet/scripts/notification-icon.min.js"></script>
-                <notification-icon style="position: relative; top: -.5rem;"></notification-icon>
+                <notification-icon style="position: relative; top: -0.5rem;"></notification-icon>
             ]]>
         </value>
     </portlet-preference>
