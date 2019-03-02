@@ -84,7 +84,7 @@
             <script src="/resource-server/webjars/uportal__waffle-menu/dist/waffle-menu.min.js"></script>
             <waffle-menu
                     url="/uPortal/api/v4-3/dlm/portletRegistry.json?category=Quicklinks"
-                    style="position: relative; top: .25rem;">
+                    style="position: relative; top: 0.25rem;">
             </waffle-menu>
         ]]>
     </value>
