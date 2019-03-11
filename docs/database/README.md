@@ -15,7 +15,7 @@ For example, the MS SQL Server driver version is captured in `mssqlJdbcVersion` 
 
 ```groovy
 jasyptVersion=1.9.2
-mssqlJdbcVersion=6.2.1.jre8
+mssqlJdbcVersion=7.2.1.jre8
 personDirectoryVersion=1.8.5
 ```
 
