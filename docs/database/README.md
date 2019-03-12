@@ -47,12 +47,12 @@ can usually be persisted without security concerns.
 In `etc/portal/global.properties`, save database details that are consistent across environments:
 
 ```groovy
-environment.build.hibernate.connection.driver_class=com.microsoft.sqlserver.jdbc.SQLServerDriver
-environment.build.hibernate.connection.url=jdbc:sqlserver://localhost:1433;
-environment.build.hibernate.connection.username=sa
-environment.build.hibernate.connection.password=
-environment.build.hibernate.dialect=org.hibernate.dialect.SQLServerDialect
-environment.build.hibernate.connection.validationQuery=select 1
+hibernate.connection.driver_class=com.microsoft.sqlserver.jdbc.SQLServerDriver
+hibernate.connection.url=jdbc:sqlserver://localhost:1433;
+hibernate.connection.username=sa
+hibernate.connection.password=
+hibernate.dialect=org.hibernate.dialect.SQLServerDialect
+hibernate.connection.validationQuery=select 1
 ```
 
 ## Step 4: Copy `global.properties` to local environment location and add credentials and URL
@@ -66,12 +66,12 @@ copied to `portal.home`. One of those two tasks is a pre-requisite to this step.
 In `global.properties` in the `portal.home` directory, edit the connection details:
 
 ```groovy
-environment.build.hibernate.connection.driver_class=com.microsoft.sqlserver.jdbc.SQLServerDriver
-environment.build.hibernate.connection.url=[actual URL for this server]
-environment.build.hibernate.connection.username=[actual user for this db]
-environment.build.hibernate.connection.password=[actual password for this db]
-environment.build.hibernate.dialect=org.hibernate.dialect.SQLServerDialect
-environment.build.hibernate.connection.validationQuery=select 1
+hibernate.connection.driver_class=com.microsoft.sqlserver.jdbc.SQLServerDriver
+hibernate.connection.url=[actual URL for this server]
+hibernate.connection.username=[actual user for this db]
+hibernate.connection.password=[actual password for this db]
+hibernate.dialect=org.hibernate.dialect.SQLServerDialect
+hibernate.connection.validationQuery=select 1
 ```
 
 ## Step 5: Specific portlet / uPortal database configuration (optional)
