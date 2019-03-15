@@ -42,10 +42,6 @@
         <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/status/weather-few-clouds.png</value>
     </parameter>
     <parameter>
-        <name>portletName</name>
-        <value>Weather</value>
-    </parameter>
-    <parameter>
         <name>mobileIconUrl</name>
         <value>/uPortal/media/skins/icons/mobile/weather.png</value>
     </parameter>

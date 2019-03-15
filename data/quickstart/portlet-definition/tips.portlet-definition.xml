@@ -52,10 +52,6 @@
         <value>true</value>
     </parameter>
     <parameter>
-        <name>role</name>
-        <value>tips</value>
-    </parameter>
-    <parameter>
         <name>hideFromMobile</name>
         <value>false</value>
     </parameter>
