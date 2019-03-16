@@ -1,4 +1,3 @@
-
 {
   "extends": [
     "config:base",
@@ -10,5 +9,15 @@
   "gradle": {
     "enabled": true
   },
-  "renovateFork": true
+  "renovateFork": true,
+  "packageRules": [
+    {
+      "groupName": "uPortal",
+      "packagePatterns": ["^org.jasig.portal:"]
+    },
+    {
+      "groupName": "uPortal web components",
+      "packagePatterns": ["^org.webjars.npm:uportal"]
+    }
+  ]
 }
