@@ -65,7 +65,7 @@
         <value>
             <![CDATA[
                 <script src="/resource-server/webjars/vue/dist/vue.min.js"></script>
-                <script src="/resource-server/webjars/uportal__content-carousel/dist/content-carousel.min.js"></script>
+                <script src="/resource-server/webjars/uportal__content-carousel/dist/content-carousel.min.js" defer></script>
                 <content-carousel
                         type="portlet"
                         source="/uPortal/api/v4-3/dlm/portletRegistry.json?favorite=true"
