@@ -2,6 +2,8 @@
 
 [![Linux Build Status](https://travis-ci.org/Jasig/uPortal-start.svg?branch=master)](https://travis-ci.org/Jasig/uPortal-start)
 
+[:fr: Français](docs/fr)
+
 ## About uPortal-start
 
 uPortal-start is the mechanism through which individuals and institutions adopt [Apereo uPortal][],
