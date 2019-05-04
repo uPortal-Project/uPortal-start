@@ -69,7 +69,12 @@
     <Connector port="8080" protocol="HTTP/1.1"
                connectionTimeout="20000"
                redirectPort="8443"
-               maxThreads="1200" /><!-- Model: 500 users, 1 page / 15 sec, 25 HTTP req / page, 20% buffer -->
+               maxThreads="1200"
+               compression="on" 
+               compressionMinSize="1024" 
+               compressableMimeType="text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json"
+    />
+    <!-- Model: 500 users, 1 page / 15 sec, 25 HTTP req / page, 20% buffer -->
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
