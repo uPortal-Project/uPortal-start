@@ -10,11 +10,20 @@
 dependencies {
     runtime "org.jasig.resourceserver:resource-server-webapp:${resourceServer13Version}@war"
 
-    // Webjars included with resource-server
-    runtime "org.webjars.npm:uportal__content-carousel:${contentCarouselVersion}@jar"
-    runtime "org.webjars.npm:uportal__esco-content-menu:${escoContentMenuVersion}@jar"
-    runtime "org.webjars.npm:uportal__waffle-menu:${waffleMenuVersion}@jar"
     runtime "org.webjars.npm:vue:${vueVersion}@jar"
+
+    // uPortal Web Components Webjars
+    runtime "org.webjars.npm:uportal__api-template-vue:${uPortalWebComponentsVersion}@jar"
+    runtime "org.webjars.npm:uportal__content-carousel:${uPortalWebComponentsVersion}@jar"
+    runtime "org.webjars.npm:uportal__esco-content-menu:${uPortalWebComponentsVersion}@jar"
+    runtime "org.webjars.npm:uportal__waffle-menu:${uPortalWebComponentsVersion}@jar"
+
+    // Notification Webjars
+    runtime "org.webjars.npm:uportal__notification-banner:${notificationWebComponentsVersion}@jar"
+    runtime "org.webjars.npm:uportal__notification-icon:${notificationWebComponentsVersion}@jar"
+    runtime "org.webjars.npm:uportal__notification-list:${notificationWebComponentsVersion}@jar"
+    runtime "org.webjars.npm:uportal__notification-modal:${notificationWebComponentsVersion}@jar"
+
 }
 
 war {

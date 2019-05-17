@@ -19,11 +19,11 @@
     under the License.
 
 -->
-<layout xmlns:dlm="http://www.uportal.org/layout/dlm" script="classpath://org/jasig/portal/io/import-layout_v3-2.crn" 
+<layout xmlns:dlm="http://www.uportal.org/layout/dlm" script="classpath://org/jasig/portal/io/import-layout_v3-2.crn"
   username="academics-lo" >
   <folder ID="s1" hidden="false" immutable="false" name="Root folder" type="root" unremovable="true">
     <!--
-     | Hidden folders do not propagate to regular users, and fragment owner 
+     | Hidden folders do not propagate to regular users, and fragment owner
      | accounts don't receive (other) fragments at all;  Fragment owners must
      | have their own copies of the minimal portlets required to view and manage
      | their own layouts.
@@ -49,7 +49,6 @@
           <name>width</name>
           <value>50%</value>
         </structure-attribute>
-        <channel fname="notification" unremovable="false" hidden="false" immutable="false" ID="n12"/>
         <channel fname="google-docs" unremovable="false" hidden="false" immutable="false" ID="n13"/>
       </folder>
     </folder>
