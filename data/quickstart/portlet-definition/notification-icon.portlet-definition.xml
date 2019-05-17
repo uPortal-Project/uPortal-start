@@ -81,7 +81,7 @@
         <value>
             <![CDATA[
                 <script src="/resource-server/webjars/vue/dist/vue.min.js"></script>
-                <script src="/resource-server/webjars/uportal__notification-icon/dist/notification-icon.min.js"></script>
+                <script src="/resource-server/webjars/uportal__notification-icon/dist/notification-icon.min.js" defer></script>
                 <notification-icon
                     see-all-notifications-url="/uPortal/p/notification-list"
                     navigation-strategy="list"

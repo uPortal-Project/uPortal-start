@@ -85,7 +85,7 @@
         <value>
             <![CDATA[
                 <script src="/resource-server/webjars/vue/dist/vue.min.js"></script>
-                <script src="/resource-server/webjars/uportal__notification-modal/dist/notification-modal.min.js"></script>
+                <script src="/resource-server/webjars/uportal__notification-modal/dist/notification-modal.min.js" defer></script>
                 <notification-modal notification-api-url="/NotificationPortlet/api/v2/notifications?minPriority=3">
                 </notification-modal>
             ]]>
