@@ -16,4 +16,4 @@ ENTRYPOINT ["tomcat/bin/catalina.sh", "run"]
 
 # The container is healthy if Tomcat can serve the error page (does not redirect) within 3 seconds
 HEALTHCHECK --start-period=1m --interval=1m --timeout=3s \
-    CMD wget --quiet --tries=1 --spider http://localhost:8080/uPortal/500.html || exit 1
+    CMD wget --quiet --tries=1 --spider http://localhost:8080/uPortal/health-check || exit 1
