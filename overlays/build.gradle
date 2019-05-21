@@ -49,7 +49,6 @@ subprojects {
          * These are nearly the same uPortal dependencies declared by uPortal-webapp;
          * perhaps we should create a uPortal-all module to bundle them all as transitives.
          */
-        shell "org.jasig.portal:uPortal-api-platform:${uPortalVersion}"
         shell "org.jasig.portal:uPortal-groups-filesystem:${uPortalVersion}"
         shell "org.jasig.portal:uPortal-groups-grouper:${uPortalVersion}"
         shell "org.jasig.portal:uPortal-groups-ldap:${uPortalVersion}"
