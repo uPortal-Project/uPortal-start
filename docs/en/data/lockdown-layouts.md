@@ -16,7 +16,7 @@ data/base/permission_set/Authenticated_Users__CUSTOMIZE__UP_SYSTEM.permission-se
 ````
 
 And should be copied to your permission_set data directory, changing target
-permission-type to DENY.
+`permission-type` to `DENY`.
 
 ```xml
 <permission-set script="classpath://org/jasig/portal/io/import-permission_set_v3-1.crn">
