@@ -2,7 +2,7 @@
 
 ## Benefits of Docker with uPortal
 
-  - Missing/untracked dependencies and tooling surface
+  - Includes all dependencies and tooling out of the box
   - Capture known OS flavor and version
   - JDK version explicitly rolled into image
   - Transient dependencies locked
