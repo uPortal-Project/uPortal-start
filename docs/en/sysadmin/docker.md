@@ -37,6 +37,7 @@ Here are the steps to setup uPortal Demo as a Docker image and then run it as a 
 
 ### Steps
 
+  - Build and run uPortal to confirm it works as expected
   - Stop HSQL and Tomcat, if they are running
   - Create the Docker images from the repo
     - `$ ./gradlew dockerBuildImageCli dockerBuildImageDemo`
