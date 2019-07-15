@@ -106,11 +106,12 @@ Here are some ports be aware of, including the defaults:
   - 8080 - default port for HTTP traffic
   - 7800 - JGroups port for sharing some caches
 
-  - 8009 - default AJP port for Apache HTTPD, if needed
+  - 8009 - default AJP port for Apache/IIS when using this protocol
+    - Apache/IIS can be configured to use either HTTP or AJP protocols
   - 8005 - Tomcat shutdown port
   - 8443 - default HTTPS port
 
-Another potential set of ports to add would be fore monitoring, such as JMX/JRE connections.
+Another potential set of ports to add would be for monitoring, such as JMX/JRE connections.
 
 ## Known Issues
 
