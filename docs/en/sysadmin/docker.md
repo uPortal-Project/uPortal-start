@@ -91,9 +91,26 @@ Here are the steps to setup uPortal Demo as a Docker image and then run it as a 
   - Import Docker Image
     - `$ docker load -i uportal-v5.7.0-01.image`
   - Run uPortal Docker Image
-    - `$ docker run --name uportal-v5.7.0-01 -d -v /opt/uportal/logs:/tomcat/logs -v /opt/uportal/portal:/tomcat/portal -p 8080:8080 apereo/uportal`
+    - `$ docker run --name uportal-v5.7.0-01 -d -v /opt/uportal/logs:/tomcat/logs -v /opt/uportal/portal:/tomcat/portal -p 8080:8080 -p 7800:7800 apereo/uportal`
   - Confirm that logs are updating
     - `$ ls -rtl /opt/uportal/logs`
+
+### Additional Ports
+
+Each institution and maybe even cluster may need additional port mappings.
+Remember port mappings are only required to allow external traffic reach the docker container.
+Calls from inside the container to external services, such as databases, do not require mappings.
+
+Here are some ports be aware of, including the defaults:
+
+  - 8080 - default port for HTTP traffic
+  - 7800 - JGroups port for sharing some caches
+
+  - 8009 - default AJP port for Apache HTTPD, if needed
+  - 8005 - Tomcat shutdown port
+  - 8443 - default HTTPS port
+
+Another potential set of ports to add would be fore monitoring, such as JMX/JRE connections.
 
 ## Known Issues
 
