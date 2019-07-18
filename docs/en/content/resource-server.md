@@ -67,6 +67,6 @@ in JSPs, the most likely scenario.
 
 For example:
 
-```
+```html
    <script src="/resource-server/rs/backbone/1.3.3/backbone-1.3.3.min.js" type="text/javascript"> </script>
 ```
