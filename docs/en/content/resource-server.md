@@ -3,9 +3,6 @@
 uPortal supports the caching of static files in the Resource Server module.
 While several JavaScript packages are included, you can add your own.
 
-Note: that the [webjars](webjars.md) document covers how to add webjars
-to Resource Server via Gradle configuration over this manual approach.
-
 The following manual approach captures the actual static files in your repo.
 
 ## Check Existing Resources
@@ -14,6 +11,13 @@ To see what is currently including in `resource-server`, you can visit [https://
 
 Alternately, you can simply look at the deployed `resource-server`'s `rs/` directory
 in Tomcat's `webapps` directory.
+
+Another approach to consider is using [WebJars](webjars.md). If the package does
+not currently exist in `rs/`, check if there is a WebJar implementation. You can
+find them at [Maven Repository](https://mvnrepository.com/artifact/org.webjars).
+
+The [WebJars document](webjars.md) covers how to add webjars
+to Resource Server via Gradle configuration over this manual approach.
 
 There is also another version of Resource Server currently deployed with
 `uPortal-start`. `ResourceServingWebapp` contains out-dated packages that
