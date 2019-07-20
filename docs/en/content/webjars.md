@@ -12,6 +12,10 @@ dependencies of the `overlays:resource-server` sub-project.
 Edit the `dependencies` section of the `overlays/resource-server/build.gradle` file to add WebJars
 from Maven Central.
 
+An alternative to WebJars is to manually add static files to resource server. WebJars are the
+preferred approach; however, this method is detailed [here](resource-server.md) for cases where
+WebJar implementations are not available.
+
 ### WebJar Dependency Example
 
 ```gradle
