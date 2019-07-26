@@ -1,0 +1,21 @@
+# General Settings
+uportal.protocol=http
+uportal.domain=localhost
+uportal.port=8080
+uportal.context=uPortal
+
+# Load Settings
+
+# Consider having the `load.num.of.threads` be equal to the number of test users
+load.num.of.threads=10
+
+# In seconds
+load.ramp.up=10
+
+# -1 = endless
+load.loop.count=25
+
+# Have the thread / 'user' wait X seconds before looping
+load.end.thread.wait=60
+
+# TODO - add duration

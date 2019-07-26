@@ -40,6 +40,7 @@ apply from: rootProject.file('gradle/tasks/tomcat.gradle')
 apply from: rootProject.file('gradle/tasks/portal.gradle')
 apply from: rootProject.file('gradle/tasks/portlet.gradle')
 apply from: rootProject.file('gradle/tasks/docker.gradle')
+apply from: rootProject.file('gradle/tasks/perf.gradle')
 
 /*
  * If gradle/tasks/custom.gradle exists, tasks from that
