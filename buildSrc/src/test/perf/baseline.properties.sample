@@ -15,7 +15,14 @@ load.ramp.up=10
 # -1 = endless
 load.loop.count=25
 
-# Have the thread / 'user' wait X seconds before looping
-load.end.thread.wait=60
+# Setting constant=1000 and deviation=3000 allows a 1 - 4 sec 'think time'
+# delay between each call
+delay.think.time.constant.ms=1000
+delay.think.time.deviation.ms=3000
+# Setting constant=10000 and deviation=30000 allows a 10 - 40 sec 'think time'
+# delay right before the test loop ends
+delay.final.think.time.constant.ms=10000
+delay.final.think.time.deviation.ms=30000
 
-# TODO - add duration
+# Duration of execution ( generally set the load.loop.count=-1 )
+scheduler.duration.seconds=0
