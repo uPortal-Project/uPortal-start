@@ -28,7 +28,7 @@ hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
 In `overlays/build.gradle` add the following line below the line for hsqldb
 
 ```gradle
-jdbc files("${rootProject.projectDir}/oracle/ojdbc8.jar")
+jdbc files("${rootProject.projectDir}/lib/ojdbc8.jar")
 ```
 
 ## Step 4: Build and Deploy
