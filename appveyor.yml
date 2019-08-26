@@ -15,7 +15,7 @@ test_script:
   - gradlew.bat -u -i -S tomcatClearLogs
   # test HSQL
   - gradlew.bat -u -i -S hsqlStart
-  - gradlew.bat -u -i -S --debug dataInit
+  - gradlew.bat -u -i -S dataInit
   - gradlew.bat -u -i -S hsqlStop
   # test skin generation tool
   - gradlew.bat -u -i -S skinGenerate -DskinName=appveyor
