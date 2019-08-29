@@ -21,27 +21,27 @@ task perfGenTestData() {
         // Determine output location for user xml files
         final String testDataDirKey = "data.test.perf.directory";
         final String testDataDirStr = project.rootProject.ext['buildProperties'].getProperty(testDataDirKey)
-        if(testDataDirStr == null || testDataDirStr.length() == 0) {
+        if (testDataDirStr == null || testDataDirStr.length() == 0) {
             throw new GradleException("Please specify a [${testDataDirKey}] to generate the test data")
         }
 
         // Determine number of test users
         final String testMaxUsersStr = project.rootProject.ext['buildProperties'].getProperty("data.test.perf.max.users");
         int maxUsers = 1000 // Default
-        if(testMaxUsersStr != null && testMaxUsersStr.length() > 0) {
+        if (testMaxUsersStr != null && testMaxUsersStr.length() > 0) {
             maxUsers = Integer.valueOf(testMaxUsersStr)
         }
 
         // Determine location / name of population file
         String testPopulationStr = project.rootProject.ext['buildProperties'].getProperty("data.test.perf.population.file");
-        if(testPopulationStr == null || testPopulationStr.length() == 0) {
+        if (testPopulationStr == null || testPopulationStr.length() == 0) {
             testPopulationStr = "buildSrc/src/test/perf/baseline-population.csv" // Default
         }
         File populationFile = file(testPopulationStr)
 
         // Prep output location for user xml files
         File testDataDir = file(testDataDirStr)
-        if(!testDataDir.exists()) {
+        if (!testDataDir.exists()) {
             testDataDir.mkdirs()
             logger.lifecycle("Created perf test data directory ${testDataDir}")
         } else {
@@ -49,7 +49,7 @@ task perfGenTestData() {
         }
 
         // Build user files and summarize in the population file (as an input to JMeter)
-        for(int i = 0; i < maxUsers; i++) {
+        for (int i = 0; i < maxUsers; i++) {
             // Generate password
             ConfigurablePasswordEncryptor md5Encryptor = new ConfigurablePasswordEncryptor()
             SimpleDigesterConfig md5Config = new SimpleDigesterConfig()

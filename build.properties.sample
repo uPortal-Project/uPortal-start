@@ -56,7 +56,7 @@
 # Location of the Performance Test Data Set;  entities in this folder can be
 # generated via the perfGenTestData task
 #
-#data.test.directory=
+#data.test.perf.directory=
 
 # Location (including filename ending in .csv) for the username and passwords
 # of the created users. Default is `buildSrc/src/test/perf/baseline-population.csv`

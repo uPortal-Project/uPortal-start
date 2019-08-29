@@ -33,7 +33,7 @@ $ ./gradlew jmRun
 
 ## Baseline Script
 
-Test are run with a cache manager, but will clear the cache each iteration.
+Tests are run with a cache manager, but will clear the cache each iteration.
 
 1. Ramp up from 1 to `load.num.of.threads` users in `load.ramp.up` seconds
 2. All users perform the list of modules / actions below
@@ -42,6 +42,7 @@ Test are run with a cache manager, but will clear the cache each iteration.
 4. Test will run for each `load.loop.count` iterations or a duration of `scheduler.duration.seconds`
 
 ### List of Baseline Modules
+
 * UI - Login
 * API - Gather AuthToken
 * API - People search
