@@ -1,0 +1,82 @@
+import org.jasypt.digest.config.SimpleDigesterConfig
+import org.jasypt.util.password.ConfigurablePasswordEncryptor
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jasypt:jasypt:1.9.2"
+    }
+}
+
+task perfGenTestData() {
+    group 'Perf'
+    description 'Generates test data to prepare a uPortal install for performance testing'
+    dependsOn ':portalProperties'
+
+    doLast {
+        // Determine output location for user xml files
+        final String testDataDirKey = "data.test.perf.directory";
+        final String testDataDirStr = project.rootProject.ext['buildProperties'].getProperty(testDataDirKey)
+        if (testDataDirStr == null || testDataDirStr.length() == 0) {
+            throw new GradleException("Please specify a [${testDataDirKey}] to generate the test data")
+        }
+
+        // Determine number of test users
+        final String testMaxUsersStr = project.rootProject.ext['buildProperties'].getProperty("data.test.perf.max.users");
+        int maxUsers = 1000 // Default
+        if (testMaxUsersStr != null && testMaxUsersStr.length() > 0) {
+            maxUsers = Integer.valueOf(testMaxUsersStr)
+        }
+
+        // Determine location / name of population file
+        String testPopulationStr = project.rootProject.ext['buildProperties'].getProperty("data.test.perf.population.file");
+        if (testPopulationStr == null || testPopulationStr.length() == 0) {
+            testPopulationStr = "buildSrc/src/test/perf/baseline-population.csv" // Default
+        }
+        File populationFile = file(testPopulationStr)
+
+        // Prep output location for user xml files
+        File testDataDir = file(testDataDirStr)
+        if (!testDataDir.exists()) {
+            testDataDir.mkdirs()
+            logger.lifecycle("Created perf test data directory ${testDataDir}")
+        } else {
+            logger.lifecycle("Using existing perf test data directory ${testDataDir}")
+        }
+
+        // Build user files and summarize in the population file (as an input to JMeter)
+        for (int i = 0; i < maxUsers; i++) {
+            // Generate password
+            ConfigurablePasswordEncryptor md5Encryptor = new ConfigurablePasswordEncryptor()
+            SimpleDigesterConfig md5Config = new SimpleDigesterConfig()
+            md5Config.setIterations(1)
+            md5Config.setAlgorithm("MD5")
+            md5Config.setSaltSizeBytes(8)
+            md5Encryptor.setConfig(md5Config)
+            String pw = UUID.randomUUID().toString()
+            String hashedPw = "(MD5)" + md5Encryptor.encryptPassword(pw)
+
+            // Copy template file and customize the username and password
+            project.copy {
+                from('etc/perf/template_perf.user.xml')
+                into(testDataDir)
+                filter {
+                    return it.replaceAll('@@username@@', "perfuser${i}")
+                            .replaceAll('@@password@@',hashedPw)
+                            .replaceAll('@@givenName@@',"perf")
+                            .replaceAll('@@surname@@',"user ${i}")
+                            .replaceAll('@@email@@',"user${i}@example.com")
+                }
+                rename('template_perf.user.xml', "perf_user_${i}.user.xml")
+            }
+            populationFile.withWriterAppend{ out ->
+                out.println "perfuser${i},${pw}"
+            }
+        }
+        logger.lifecycle("Created ${maxUsers} user xml files in the ${testDataDirStr} directory.  Please import them.  Population file:  ${testPopulationStr}")
+    }
+}
