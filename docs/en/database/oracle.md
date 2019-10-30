@@ -1,18 +1,18 @@
 # Using uPortal with Oracle
 
-## Step 1: Capture the Driver
+## Step 1: Identify the Driver Version
 
-Since the Oracle JDBC driver is not available in the central Maven repository, it must be manually added to your uPortal-start repository.
+The Oracle drivers have been available in Maven Central since mid-2019.
+There are several un-official packages. Make sure to use the
+[official group](https://mvnrepository.com/artifact/com.oracle.ojdbc).
 
-[Download](http://www.oracle.com/technetwork/database/features/jdbc/index-091264.html) the correct Oracle JDBC driver for your server.
+There are also variants of OJDBC drivers. uPortal requires Java 8, so the Ojdbc8 variants are required.
 
-Once you have the jar, create a `lib/` directory inside your uPortal-start repo and place the jar inside this new directory.
-
-In this example, we assume the driver filename is `ojdbc8.jar`.
+As of this writing, the current version of Ojdbc8 is `19.3.0.0`.
 
 ## Step 2: Configure the Database Connection Properties
 
-Configure the Database Connection in `etc/portal/global.properties`
+Configure the Database Connection in `etc/portal/global.properties`. For example:
 
 ```properties
 hibernate.connection.driver_class=oracle.jdbc.OracleDriver
@@ -23,12 +23,18 @@ hibernate.connection.validationQuery=select 1 from dual
 hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
 ```
 
-## Step 3: Add the Database Driver to the Project
+## Step 3: Add the Database Driver
 
-In `overlays/build.gradle` add the following line below the line for hsqldb
+In `gradle.properties` add a variable to manage the driver version:
 
 ```gradle
-jdbc files("${rootProject.projectDir}/lib/ojdbc8.jar")
+oracleDriverVersion=19.3.0.0
+```
+
+In `overlays/build.gradle` add the following line below the line for hsqldb:
+
+```gradle
+jdbc group: 'com.oracle.ojdbc', name: 'ojdbc8', version: "${oracleDriverVersion}"
 ```
 
 ## Step 4: Build and Deploy
