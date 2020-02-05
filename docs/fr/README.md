@@ -17,9 +17,11 @@ uPortal-start va vous aider à gérer:
 
 ## Sujets supplémentaires
 
-* [Configuration de Base de Données](database/index.md)
-* [Configuration de Tomcat](tomcat/index.md)
-* [Intégrations](integrations/index.md)
+* [Configuration de Base de Données](database/README.md)
+* [Configuration de Tomcat](tomcat/README.md)
+* [Intégrations](integrations/README.md)
+* [Fichiers de données (en)](../en/data/README.md)
+* [Ajouter un contenu dans uPortal-start (en)](../en/content/README.md)
 
 ### Prérequis
 
@@ -36,13 +38,13 @@ chaque semaine :  des nouvelles fonctionnalités, des fixes de bug, des amélior
 Il est extrêmement important de pouvoir mettre à jour votre copie locale de uPortal-start et (par conséquent)
 de bénéficier de ces contributions.
 
-### Manuel uPortal 5.0
+### Manuel uPortal 5.x
 
 Ce `README` fournit des informations de haut niveau sur le composant uPortal-start, ainsi que des exemples 
-d'exécution de nombreuses tâches courantes. Le manuel complet d'uPortal 5.0 est hébergé dans les pages GitHUb.
+d'exécution de nombreuses tâches courantes. Le manuel complet d'uPortal 5.x est hébergé dans les pages GitHUb.
 
-  - [uPortal 5.0 Manual (en)][]
-  - [Manuel uPortal 5.0 (fr)][]
+  - [uPortal 5.x Manual (en)][]
+  - [Manuel uPortal 5.x (fr)][]
 
 autant que possible, **les exemples de ce `LISEZMOI` sont présentés dans l'ordre dans lequel vous allez
 les exécuter** pour configurer un environnement de développement uPortal en local.
@@ -78,7 +80,7 @@ en exécutant la commande suivante :
   - [Comment tout configurer pour la première fois](#comment-tout-configurer-pour-la-première-fois)
   - [Comment installer Tomcat](#comment-installer-tomcat)
   - [Comment démarrer la base de données intégrée](#comment-démarrer-la-base-de-données-intégrée)
-  - [Comment déployer la technologie uPortal sur Tomcat](#comment-déployer-la-technologie-uPortal-sur-tomcat)
+  - [Comment déployer la technologie uPortal sur Tomcat](#comment-déployer-la-technologie-uportal-sur-tomcat)
   - [Comment créer et initialiser le schéma de base de données](#comment-créer-et-initialiser-le-schéma-de-base-de-données)
   - [Comment démarrer Tomcat](#comment-démarrer-tomcat)
   - [Comment créer une Skin personnalisée](#comment-créer-une-skin-personnalisée)
@@ -245,7 +247,7 @@ syntaxe LESS) qui surchargeront la CSS par défaut d'uPortal/Respondr.
 
 ### Comment configurer votre déploiement
 
-uPortal contient de nombreux paramètres de configuration. (Reportez-vous au [Manuel de uPortal 5.0 (fr)][] pour un 
+uPortal contient de nombreux paramètres de configuration. (Reportez-vous au [Manuel uPortal 5.x (fr)][] pour un
 guide complet de configuration.) Tous les paramètres ont des valeurs par défaut qui, pour la plupart, 
 ont été sélectionnées pour répondre aux besoins d'un environnement de développement local (comme le ceux 
 de ce `LISEZMOI` vous guide dans cette création).
@@ -293,8 +295,8 @@ Assurez-vous toujours que `tomcatInstall` et `tomcatDeploy` ont bien été exéc
 intacte avant d'appeler l'une des tâches `dockerBuildImage <type>`.
 
 [Apereo uPortal]: https://www.apereo.org/projects/uportal
-[uPortal 5.0 Manual (en)]: https://jasig.github.io/uPortal
-[Manuel uPortal 5.0 (fr)]: https://jasig.github.io/uPortal/fr
+[uPortal 5.x Manual (en)]: https://jasig.github.io/uPortal
+[Manuel uPortal 5.x (fr)]: https://jasig.github.io/uPortal/fr
 [Java Development Kit]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 [Client Git]: https://git-scm.com/downloads
 [conteneur de servlet Apache Tomcat]: https://tomcat.apache.org/

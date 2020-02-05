@@ -4,9 +4,9 @@ These pages contain documentation for using uPortal-start.  They will help you u
 the features of uPortal-start, such as the build system and CLI tools.
 
 **NOTE:**  This manual is _not_ a comprehensive reference for configuring each of the modules
-included with uPortal-start.  Individual modules typically have their own doucmentation.  For
+included with uPortal-start.  Individual modules typically have their own documentation.  For
 example, detailed information for configuring uPortal (one of the modules _"bundled"_ with
-uPortal-start) can be found in the [uPortal 5.0 Manual][].
+uPortal-start) can be found in the [uPortal 5.x Manual][].
 
 ## Topics
 
@@ -16,4 +16,4 @@ uPortal-start) can be found in the [uPortal 5.0 Manual][].
 * [Data files](data/README.md)
 * [Adding Content to uPortal-start](content/README.md)
 
-[uPortal 5.0 Manual]: https://jasig.github.io/uPortal
+[uPortal 5.x Manual]: https://jasig.github.io/uPortal
