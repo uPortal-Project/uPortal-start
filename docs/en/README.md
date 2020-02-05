@@ -8,6 +8,9 @@ included with uPortal-start.  Individual modules typically have their own docume
 example, detailed information for configuring uPortal (one of the modules _"bundled"_ with
 uPortal-start) can be found in the [uPortal 5.x Manual][].
 
+:warning: Warning uPortal-start provide datas in `data/quickstart` and properties in `etc/portal/` only for a demonstration use,
+this configuration should not be use in production without checking on ( for details see [Data files (en)](data/README.md)).
+
 ## Topics
 
 * [Database Configuration](database/README.md)

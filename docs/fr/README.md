@@ -15,6 +15,10 @@ uPortal-start va vous aider à gérer:
   - vos données dans uPortal
   - et vos déploiements d'uPortal au travers d'outils en interface en ligne de commande (CLI)
 
+:warning: Attention uPortal-start fourni des données dans `data/quickstart` ainsi qu'une configuration
+dans `etc/portal/` valable que pour un usage de démonstration, cette configuration n'est pas à utiliser
+en production sans vérification préalable (se référer aux [Fichiers de données (en)](../en/data/README.md)) .
+
 ## Sujets supplémentaires
 
 * [Configuration de Base de Données](database/README.md)
