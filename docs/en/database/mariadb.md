@@ -4,7 +4,7 @@ As working example you can watch on travis configuration test in `uPortal-start/
 
 ## Step 1: MariaDB server setup
 Edit the file /etc/mysql/mariadb.conf.d/60-server.cnf. (Debian 9)
-In the [mysqld] part add the following items :
+In the `[mysqld]` part add the following items :
 
 ```properties
 default-storage-engine=INNODB
@@ -22,6 +22,18 @@ innodb_data_file_path=ibdata1:100M:autoextend
 innodb_flush_log_at_trx_commit=1
 innodb_log_file_size=256M
 innodb_log_buffer_size=64M
+```
+
+**NOTE:** From mariaDB 10.1.35 add this configuration:
+```properties
+innodb_default_row_format=dynamic
+```
+This permit to create by default all tables with the `row_format=dynamic` if not provided.
+
+In addition you can indicate these properties to define UTF-8 as default, this is optional if you create your your database with the character set `uft8mb4` and the associated collation (see below).
+```properties
+character-set-server  = utf8mb4
+collation-server      = utf8mb4_unicode_520_ci
 ```
 
 ## Step 2: Configure the user and database
@@ -70,7 +82,9 @@ hibernate.connection.password=uportal
 hibernate.connection.validationQuery=select 1
 hibernate.dialect = org.apereo.portal.utils.MySQL5InnoDBCompressedDialect
 ```
-You should copy/paste this configuration for each customized database portlet/uPortal context [see global datasource documentation](index.md#step-5-specific-portlet-uportal-database-configuration-optional)
+You should copy/paste this configuration for each customized database portlet/uPortal context [see global datasource documentation](README.md#step-5-specific-portlet--uportal-database-configuration-optional)
+
+**NOTE:** From mariaDB 10.1.35 using the Dialect `org.apereo.portal.utils.MySQL5InnoDBCompressedDialect` is not needed anymore if you configured your mariaDB server with the [default row_format](mariadb.md#step-1-mariadb-server-setup)
 
 ## Step 4 : Initialization of the Database
 ```shell

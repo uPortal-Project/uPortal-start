@@ -4,7 +4,7 @@ En exemple fonctionnel vous pouvez regarder les fichiers de configuration des te
 
 ## Étape 1 : Paramétrage du server MariaDB
 Editer le fichier /etc/mysql/mariadb.conf.d/60-server.cnf. (ici pour Debian 9)
-Dans la partie mysqld ajouter les éléments suivant :
+Dans la partie `[mysqld]` ajouter les éléments suivant :
 
 ```properties
 default-storage-engine=INNODB
@@ -22,6 +22,18 @@ innodb_data_file_path=ibdata1:100M:autoextend
 innodb_flush_log_at_trx_commit=1
 innodb_log_file_size=256M
 innodb_log_buffer_size=64M
+```
+
+**NOTE:** À partir de mariaDB 10.1.35 indiquer en plus la configuration suivante:
+```properties
+innodb_default_row_format=dynamic
+```
+Cela aura pour effet de créer par défaut toutes les tables avec le row_format=dynamic s'il n'est pas indiqué.
+
+En complément vous pouvez indiquer ces propriétés afin de définir l'UTF-8 par défaut, cela est facultatif si vous créez votre base de données avec le jeu de caractères `uft8mb4` et la collation adequat (cf ci après).
+```properties
+character-set-server  = utf8mb4
+collation-server      = utf8mb4_unicode_520_ci
 ```
 
 ## Étape 2 : Configurer l'utilisateur et la base de donnée
@@ -71,7 +83,10 @@ hibernate.connection.validationQuery=select 1
 hibernate.dialect = org.apereo.portal.utils.MySQL5InnoDBCompressedDialect
 ```
 
-Vous devez copier/coller cette configuration pour chaque personnalisation d'accès à la base de données des contextes portlets / uPortal [cf configuration générale des bases de données](index.md#step-5-specific-portlet-uportal-database-configuration-optional)
+Vous devez copier/coller cette configuration pour chaque personnalisation d'accès à la base de données des contextes portlets / uPortal [cf configuration générale des bases de données](README.md#Étape-5-configuration-spécifique-portlet--uportal-optionel)
+
+**NOTE:** Depuis mariaDB 10.1.35 utiliser le dialect `org.apereo.portal.utils.MySQL5InnoDBCompressedDialect` n'est plus nécessaire si vous avez configuré votre serveur mariDB avec le [row_format par défault](mariadb.md#Étape-1--paramétrage-du-server-mariadb)
+
 
 ## Étape 4 : Initialisation de la Base de Donnée
 ```shell
