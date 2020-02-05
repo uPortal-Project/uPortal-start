@@ -10,10 +10,10 @@ uPortal-start) can be found in the [uPortal 5.0 Manual][].
 
 ## Topics
 
-* [Database Configuration](database/index.md)
-* [Tomcat Configuration](tomcat/index.md)
-* [Integrations](integrations/index.md)
-* [Data files](data/index.md)
-* [Adding Content to uPortal-start](content/index.md)
+* [Database Configuration](database/README.md)
+* [Tomcat Configuration](tomcat/README.md)
+* [Integrations](integrations/README.md)
+* [Data files](data/README.md)
+* [Adding Content to uPortal-start](content/README.md)
 
 [uPortal 5.0 Manual]: https://jasig.github.io/uPortal
