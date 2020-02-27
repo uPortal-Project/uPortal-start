@@ -28,7 +28,7 @@ example is to customize CalendarPortlet, name it `<shortname>-calendar`.
 5. Create a `build.gradle` file in the subdirectory, following the
 below pattern:
 
-```
+```gradle
 description = "<institution> Custom Components for <target module or portlet>"
 
 apply plugin: 'java'
@@ -49,7 +49,7 @@ dependencies {
 
 Here is an example for customizing uPortal Groups:
 
-```
+```gradle
 description = "MyUniversity Custom Components for uPortal Security"
 
 apply plugin: 'java'
