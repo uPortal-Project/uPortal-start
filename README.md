@@ -21,7 +21,7 @@ uPortal-start help you manage:
 
 The following software packages are required for working with uPortal-start:
 
-  - A [Java Development Kit][] (JDK)
+  - A Java Development Kit (JDK), version 8 ([Oracle JDK 8][], [Corretto JDK 8][], [Adopt OpenJDK 8][], or [Zulu JDK 8][])
   - A suitable [Git Client][] for your OS
 
 Download and install the **latest JDK 8 release**.  Make sure you select the full JDK;  _a JRE is
@@ -311,7 +311,10 @@ intact before invoking any of the `dockerBuildImage<type>` tasks.
 
 [Apereo uPortal]: https://www.apereo.org/projects/uportal
 [uPortal 5.0 Manual]: https://jasig.github.io/uPortal
-[Java Development Kit]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+[Oracle JDK 8]: https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
+[Corretto JDK 8]: https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/downloads-list.html
+[Adopt OpenJDK 8]: https://adoptopenjdk.net/?variant=openjdk8
+[Zulu JDK 8]: https://www.azul.com/downloads/zulu-community/?&version=java-8-lts
 [Git Client]: https://git-scm.com/downloads
 [Apache Tomcat Servlet Container]: https://tomcat.apache.org/
 [Maven Central]: https://search.maven.org/
