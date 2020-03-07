@@ -134,6 +134,11 @@ script:
     fi
   # test skin generation tool
   - ./gradlew -u -i -S skinGenerate -DskinName=travis
+  # test deploy on customized webapps directory
+  - ./gradlew -u -i -S tomcatInstall -Dserver.webapps=.gradle/webapps
+  - ./gradlew -u -i -S tomcatStart -Dserver.webapps=.gradle/webapps
+  - ./gradlew -u -i -S tomcatStop -Dserver.webapps=.gradle/webapps
+  - ./gradlew -u -i -S tomcatClearLogs -Dserver.webapps=.gradle/webapps
 
 cache:
   directories:

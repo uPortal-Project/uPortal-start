@@ -23,8 +23,8 @@ task deployPortletApp() {
         destinationDir.mkdir()
         File archiveOutput = new File(destinationDir, warfile.getName())
 
-        File serverBase = file(project.rootProject.ext['buildProperties'].getProperty('server.base'))
-        File deployDir = new File(serverBase, "webapps/${FilenameUtils.removeExtension(warfile.getName())}")
+        File serverWebapps = file(project.rootProject.ext['buildProperties'].getProperty('server.webapps'))
+        File deployDir = new File(serverWebapps, "${FilenameUtils.removeExtension(warfile.getName())}")
         logger.lifecycle("Deploying portlet application ${warfile} to location ${deployDir}")
 
         AssemblerConfig config = new AssemblerConfig()

@@ -48,8 +48,8 @@ dataInit {
      * Drop (if present) then create the Hibernate-managed schema.
      */
     doLast {
-        File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
-        File deployDir = new File (serverBase, "webapps/${project.name}")
+        File serverWebapps = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.webapps'))
+        File deployDir = new File (serverWebapps, "${project.name}")
 
         ant.setLifecycleLogLevel('INFO')
         ant.java(fork: true, failonerror: true, dir: rootProject.projectDir, classname: 'org.jasig.portlet.announcements.SchemaCreator') {
@@ -69,8 +69,8 @@ dataInit {
      * specified by 'implementation.entities.location'.
      */
     doLast {
-        File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
-        File deployDir = new File (serverBase, "webapps/${project.name}")
+        File serverWebapps = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.webapps'))
+        File deployDir = new File (serverWebapps, "${project.name}")
         String implementationEntitiesLocation = PortalShellInvoker.createGroovySafePath(rootProject.ext['buildProperties'].getProperty('implementation.entities.location'))
 
         ant.setLifecycleLogLevel('INFO')

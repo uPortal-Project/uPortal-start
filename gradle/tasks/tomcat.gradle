@@ -191,12 +191,27 @@ task tomcatZip {
 
     doLast {
         String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
-        ant.zip(destfile: 'tomcat-uportal.zip') {
-            zipfileset (
-                dir: "${serverBase}",
-                prefix: 'tomcat',
-                excludes: 'logs/**/*, temp/**/*, work/**/*'
-            )
+        String serverWebapps = rootProject.ext.buildProperties.getProperty('server.webapps')
+        if (serverWebapps.startsWith(serverBase)) {
+            ant.zip(destfile: 'tomcat-uportal.zip') {
+                zipfileset (
+                    dir: "${serverBase}",
+                    prefix: 'tomcat',
+                    excludes: 'logs/**/*, temp/**/*, work/**/*'
+                )
+            }
+        } else {
+            ant.zip(destfile: 'tomcat-uportal.zip') {
+                zipfileset(
+                    dir: "${serverBase}",
+                    prefix: 'tomcat',
+                    excludes: 'logs/**/*, temp/**/*, work/**/*'
+                )
+                zipfileset(
+                    dir: "${serverWebapps}",
+                    prefix: 'webapps'
+                )
+            }
         }
     }
 }
@@ -210,12 +225,27 @@ task tomcatTar {
 
     doLast {
         String serverBase = rootProject.ext.buildProperties.getProperty('server.base')
-        ant.tar(destfile: 'tomcat-uportal.tgz', compression: 'gzip', longfile: 'gnu') {
-            tarfileset (
-                dir: "${serverBase}",
-                prefix: 'tomcat',
-                excludes: 'logs/**/*, temp/**/*, work/**/*'
-            )
+        String serverWebapps = rootProject.ext.buildProperties.getProperty('server.webapps')
+        if (serverWebapps.startsWith(serverBase)) {
+            ant.tar(destfile: 'tomcat-uportal.tgz', compression: 'gzip', longfile: 'gnu') {
+                tarfileset (
+                    dir: "${serverBase}",
+                    prefix: 'tomcat',
+                    excludes: 'logs/**/*, temp/**/*, work/**/*'
+                )
+            }
+        } else {
+            ant.tar(destfile: 'tomcat-uportal.tgz', compression: 'gzip', longfile: 'gnu') {
+                tarfileset (
+                    dir: "${serverBase}",
+                    prefix: 'tomcat',
+                    excludes: 'logs/**/*, temp/**/*, work/**/*'
+                )
+                tarfileset (
+                    dir: "${serverWebapps}",
+                    prefix: 'webapps'
+                )
+            }
         }
     }
 }

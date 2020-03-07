@@ -1,5 +1,3 @@
-import java.nio.file.Paths
-
 /*
  * Allows a collection of Java versions to be supported.
  * If the currect Java version is unsupported, it will stop the current task execution.
@@ -114,6 +112,15 @@ task portalProperties() {
             // Still need to check for a JVM argument...
             String portalHome = System.getProperty('portal.home') ?: "${buildProperties.getProperty('server.base')}/portal"
             buildProperties.setProperty('portal.home', portalHome)
+        }
+
+        /*
+        * Step Seven:  Calculate server.webapps (if absent)
+        */
+        if (!buildProperties.containsKey('server.webapps')) {
+            // Still need to check for a JVM argument...
+            String serverWebapps = System.getProperty('server.webapps') ?: "${buildProperties.getProperty('server.base')}/webapps"
+            buildProperties.setProperty('server.webapps', serverWebapps)
         }
 
         /*
