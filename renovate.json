@@ -1,16 +1,13 @@
 {
   "extends": [
     "config:base",
-    ":rebaseStalePrs",
     ":preserveSemverRanges",
-    ":disableRateLimiting"
+    ":masterIssue"
   ],
   "gradle": {
     "enabled": true
   },
-  "maven": {
-    "enabled": true
-  },
+  "major": { "masterIssueApproval": true },
   "renovateFork": true,
   "packageRules": [
     {
