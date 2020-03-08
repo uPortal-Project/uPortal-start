@@ -12,7 +12,7 @@ dependencies {
 
 apply plugin: GradleImportExportPlugin
 apply plugin: GradlePlutoPlugin
-apply plugin: 'com.moowork.node'
+apply plugin: 'com.github.node-gradle.node'
 
 node {
     version = nodejsVersion
