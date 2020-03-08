@@ -1,4 +1,4 @@
-![uPortal logo](docs/images/uPortal-logo.jpg)
+![uPortal logo](docs/en/images/uPortal-logo.jpg)
 
 [![Linux Build Status](https://travis-ci.org/Jasig/uPortal-start.svg?branch=master)](https://travis-ci.org/Jasig/uPortal-start)
 
