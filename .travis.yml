@@ -1,30 +1,26 @@
 language: java
 
-matrix:
+jobs:
   include:
     - os: linux
       dist: trusty
       jdk: oraclejdk8
-      sudo: required
       env: DB=mariadb
       addons:
         mariadb: '10.1'
     - os: linux
       dist: trusty
       jdk: openjdk8
-      sudo: required
       env: DB=mariadb
       addons:
         mariadb: '10.1'
     - os: linux
       dist: trusty
       jdk: oraclejdk8
-      sudo: required
       env: DB=hsql
     - os: linux
       dist: trusty
       jdk: openjdk8
-      sudo: required
       env: DB=hsql
     - os: osx
       osx_image: xcode9.1 # OSX 10.12, Oracle Java 8
