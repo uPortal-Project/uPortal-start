@@ -115,25 +115,25 @@ before_script:
 
 script:
   # test embedded tomcat
-  - ./gradlew -u -i -S tomcatInstall
-  - ./gradlew -u -i -S tomcatStart
-  - ./gradlew -u -i -S tomcatStop
-  - ./gradlew -u -i -S tomcatClearLogs
+  - ./gradlew -i -S tomcatInstall
+  - ./gradlew -i -S tomcatStart
+  - ./gradlew -i -S tomcatStop
+  - ./gradlew -i -S tomcatClearLogs
   - |
     if [ "$DB" = 'hsql' ]; then
       echo "testing on hsql..."
-      ./gradlew -u -i -S hsqlStart
-      ./gradlew -u -i -S dataInit
-      ./gradlew -u -i -S hsqlStop
+      ./gradlew -i -S hsqlStart
+      ./gradlew -i -S dataInit
+      ./gradlew -i -S hsqlStop
     fi
     if [ "$DB" = 'mariadb' ]; then
       echo "testing on MariaDB..."
       echo -n "mysqldbVersion=5.1.45" >> gradle.properties
       sed -i '/jdbc "org.hsqldb:hsqldb:/a jdbc "mysql:mysql-connector-java:${mysqldbVersion}"' ./overlays/build.gradle
-      ./gradlew -u -i -S dataInit -Dportal.home=./.travis/conf/database/mariadb
+      ./gradlew -i -S dataInit -Dportal.home=./.travis/conf/database/mariadb
     fi
   # test skin generation tool
-  - ./gradlew -u -i -S skinGenerate -DskinName=travis
+  - ./gradlew -i -S skinGenerate -DskinName=travis
 
 cache:
   directories:

@@ -7,18 +7,18 @@ install:
 build: off
 test_script:
   # install and build source
-  - gradlew.bat -u -i -S build
+  - gradlew.bat -i -S build
   # test embedded tomcat
-  - gradlew.bat -u -i -S tomcatInstall
-  - gradlew.bat -u -i -S tomcatStart
-  - gradlew.bat -u -i -S tomcatStop
-  - gradlew.bat -u -i -S tomcatClearLogs
+  - gradlew.bat -i -S tomcatInstall
+  - gradlew.bat -i -S tomcatStart
+  - gradlew.bat -i -S tomcatStop
+  - gradlew.bat -i -S tomcatClearLogs
   # test HSQL
-  - gradlew.bat -u -i -S hsqlStart
-  - gradlew.bat -u -i -S dataInit
-  - gradlew.bat -u -i -S hsqlStop
+  - gradlew.bat -i -S hsqlStart
+  - gradlew.bat -i -S dataInit
+  - gradlew.bat -i -S hsqlStop
   # test skin generation tool
-  - gradlew.bat -u -i -S skinGenerate -DskinName=appveyor
+  - gradlew.bat -i -S skinGenerate -DskinName=appveyor
 cache:
   - .gradle
   - C:\Users\appveyor\.gradle
