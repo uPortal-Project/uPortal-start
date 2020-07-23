@@ -80,7 +80,7 @@
   </appender>
 
   <!-- 
-   | Setup default log level to the build-defined value
+   | Setup default log level to INFO
    +-->
   <root level="INFO">
     <appender-ref ref="LOG" />
@@ -89,8 +89,8 @@
   <!-- 
    | Turn up logging for portlet specific package
    +-->
-    <!--
-  <logger name="org.jasig.portlet.notification" additivity="false" level="DEBUG">
+  <!--
+  <logger name="org.jasig.portlet.notice" additivity="false" level="DEBUG">
     <appender-ref ref="LOG" />
   </logger>
   -->
