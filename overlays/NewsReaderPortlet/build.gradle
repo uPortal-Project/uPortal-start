@@ -100,3 +100,57 @@ dataInit {
         }
     }
 }
+
+dataImport {
+    doLast {
+        String dir = System.getProperty('dir') ?: "${buildDir}/export"
+        String dirEscaped = PortalShellInvoker.createGroovySafePath(dir)
+        println "Export directory: ${dirEscaped}"
+
+        File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
+        File deployDir = new File (serverBase, "webapps/${project.name}")
+        println "classes: ${deployDir}/WEB-INF/classes"
+
+        ant.setLifecycleLogLevel('INFO')
+        ant.java(fork: true, failonerror: true, dir: rootProject.projectDir, classname: 'org.danann.cernunnos.runtime.Main') {
+            classpath {
+                pathelement(location: "${deployDir}/WEB-INF/classes")
+                pathelement(location: "${deployDir}/WEB-INF/lib/*")
+                project.configurations.impexp.files.each {
+                    pathelement(location: it.absolutePath)
+                }
+            }
+            sysproperty(key: 'portal.home', value: project.rootProject.ext['buildProperties'].getProperty('portal.home'))
+            sysproperty(key: 'logback.configurationFile', value: 'command-line.logback.xml')
+            arg(value: 'classpath://org/jasig/portlet/newsreader/io/import.crn.xml')
+            arg(value: "${dirEscaped}")
+        }
+    }
+}
+
+dataExport {
+    doLast {
+        String dir = System.getProperty('dir') ?: "${buildDir}/export"
+        String dirEscaped = PortalShellInvoker.createGroovySafePath(dir)
+        println "Export directory: ${dirEscaped}"
+
+        File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
+        File deployDir = new File (serverBase, "webapps/${project.name}")
+        println "classes: ${deployDir}/WEB-INF/classes"
+
+        ant.setLifecycleLogLevel('INFO')
+        ant.java(fork: true, failonerror: true, dir: rootProject.projectDir, classname: 'org.danann.cernunnos.runtime.Main') {
+            classpath {
+                pathelement(location: "${deployDir}/WEB-INF/classes")
+                pathelement(location: "${deployDir}/WEB-INF/lib/*")
+                project.configurations.impexp.files.each {
+                    pathelement(location: it.absolutePath)
+                }
+            }
+            sysproperty(key: 'portal.home', value: project.rootProject.ext['buildProperties'].getProperty('portal.home'))
+            sysproperty(key: 'logback.configurationFile', value: 'command-line.logback.xml')
+            arg(value: 'classpath://org/jasig/portlet/newsreader/io/export.crn.xml')
+            arg(value: "${dirEscaped}")
+        }
+    }
+}
