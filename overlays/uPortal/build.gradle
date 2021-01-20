@@ -138,9 +138,10 @@ else {
     String skinTmpDir = "${buildDir}/tmp/skin/uPortal/media/skins/respondr/"
     // Identify custom skins located in skinsDir
     logger.lifecycle "Preparing Gradle tasks to compile the following custom skin files defined in ${skinsDir}"
-    List<String> skinFiles = new FileNameFinder().getFileNames(skinsDir.path, '*.less')
+    FileTree skinFiles = fileTree(dir: skinsDir, include: "**/*.less")
     // Step 3:  Use NodeJS & lessc to compile custom skin(sz)
-    skinFiles.eachWithIndex { it, index ->
+    skinFiles.eachWithIndex { f, index ->
+        String it = f.toString()
         // Strip the path
         String skinFileName = it.substring(it.lastIndexOf(File.separator) + 1)
         logger.lifecycle "  -> ${skinFileName} $index"
