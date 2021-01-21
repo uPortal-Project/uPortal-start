@@ -10,6 +10,8 @@ CATALINA_OPTS="$CATALINA_OPTS -Djsse.enableSNIExtension=false"
 echo "PORTAL_HOME=$PORTAL_HOME"
 CATALINA_OPTS="$CATALINA_OPTS -Dportal.home=$PORTAL_HOME"
 
+CATALINA_OPTS="$CATALINA_OPTS  -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses -Djava.net.preferIPv6Addresses=false"
+
 # Checking if anyother garbage collectors have been defined. If no other garbage
 # collector is present, default to G1GC
 # List of options taken from:
