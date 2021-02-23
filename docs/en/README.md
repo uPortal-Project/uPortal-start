@@ -19,4 +19,4 @@ this configuration should not be use in production without checking on ( for det
 * [Data files](data/README.md)
 * [Adding Content to uPortal-start](content/README.md)
 
-[uPortal 5.x Manual]: https://jasig.github.io/uPortal
+[uPortal 5.x Manual]: https://uPortal-Project.github.io/uPortal
