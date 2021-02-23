@@ -1,6 +1,6 @@
 ![uPortal logo](docs/en/images/uPortal-logo.jpg)
 
-[![Linux Build Status](https://travis-ci.org/Jasig/uPortal-start.svg?branch=master)](https://travis-ci.org/Jasig/uPortal-start)
+[![Linux Build Status](https://travis-ci.org/uPortal-Project/uPortal-start.svg?branch=master)](https://travis-ci.org/uPortal-Project/uPortal-start)
 
 [:fr: Français](docs/fr)
 
@@ -273,7 +273,7 @@ that sample with institution-specific defaults in your fork of uPortal-start.
 ### How To Customize Text
 
 Most of the text strings displayed in the portal are in the
-[uPortal](https://github.com/Jasig/uPortal) project, defined in
+[uPortal](https://github.com/uPortal-Project/uPortal) project, defined in
 `Messages.properties` in the directory
 `uPortal-webapp/src/main/resources/properties/i18n`.
 
@@ -310,7 +310,7 @@ Use one of the following Gradle tasks to build the image(s) you need:
 intact before invoking any of the `dockerBuildImage<type>` tasks.
 
 [Apereo uPortal]: https://www.apereo.org/projects/uportal
-[uPortal 5.0 Manual]: https://jasig.github.io/uPortal
+[uPortal 5.0 Manual]: https://uPortal-Project.github.io/uPortal
 [Oracle JDK 8]: https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
 [Corretto JDK 8]: https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/downloads-list.html
 [Adopt OpenJDK 8]: https://adoptopenjdk.net/?variant=openjdk8

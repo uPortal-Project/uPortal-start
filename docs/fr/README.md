@@ -1,6 +1,6 @@
 ![uPortal logo](../en/images/uPortal-logo.jpg)
 
-[![Linux Build Status](https://travis-ci.org/Jasig/uPortal-start.svg?branch=master)](https://travis-ci.org/Jasig/uPortal-start)
+[![Linux Build Status](https://travis-ci.org/uPortal-Project/uPortal-start.svg?branch=master)](https://travis-ci.org/uPortal-Project/uPortal-start)
 
 ## À propos d'uPortal-start
 
@@ -299,8 +299,8 @@ Assurez-vous toujours que `tomcatInstall` et `tomcatDeploy` ont bien été exéc
 intacte avant d'appeler l'une des tâches `dockerBuildImage <type>`.
 
 [Apereo uPortal]: https://www.apereo.org/projects/uportal
-[uPortal 5.x Manual (en)]: https://jasig.github.io/uPortal
-[Manuel uPortal 5.x (fr)]: https://jasig.github.io/uPortal/fr
+[uPortal 5.x Manual (en)]: https://uPortal-Project.github.io/uPortal
+[Manuel uPortal 5.x (fr)]: https://uPortal-Project.github.io/uPortal/fr
 [Java Development Kit]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 [Client Git]: https://git-scm.com/downloads
 [conteneur de servlet Apache Tomcat]: https://tomcat.apache.org/
