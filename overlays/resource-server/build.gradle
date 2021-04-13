@@ -24,6 +24,9 @@ dependencies {
     runtime "org.webjars.npm:uportal__notification-list:${notificationWebComponentsVersion}@jar"
     runtime "org.webjars.npm:uportal__notification-modal:${notificationWebComponentsVersion}@jar"
 
+    // Third party Webjars
+    runtime "org.webjars.npm:html-include-element:${htmlIncludeElementWebComponentVersion}@jar"
+
 }
 
 war {
