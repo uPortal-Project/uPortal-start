@@ -113,6 +113,7 @@ script:
   # test embedded tomcat
   - ./gradlew -i -S tomcatInstall
   - ./gradlew -i -S tomcatStart
+  - ./gradlew -i -S tomcatRestart
   - ./gradlew -i -S tomcatStop
   - ./gradlew -i -S tomcatClearLogs
   - |
