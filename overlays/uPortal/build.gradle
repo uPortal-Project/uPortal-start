@@ -2,7 +2,7 @@ import org.apereo.portal.start.gradle.plugins.GradleImportExportPlugin
 import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
 
 plugins {
-  id "com.github.node-gradle.node" version "3.0.1"
+  id "com.github.node-gradle.node" version "3.1.0"
 }
 
 dependencies {
