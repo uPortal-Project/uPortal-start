@@ -3,7 +3,7 @@
 # image.
 
 # This image aims for maximum slimness
-FROM openjdk:8-jdk-alpine
+FROM adoptopenjdk:8-jdk-hotspot
 
 # For this image, we only need the fully-assembled Tomcat container
 COPY .gradle/tomcat tomcat
