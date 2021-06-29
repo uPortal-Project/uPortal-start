@@ -163,6 +163,13 @@ task tomcatStop() {
     }
 }
 
+task tomcatRestart(dependsOn: ['tomcatStop', 'tomcatStart']) {
+    group 'Tomcat'
+    description 'Restart the embedded Tomcat servlet container'
+
+    tomcatStart.mustRunAfter(tomcatStop)
+}
+
 task tomcatClearLogs(type: Delete) {
     group 'Tomcat'
     description 'Delete all log files within Tomcat'
