@@ -36,6 +36,10 @@
       <channel fname="personalization-gallery" unremovable="false" hidden="false" immutable="false" ID="n6"/>
     </folder>
     <folder ID="s7" hidden="false" immutable="false" name="Academics" type="regular" unremovable="false">
+      <structure-attribute>
+        <name>externalId</name>
+        <value>academics</value>
+      </structure-attribute>
       <folder ID="s8" hidden="false" immutable="false" name="Column 1" type="regular" unremovable="false">
         <structure-attribute>
           <name>width</name>
@@ -52,21 +56,25 @@
         <channel fname="google-docs" unremovable="false" hidden="false" immutable="false" ID="n13"/>
       </folder>
     </folder>
-      <folder ID="s14" hidden="false" immutable="false" name="LMS" type="regular" unremovable="false">
-          <folder ID="s15" hidden="false" immutable="false" name="Column 1" type="regular" unremovable="false">
-              <structure-attribute>
-                  <name>width</name>
-                  <value>50%</value>
-              </structure-attribute>
-              <channel fname="sakai-connector" unremovable="false" hidden="false" immutable="false" ID="n16"/>
-          </folder>
-          <folder ID="s17" hidden="false" immutable="false" name="Column 2" type="regular" unremovable="false">
-              <structure-attribute>
-                  <name>width</name>
-                  <value>50%</value>
-              </structure-attribute>
-              <channel fname="basiclti-portlet" unremovable="false" hidden="false" immutable="false" ID="n18"/>
-          </folder>
+    <folder ID="s14" hidden="false" immutable="false" name="LMS" type="regular" unremovable="false">
+      <structure-attribute>
+        <name>externalId</name>
+        <value>lms</value>
+      </structure-attribute>
+      <folder ID="s15" hidden="false" immutable="false" name="Column 1" type="regular" unremovable="false">
+        <structure-attribute>
+          <name>width</name>
+          <value>50%</value>
+        </structure-attribute>
+        <channel fname="sakai-connector" unremovable="false" hidden="false" immutable="false" ID="n16"/>
       </folder>
+      <folder ID="s17" hidden="false" immutable="false" name="Column 2" type="regular" unremovable="false">
+        <structure-attribute>
+          <name>width</name>
+          <value>50%</value>
+        </structure-attribute>
+        <channel fname="basiclti-portlet" unremovable="false" hidden="false" immutable="false" ID="n18"/>
+      </folder>
+    </folder>
   </folder>
 </layout>
