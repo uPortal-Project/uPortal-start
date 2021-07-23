@@ -23,8 +23,8 @@
 <c:set var="request" value="${pageContext.request}" />
 <c:set var="ctxPath" value="${request.contextPath}" />
 
-<script src="/resource-server/webjars/vue/dist/vue.min.js"></script>
-<script src="/resource-server/webjars/uportal__esco-content-menu/dist/esco.min.js" defer></script>
+<script src="/resource-server/webjars/vue/dist/vue.min.js" type="text/javascript"></script>
+<script src="/resource-server/webjars/uportal__esco-content-menu/dist/esco.min.js" type="text/javascript" defer></script>
 
 <div id="content-menu">
   <esco-hamburger-menu
