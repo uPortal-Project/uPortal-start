@@ -34,7 +34,7 @@ dependencies {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'javax.xml', module: 'xmldsig'
     }
-    testCompile group: 'org.springframework', name: 'spring-jdbc', version: ${casSpringVersion}
+    testCompile group: 'org.springframework', name: 'spring-jdbc', version: "${casSpringVersion}"
 }
 
 war {
