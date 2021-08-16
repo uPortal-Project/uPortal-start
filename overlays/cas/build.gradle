@@ -1,29 +1,29 @@
 apply plugin: 'java'
 
 dependencies {
-    runtime("commons-dbcp:commons-dbcp:${commonsDbcpVersion}") {
+    runtime("commons-dbcp:commons-dbcp:${casCommonsDbcpVersion}") {
         exclude group: 'xml-apis', module: 'xml-apis'
         exclude group: 'xerces', module: 'xercesImpl'
     }
-    runtime "net.sf.ehcache:ehcache-core:${ehcacheVersion}"
+    runtime "net.sf.ehcache:ehcache-core:${casEhcacheVersion}"
     runtime "org.jasig.cas:cas-server-webapp:${casServerVersion}@war"
     runtime("org.jasig.cas:cas-server-extension-clearpass:${casServerVersion}") {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'javax.xml', module: 'xmldsig'
     }
-    runtime "xerces:xercesImpl:${xercesImplVersion}"
+    runtime "xerces:xercesImpl:${casXercesImplVersion}"
 
-    compile "commons-codec:commons-codec:${commonsCodecVersion}"
-    compile "commons-collections:commons-collections:${commonsCollectionsVersion}"
+    compile "commons-codec:commons-codec:${casCommonsCodecVersion}"
+    compile "commons-collections:commons-collections:${casCommonsCollectionsVersion}"
     compile "org.jasypt:jasypt:${jasyptVersion}"
-    compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    compile "org.slf4j:slf4j-api:${casSlf4jVersion}"
     compile configurations.jdbc
 
     compileOnly("org.jasig.cas:cas-server-core:${casServerVersion}") {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'javax.xml', module: 'xmldsig'
     }
-    compileOnly("org.springframework:spring-jdbc:${springVersion}") {
+    compileOnly("org.springframework:spring-jdbc:${casSpringVersion}") {
         exclude group: 'commons-logging', module: 'commons-logging'
     }
     compileOnly servletApiDependency
@@ -34,7 +34,7 @@ dependencies {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'javax.xml', module: 'xmldsig'
     }
-    testCompile group: 'org.springframework', name: 'spring-jdbc', version: springVersion
+    testCompile group: 'org.springframework', name: 'spring-jdbc', version: ${casSpringVersion}
 }
 
 war {
