@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "org.jasypt:jasypt:1.9.3"
+        classpath "org.jasypt:jasypt:${jasyptVersion}"
     }
 }
 
