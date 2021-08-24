@@ -1,6 +1,6 @@
 ![uPortal logo](../en/images/uPortal-logo.jpg)
 
-[![Linux Build Status](https://travis-ci.org/uPortal-Project/uPortal-start.svg?branch=master)](https://travis-ci.org/uPortal-Project/uPortal-start)
+[![build status](https://github.com/uPortal-Project/uPortal-start/workflows/CI/badge.svg?branch=master)](https://github.com/uPortal-Project/uPortal-start/actions)
 
 ## À propos d'uPortal-start
 
