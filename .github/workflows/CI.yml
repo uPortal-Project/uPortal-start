@@ -21,6 +21,7 @@ jobs:
           - temurin
           - zulu
     runs-on: ${{ matrix.platform }}
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v2
