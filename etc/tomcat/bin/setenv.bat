@@ -7,6 +7,10 @@ rem http://confluence.atlassian.com/display/DOC/Garbage+Collector+Performance+Is
 rem Prevent "Unrecognized Name" SSL warning
 set CATALINA_OPTS=%CATALINA_OPTS% -Djsse.enableSNIExtension=false
 
+rem CVE-2021-44228 Log4j2
+set CATALINA_OPTS=%CATALINA_OPTS% -Dcom.sun.jndi.ldap.object.trustURLCodebase=false
+set CATALINA_OPTS=%CATALINA_OPTS% -Dlog4j2.formatMsgNoLookups=true
+
 rem Checking if anyother garbage collectors have been defined. If no other garbage
 rem collector is present, default to G1GC
 rem List of options taken from:
