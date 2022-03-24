@@ -1,0 +1,20 @@
+Here are recommendations for Tomcat service in Windows.
+
+Below are the lines to cut and paste into the Java Options box after the existing values:
+
+-XX:+PrintCommandLineFlags
+-XX:+UseG1GC
+-Dportal.home=%PORTAL_HOME%
+-Djava.net.preferIPv4Stack=true
+-Djava.net.preferIPv4Addresses
+-Djava.net.preferIPv6Addresses=false
+
+Note: 'portal.home' should be set to the directory with portal properites files for runtime
+(if not the default)
+
+The memory settings should be the following for most setups:
+
+Initial memory pool: 2048 MB
+Maximum memory pool: 4096 MB
+Thread stack size: [blank] KB
+
