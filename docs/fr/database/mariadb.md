@@ -80,12 +80,14 @@ hibernate.connection.url=jdbc:mysql://localhost/portlets
 hibernate.connection.username=uportal
 hibernate.connection.password=uportal
 hibernate.connection.validationQuery=select 1
-hibernate.dialect = org.apereo.portal.utils.MySQL5InnoDBCompressedDialect
+hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 ```
 
 Vous devez copier/coller cette configuration pour chaque personnalisation d'accès à la base de données des contextes portlets / uPortal [cf configuration générale des bases de données](README.md#Étape-5-configuration-spécifique-portlet--uportal-optionel)
 
-**NOTE:** Depuis mariaDB 10.1.35 utiliser le dialect `org.apereo.portal.utils.MySQL5InnoDBCompressedDialect` n'est plus nécessaire si vous avez configuré votre serveur mariDB avec le [row_format par défault](mariadb.md#Étape-1--paramétrage-du-server-mariadb)
+**NOTE:** Avant mariaDB 10.1.35 il fallait utiliser le dialect `org.apereo.portal.utils.MySQL5InnoDBCompressedDialect` si vous n'aviez pas configuré votre serveur mariaDB avec le [row_format par défault ou équivalent](mariadb.md#Étape-1--paramétrage-du-server-mariadb).
+
+**NOTE:** Selon la version d'hibernate utilisée et la version du serveur de données il peut être nécessaire de sélectionner un Dialect adéquat [voici où chercher](https://github.com/hibernate/hibernate-orm/tree/main/hibernate-core/src/main/java/org/hibernate/dialect) (Attention à sélectionner la bonne version en fonction du tag)
 
 
 ## Étape 4 : Initialisation de la Base de Donnée
