@@ -81,6 +81,7 @@ running the following command:
   - [How To Create a Custom Skin](#how-to-create-a-custom-skin)
   - [How To Configure Your Deployment](#how-to-configure-your-deployment)
   - [How To Customize Text](#how-to-customize-text)
+  - [How To Run Integration Tests](#how-to-run-integration-tests)
 
 ### How To Set Up Everything the First Time
 
@@ -309,6 +310,18 @@ Use one of the following Gradle tasks to build the image(s) you need:
 :warning: Always make sure both `tomcatInstall` and `tomcatDeploy` have run and their output is
 intact before invoking any of the `dockerBuildImage<type>` tasks.
 
+### How To Run Integration Tests
+uPortal-start comes with integration tests that leverages [Playwright][]. These tests are meant to run out-of-the-box on the quickstart data set of uPortal-start. It's encouraged for adopters to add additional tests to meet their specific needs.
+
+The intent is for Playwright installation and execution to be controlled by the following Gradle tasks. Installation of Playwright and it's dependences are scoped to the uPortal-start directory.
+
+```console
+./gradlew playwrightInstall - Installs Playwright, Playwright/Test, and related dependencies
+./gradlew playwrightNpmInstall - Installs Playwright/Test
+./gradlew playwrightNpxInstall - Installs Playwright and related dependencies
+./gradlew playwrightRun - Runs Playwright scripts as per tests/uportal-pw.config.ts
+```
+
 [Apereo uPortal]: https://www.apereo.org/projects/uportal
 [uPortal 5.0 Manual]: https://uPortal-Project.github.io/uPortal
 [Oracle JDK 8]: https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
@@ -319,3 +332,4 @@ intact before invoking any of the `dockerBuildImage<type>` tasks.
 [Apache Tomcat Servlet Container]: https://tomcat.apache.org/
 [Maven Central]: https://search.maven.org/
 [HSQLDB]: http://hsqldb.org/
+[Playwright]: https://playwright.dev/
