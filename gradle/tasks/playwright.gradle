@@ -1,15 +1,8 @@
 apply plugin: 'com.github.node-gradle.node'
 
-task playwrightNpmInstall(type: NpmTask) {
+task playwrightNpxInstall(type: NpxTask, dependsOn: npmInstall) {
     group 'Testing'
-    description 'Installs Playwright/Test'
-
-    args = ['install', '@playwright/test']
-}
-
-task playwrightNpxInstall(type: NpxTask) {
-    group 'Testing'
-    description 'Installs Playwright and related dependencies'
+    description 'Installs Playwright dependencies. Playwright/test is already installed via npmInstall'
 
     environment = [
             'PLAYWRIGHT_BROWSERS_PATH': '0'
@@ -18,15 +11,7 @@ task playwrightNpxInstall(type: NpxTask) {
     args = ['install', 'chromium']
 }
 
-task playwrightInstall() {
-    group 'Testing'
-    description 'Installs Playwright, Playwright/Test, and related dependencies'
-
-    dependsOn project.tasks.playwrightNpmInstall
-    dependsOn project.tasks.playwrightNpxInstall
-}
-
-task playwrightRun(type: NpxTask) {
+task playwrightRun(type: NpxTask, dependsOn: project.tasks.playwrightNpxInstall) {
     group 'Testing'
     description 'Runs Playwright scripts as per tests/uportal-pw.config.ts'
 

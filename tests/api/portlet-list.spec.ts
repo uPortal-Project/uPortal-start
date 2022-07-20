@@ -7,7 +7,7 @@ import {
 import { login } from '../ux/utils/ux-general-utils.ts';
 
 test('portlet-list GET ALL - not logged in', async ({ request }) => {
-  const response = await request.get(config.url + `api/portlet-list/`);
+  const response = await request.get(`${config.url}api/portlet-list/`);
   expect(response.status()).toEqual(401); // Unauthorized
   expect(await response.json()).toEqual({
     message: 'Not authorized'
@@ -24,11 +24,11 @@ test('portlet-list POST confirm disallow duplicate name', async ({ request }) =>
         }
     }
     // Create a portlet-list
-    const responseCreation = await request.post(config.url + `api/portlet-list/`, payload);
+    const responseCreation = await request.post(`${config.url}api/portlet-list/`, payload);
     expect(responseCreation.status()).toEqual(201);
 
     // Try to create another one with the same name
-    const responseCreation2 = await request.post(config.url + `api/portlet-list/`, payload);
+    const responseCreation2 = await request.post(`${config.url}api/portlet-list/`, payload);
     expect(responseCreation2.status()).toEqual(400);
     expect(await responseCreation2.json()).toEqual({
     message: 'Data integrity issue - likely tried to use a non-unique name.'
@@ -36,7 +36,7 @@ test('portlet-list POST confirm disallow duplicate name', async ({ request }) =>
 });
 
 test('portlet-list happy path', async ({ request }) => {
-    const portletListName = "portlet-list happy path " + (new Date());
+    const portletListName = "portlet-list happy path ${(new Date())}";
 
     await login(request, 'admin', 'admin');
 
