@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { config } from '../general-config.ts';
+import { config } from '../general-config';
 import {
     createPortletList,
     getAllPortletLists,
-    getPortletList } from './utils/api-portlet-list-utils.ts';
-import { login } from '../ux/utils/ux-general-utils.ts';
+    getPortletList } from './utils/api-portlet-list-utils';
+import { login } from '../ux/utils/ux-general-utils';
 
 test('portlet-list GET ALL - not logged in', async ({ request }) => {
   const response = await request.get(`${config.url}api/portlet-list/`);
@@ -36,7 +36,7 @@ test('portlet-list POST confirm disallow duplicate name', async ({ request }) =>
 });
 
 test('portlet-list happy path', async ({ request }) => {
-    const portletListName = "portlet-list happy path ${(new Date())}";
+    const portletListName = `portlet-list happy path ${(new Date())}`;
 
     await login(request, 'admin', 'admin');
 

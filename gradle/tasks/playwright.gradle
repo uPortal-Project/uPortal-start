@@ -11,7 +11,14 @@ task playwrightNpxInstall(type: NpxTask, dependsOn: npmInstall) {
     args = ['install', 'chromium']
 }
 
-task playwrightRun(type: NpxTask, dependsOn: project.tasks.playwrightNpxInstall) {
+task playwrightLintTsc(type: NpxTask, dependsOn: npmInstall) {
+    group 'Testing'
+    description 'Type checks the files in the tests/ directory'
+
+    command = 'tsc'
+}
+
+task playwrightRun(type: NpxTask, dependsOn: [project.tasks.playwrightNpxInstall, project.tasks.playwrightLintTsc]) {
     group 'Testing'
     description 'Runs Playwright scripts as per tests/uportal-pw.config.ts'
 
