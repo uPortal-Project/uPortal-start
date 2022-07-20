@@ -318,6 +318,7 @@ The intent is for Playwright installation and execution to be controlled by the 
 ```console
 ./gradlew playwrightNpxInstall - Installs Playwright dependencies
 ./gradlew playwrightLint - Lints the tests/ directory across a number of tools. Can also be run as an npm script (see package.json)'
+./gradlew playwrightFormat - Formats the files in the tests/ directory via prettier. Can also be run as an npm script (see package.json)
 ./gradlew playwrightRun - Runs Playwright scripts as per tests/uportal-pw.config.ts
 ```
 

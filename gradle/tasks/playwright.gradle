@@ -22,6 +22,13 @@ task playwrightLint(type: NpmTask, dependsOn: npmInstall) {
     args = ['run', 'lint']
 }
 
+task playwrightFormat(type: NpmTask, dependsOn: npmInstall) {
+    group 'Testing'
+    description 'Formats the files in the tests/ directory via prettier. Can also be run as an npm script (see package.json)'
+
+    args = ['run', 'format']
+}
+
 task playwrightRun(type: NpxTask, dependsOn: [project.tasks.playwrightNpxInstall, project.tasks.playwrightLint]) {
     group 'Testing'
     description 'Runs Playwright scripts as per tests/uportal-pw.config.ts'
