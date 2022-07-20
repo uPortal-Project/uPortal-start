@@ -1,6 +1,34 @@
 {
-  "dependencies": {
-    "@playwright/test": "^1.23.3",
-    "typescript": "^4.7.4"
+  "devDependencies": {
+    "@playwright/test": "~1.23.0",
+    "@typescript-eslint/eslint-plugin": "~5.30.0",
+    "@typescript-eslint/parser": "~5.30.0",
+    "eslint": "~8.20.0",
+    "prettier": "~2.7.0",
+    "type-coverage": "~2.22.0",
+    "typescript": "~4.7.0"
+  },
+  "scripts": {
+    "lint": "npm run lint:tsc && npm run lint:type-coverage && npm run lint:eslint",
+    "lint:tsc": "tsc",
+    "lint:type-coverage": "type-coverage",
+    "lint:eslint": "eslint tests",
+    "format": "prettier --write tests"
+  },
+  "eslintConfig": {
+    "root": true,
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    ]
+  },
+  "typeCoverage": {
+    "atLeast": 100,
+    "detail": true,
+    "strict": true
   }
 }

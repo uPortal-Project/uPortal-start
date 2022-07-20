@@ -311,14 +311,13 @@ Use one of the following Gradle tasks to build the image(s) you need:
 intact before invoking any of the `dockerBuildImage<type>` tasks.
 
 ### How To Run Integration Tests
-uPortal-start comes with integration tests that leverages [Playwright][]. These tests are meant to run out-of-the-box on the quickstart data set of uPortal-start. It's encouraged for adopters to add additional tests to meet their specific needs.
+uPortal-start comes with integration tests that leverages [Playwright][]. These tests are meant to run out-of-the-box on the quickstart data set of uPortal-start. uPortal should already be running before launching `playwrightRun`. It's encouraged for adopters to add additional tests to meet their specific needs.
 
-The intent is for Playwright installation and execution to be controlled by the following Gradle tasks. Installation of Playwright and it's dependences are scoped to the uPortal-start directory.
+The intent is for Playwright installation and execution to be controlled by the following Gradle tasks. Installation of Playwright and it's dependencies (including the browsers) are scoped to the uPortal-start directory.
 
 ```console
-./gradlew playwrightInstall - Installs Playwright, Playwright/Test, and related dependencies
-./gradlew playwrightNpmInstall - Installs Playwright/Test
-./gradlew playwrightNpxInstall - Installs Playwright and related dependencies
+./gradlew playwrightNpxInstall - Installs Playwright dependencies
+./gradlew playwrightLint - Lints the tests/ directory across a number of tools. Can also be run as an npm script (see package.json)'
 ./gradlew playwrightRun - Runs Playwright scripts as per tests/uportal-pw.config.ts
 ```
 
