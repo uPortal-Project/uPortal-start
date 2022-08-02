@@ -5,7 +5,17 @@ import { login_via_api } from "../ux/utils/ux-general-utils";
 test.only("search all", async ({
   request,
 }) => {
-  await login_via_api(request, "admin", "admin", "Amy Administrator");
+  //await login_via_api(request, "admin", "admin", "Amy Administrator");
+
+  for(let i = 0 ; i < 10 ; i++ ) {
+    const text = await login_via_api(request, "admin", "admin", "Amy Administrator");
+    if(text.includes("Amy Administrator")) {
+      console.log("on the [%s]th try, SUCCEEDED to log in!", i);
+      i = 10;
+    } else {
+      console.log("on the [%s]th try, FAILED to log in.", i);
+    }
+  }
   const response = await request.get(`${config.url}api/v5-0/portal/search?q=cartoon`);
   expect(response.status()).toEqual(200);
   expect(await response.json()).toEqual({

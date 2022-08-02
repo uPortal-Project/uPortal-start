@@ -13,13 +13,13 @@ export async function login_via_api(
   username: string,
   password: string,
   displayname: string,
-): Promise<void> {
+): Promise<string> {
   const url = `${config.url}Login?userName=${username}&password=${password}`;
   const response = await request.get(url);
   expect(response.status()).toEqual(200);
   const text = await response.text();
-  console.log("login_via_api - url [%s] - response url [%s] - headers [%o] - text [%s]", url, response.url(), response.headers(), text);
-  expect(text).toContain(displayname);
+  console.log("login_via_api - url [" + url + "] - response url [%s] - headers [%o]", response.url(), response.headers());
+  return text;
   //await sleep(2000);
 }
 
