@@ -21,9 +21,9 @@ export async function login_via_page(
   password: string,
   displayname: string,
 ): Promise<void> {
-    await page.goto(`${config.url}Login?userName=${username}&password=${password}`);
-    const uportalLogo = page.locator('h1.portal-logo > a');
-    await expect(uportalLogo).toHaveText('uPortal');
-    const loggedInUserDisplay = page.locator('div.user-name');
-    await expect(loggedInUserDisplay).toHaveText(`You are signed in as ${displayname}`);
+  await page.goto(`${config.url}Login?userName=${username}&password=${password}`);
+  const uportalLogo = page.locator('h1.portal-logo > a');
+  await expect(uportalLogo).toHaveText('uPortal');
+  const loggedInUserDisplay = page.locator('div.user-name');
+  await expect(loggedInUserDisplay).toHaveText(`You are signed in as ${displayname}`);
 }

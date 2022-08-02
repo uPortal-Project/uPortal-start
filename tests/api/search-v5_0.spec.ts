@@ -9,17 +9,17 @@ test("search all", async ({
   const response = await request.get(`${config.url}api/v5-0/portal/search?q=cartoon`);
   expect(response.status()).toEqual(200);
   expect(await response.json()).toEqual({
-      people: [],
-      portlets: [
-        {
-          description: "Daily Business Cartoon by Ted Goff, www.tedgoff.com",
-          fname: "daily-business-cartoon",
-          name: "Daily Business Cartoon",
-          score: "4.0",
-          title: "Daily Business Cartoon",
-          url: "/uPortal/p/daily-business-cartoon.ctf3/max/render.uP"
-        }
-      ]
+    people: [],
+    portlets: [
+      {
+        description: "Daily Business Cartoon by Ted Goff, www.tedgoff.com",
+        fname: "daily-business-cartoon",
+        name: "Daily Business Cartoon",
+        score: "4.0",
+        title: "Daily Business Cartoon",
+        url: "/uPortal/p/daily-business-cartoon.ctf3/max/render.uP"
+      }
+    ]
   });
 });
 
@@ -30,30 +30,30 @@ test("search type people", async ({
   const response = await request.get(`${config.url}api/v5-0/portal/search?q=steven&type=people`);
   expect(response.status()).toEqual(200);
   expect(await response.json()).toEqual({
-    "people": [
+    people: [
       {
-        "uid": [
+        uid: [
           "student"
         ],
-        "telephoneNumber": [
+        telephoneNumber: [
           "(555) 555-5555"
         ],
-        "mail": [
+        mail: [
           "steven.student@example.org"
         ],
-        "displayName": [
+        displayName: [
           "Steven Student"
         ],
-        "givenName": [
+        givenName: [
           "Steven"
         ],
         "user.login.id": [
           "student"
         ],
-        "sn": [
+        sn: [
           "Student"
         ],
-        "username": [
+        username: [
           "student"
         ]
       }
