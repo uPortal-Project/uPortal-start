@@ -17,7 +17,7 @@ export async function login_via_api(
     `${config.url}Login?userName=${username}&password=${password}`
   );
   expect(response.status()).toEqual(200);
-  await sleep(1000);
+  await sleep(2000);
 }
 
 export async function login_via_page(
@@ -27,9 +27,10 @@ export async function login_via_page(
   displayname: string,
 ): Promise<void> {
   await page.goto(`${config.url}Login?userName=${username}&password=${password}`);
+  await sleep(2000);
   const uportalLogo = page.locator('h1.portal-logo > a');
   await expect(uportalLogo).toHaveText('uPortal');
   const loggedInUserDisplay = page.locator('div.user-name');
   await expect(loggedInUserDisplay).toHaveText(`You are signed in as ${displayname}`);
-  await sleep(1000);
+  await sleep(2000);
 }

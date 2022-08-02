@@ -16,7 +16,9 @@ test('login and logout', async ({ page }) => {
   // Confirm default CAS logout page
   const casLogoutSuccessful = page.locator('div > h2');
   await expect(casLogoutSuccessful).toHaveText('Logout successful');
+});
 
+test('login twice without logout', async ({ page }) => {
   // Login as staff
   await login_via_page(page, 'staff', 'staff', 'Samuel Staff');
 
