@@ -1,6 +1,10 @@
 import { expect, Page, APIRequestContext } from "@playwright/test";
 import { config } from "../../general-config";
 
+function sleep(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 /*
  * Log into uPortal
  */
@@ -13,6 +17,7 @@ export async function login_via_api(
     `${config.url}Login?userName=${username}&password=${password}`
   );
   expect(response.status()).toEqual(200);
+  await sleep(1000);
 }
 
 export async function login_via_page(
@@ -26,4 +31,5 @@ export async function login_via_page(
   await expect(uportalLogo).toHaveText('uPortal');
   const loggedInUserDisplay = page.locator('div.user-name');
   await expect(loggedInUserDisplay).toHaveText(`You are signed in as ${displayname}`);
+  await sleep(1000);
 }
