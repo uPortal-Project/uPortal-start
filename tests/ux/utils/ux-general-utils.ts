@@ -1,7 +1,7 @@
 import { expect, Page, APIRequestContext } from "@playwright/test";
 import { config } from "../../general-config";
 
-function sleep(ms: number): Promise<void> {
+async function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
