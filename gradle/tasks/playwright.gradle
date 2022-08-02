@@ -32,10 +32,21 @@ task playwrightFormat(type: NpmTask, dependsOn: npmInstall) {
 task playwrightRun(type: NpxTask, dependsOn: [project.tasks.playwrightNpxInstall, project.tasks.playwrightLint]) {
     group 'Testing'
     description 'Runs Playwright scripts as per tests/uportal-pw.config.ts'
-
     environment = [
             'PLAYWRIGHT_BROWSERS_PATH': '0'
     ]
     command = 'playwright'
     args = ['test', '--config=tests/uportal-pw.config.ts']
+}
+
+// Works best when only a single test is enabled ( test.only(...) )
+task playwrightDebug(type: NpxTask, dependsOn: [project.tasks.playwrightNpxInstall, project.tasks.playwrightLint]) {
+    group 'Testing'
+    description 'Runs Playwright scripts as per tests/uportal-pw.config.ts in debug mode'
+    environment = [
+            'PLAYWRIGHT_BROWSERS_PATH': '0',
+            'PWDEBUG': 'console'
+    ]
+    command = 'playwright'
+    args = ['test', '--config=tests/uportal-pw.config.ts', '--debug']
 }
