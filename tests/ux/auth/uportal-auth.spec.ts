@@ -1,4 +1,4 @@
-im`p`ort { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { login_via_page } from "../utils/ux-general-utils";
 
 const SEL_UPORTAL_LOGOUT = '.portal-logout';
