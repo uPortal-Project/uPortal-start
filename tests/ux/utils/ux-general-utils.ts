@@ -14,11 +14,12 @@ export async function login_via_api(
   password: string,
   displayname: string,
 ): Promise<void> {
-  const response = await request.get(
-    `${config.url}Login?userName=${username}&password=${password}`
-  );
+  const url = `${config.url}Login?userName=${username}&password=${password}`;
+  const response = await request.get(url);
   expect(response.status()).toEqual(200);
-  expect(await response.text()).toContain(displayname);
+  const text = await response.text();
+  console.log("login_via_api - url [%s] - response url [%s] - headers [%o] - text [%s]", url, response.url(), response.headers(), text);
+  expect(text).toContain(displayname);
   //await sleep(2000);
 }
 
@@ -28,8 +29,10 @@ export async function login_via_page(
   password: string,
   displayname: string,
 ): Promise<void> {
-  await page.goto(`${config.url}Login?userName=${username}&password=${password}`);
+  const url = `${config.url}Login?userName=${username}&password=${password}`;
+  await page.goto(url);
   //await sleep(2000);
+  //console.log("login_via_api - url [%s], - headers [%o]", url, page.headers());
   const uportalLogo = page.locator('h1.portal-logo > a');
   await expect(uportalLogo).toHaveText('uPortal');
   const loggedInUserDisplay = page.locator('div.user-name');

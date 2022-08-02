@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { config } from "../general-config";
 import { login_via_api } from "../ux/utils/ux-general-utils";
 
-test("search all", async ({
+test.only("search all", async ({
   request,
 }) => {
   await login_via_api(request, "admin", "admin", "Amy Administrator");
