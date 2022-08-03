@@ -3,7 +3,7 @@ import { login_via_page } from "../utils/ux-general-utils";
 
 const SEL_UPORTAL_LOGOUT = '.portal-logout';
 
-test.only('login, logout, login as different user', async ({ page }) => {
+test('login, logout, login as different user', async ({ page }) => {
   // Login as admin
   await login_via_page(page, 'admin', 'admin', 'Amy Administrator');
 
