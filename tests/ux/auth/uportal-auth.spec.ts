@@ -3,7 +3,7 @@ import { login_via_page } from "../utils/ux-general-utils";
 
 const SEL_UPORTAL_LOGOUT = '.portal-logout';
 
-test('login and logout', async ({ page }) => {
+test.only('login, logout, login as different user', async ({ page }) => {
   // Login as admin
   await login_via_page(page, 'admin', 'admin', 'Amy Administrator');
 
@@ -16,11 +16,6 @@ test('login and logout', async ({ page }) => {
   // Confirm default CAS logout page
   const casLogoutSuccessful = page.locator('div > h2');
   await expect(casLogoutSuccessful).toHaveText('Logout successful');
-});
-
-test('login twice without logout', async ({ page }) => {
-  // Login as staff
-  await login_via_page(page, 'staff', 'staff', 'Samuel Staff');
 
   // Login as student
   await login_via_page(page, 'student', 'student', 'Steven Student');
