@@ -15,7 +15,6 @@ jobs:
         platform:
           - ubuntu-latest
           - windows-latest
-          - macos-latest
         java-distribution:
           - adopt-hotspot
           - temurin
