@@ -9,7 +9,7 @@ const SEL_UPORTAL_LOGIN_SUBMIT = ".btn-submit";
 /*
  * Log into uPortal via an APIRequestContext
  */
-export async function login_via_api(
+export async function loginViaApi(
   request: APIRequestContext,
   username: string,
   password: string,
@@ -25,7 +25,7 @@ export async function login_via_api(
 /*
  * Log into uPortal via the UX
  */
-export async function login_via_page(
+export async function loginViaPage(
   page: Page,
   username: string,
   password: string,

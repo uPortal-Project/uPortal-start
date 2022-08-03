@@ -1,11 +1,11 @@
 import { test, expect } from "@playwright/test";
-import { login_via_page } from "../utils/ux-general-utils";
+import { loginViaPage } from "../utils/ux-general-utils";
 
 const SEL_UPORTAL_LOGOUT = ".portal-logout";
 
 test("login, logout, login as different user", async ({ page }) => {
   // Login as admin
-  await login_via_page(page, "admin", "admin", "Amy Administrator");
+  await loginViaPage(page, "admin", "admin", "Amy Administrator");
 
   // Logout via UX
   const uportalSignout = page.locator(SEL_UPORTAL_LOGOUT);
@@ -18,5 +18,5 @@ test("login, logout, login as different user", async ({ page }) => {
   await expect(casLogoutSuccessful).toHaveText("Logout successful");
 
   // Login as student
-  await login_via_page(page, "student", "student", "Steven Student");
+  await loginViaPage(page, "student", "student", "Steven Student");
 });

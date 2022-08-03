@@ -1,9 +1,9 @@
 import { test, expect } from "@playwright/test";
 import { config } from "../general-config";
-import { login_via_api } from "../ux/utils/ux-general-utils";
+import { loginViaApi } from "../ux/utils/ux-general-utils";
 
 test("search all", async ({ request }) => {
-  await login_via_api(request, "admin", "admin", "Amy Administrator");
+  await loginViaApi(request, "admin", "admin", "Amy Administrator");
   const response = await request.get(
     `${config.url}api/v5-0/portal/search?q=cartoon`
   );
@@ -24,7 +24,7 @@ test("search all", async ({ request }) => {
 });
 
 test("search type people", async ({ request }) => {
-  await login_via_api(request, "admin", "admin", "Amy Administrator");
+  await loginViaApi(request, "admin", "admin", "Amy Administrator");
   const response = await request.get(
     `${config.url}api/v5-0/portal/search?q=steven&type=people`
   );
