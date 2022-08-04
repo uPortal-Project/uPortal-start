@@ -54,11 +54,11 @@ task tomcatInstall() {
 
         // Gunzip the Tomcat binaries
         File tomcatTarGz = configurations.tomcat.files.iterator().next()
-        ant.gunzip(src: tomcatTarGz, dest: tomcatTarFile.getPath())
+        ant.gunzip(src: tomcatTarGz, dest: tomcatTarFile.getAbsolutePath())
 
         // Un-archive the tar file
         copy {
-            from tarTree(tomcatTarFile.getPath())
+            from tarTree(tomcatTarFile.getAbsolutePath())
             into tomcatTmpDir
         }
 
