@@ -6,6 +6,6 @@ const config: PlaywrightTestConfig = {
     ignoreHTTPSErrors: true,
     video: "on-first-retry",
   },
-  retries: 1,
+  retries: 0,
 };
 export default config;

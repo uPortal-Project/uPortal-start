@@ -6,18 +6,61 @@ import { config } from "../../general-config";
  */
 export async function createPortletList(
   request: APIRequestContext,
-  portletListName: string
+  portletListName: string,
+  items: Array<Record<string, string>>
 ): Promise<string> {
+
+  const payload = (items === undefined) ? {
+    name: portletListName,
+  } :
+  {
+    name: portletListName,
+    items: items
+  }
+
   const response = await request.post(`${config.url}api/portlet-list/`, {
-    data: {
-      name: portletListName,
-    },
+    data: payload,
   });
   const locationHeader: string = response.headers().location;
   expect(locationHeader).not.toEqual(undefined);
   expect(locationHeader.length).not.toEqual(0);
   expect(response.status()).toEqual(201);
   return locationHeader;
+}
+
+/*
+ * Update a portlet-list with a given name, and optionally, a new array of items.
+ */
+export async function updatePortletList(
+  request: APIRequestContext,
+  portletListUuid: string,
+  portletListName: string,
+  items: Array<Record<string, string>>
+): Promise<void> {
+
+  const payload = (items === undefined) ? {
+    name: portletListName,
+  } :
+  {
+    name: portletListName,
+    items: items
+  }
+
+  const response = await request.put(`${config.url}api/portlet-list/${portletListUuid}`, {
+    data: payload,
+  });
+  expect(response.status()).toEqual(200);
+}
+
+/*
+ * Remove a portlet-list
+ */
+export async function removePortletList(
+  request: APIRequestContext,
+  portletListUuid: string
+): Promise<void> {
+  const response = await request.delete(`${config.url}api/portlet-list/${portletListUuid}`);
+  expect(response.status()).toEqual(200);
 }
 
 /*
@@ -45,4 +88,49 @@ export async function getPortletList(
   // Future improvement - instead of 'unknown', leverage interfaces with a tool like https://zod.dev/
   const json = (await response.json()) as Record<string, unknown>;
   return json;
+}
+
+export async function createPortletListFailsWith409(
+  request: APIRequestContext,
+  inputTypeToFail: string,
+  ownerUsername: string,
+  portletListName: string,
+  items: Array<Record<string, string>>
+  ): Promise<void> {
+  const responseCreation = await request.post(
+    `${config.url}api/portlet-list/`,
+    { data: {
+        ownerUsername: ownerUsername,
+        name: portletListName,
+        items: items,
+      },
+    }
+  );
+  expect(responseCreation.status()).toEqual(409);
+  expect(await responseCreation.json()).toEqual({
+    message: `Specified ${inputTypeToFail} is not the correct length or has invalid characters.`,
+  });
+}
+
+export async function updatePortletListFailsWith409(
+  request: APIRequestContext,
+  portletListUuid: string,
+  inputTypeToFail: string,
+  ownerUsername: string,
+  portletListName: string,
+  items: Array<Record<string, string>>
+  ): Promise<void> {
+  const responseCreation = await request.put(
+    `${config.url}api/portlet-list/${portletListUuid}`,
+    { data: {
+        ownerUsername: ownerUsername,
+        name: portletListName,
+        items: items,
+      },
+    }
+  );
+  expect(responseCreation.status()).toEqual(409);
+  expect(await responseCreation.json()).toEqual({
+    message: `Specified ${inputTypeToFail} is not the correct length or has invalid characters.`,
+  });
 }
