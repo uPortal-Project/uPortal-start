@@ -83,8 +83,8 @@ test("POST confirm disallow extra fields", async ({
     message: "Unparsable portlet-list JSON",
   });
 });
-test("POST name regex", async ({
 
+test("POST name regex", async ({
   request,
 }) => {
   await loginViaApi(request, config.users.admin);
@@ -111,6 +111,44 @@ test("POST items entityId regex", async ({
   }
 });
 
+test("POST disallow non-admin to specify ownerUsername", async ({
+  request,
+}) => {
+  await loginViaApi(request, config.users.staff);
+
+  const response = await request.post(
+    `${config.url}api/portlet-list/`,
+    {
+      data: {
+        name: `TESTING - portlet-list disallow non-admin to specify ownerUsername - ${(new Date()).toString()}`,
+        ownerUsername: config.users.admin.username,
+      },
+    }
+  );
+  expect(response.status()).toEqual(400);
+  expect(await response.json()).toEqual({
+    message: `Non-admin user cannot set portlet-list owner`,
+  });
+});
+
+test("POST disallow non-admin to specify name as favorites", async ({
+  request,
+}) => {
+  await loginViaApi(request, config.users.staff);
+
+  const response = await request.post(
+    `${config.url}api/portlet-list/`,
+    {
+      data: {
+        name: `favorites`,
+      },
+    }
+  );
+  expect(response.status()).toEqual(400);
+  expect(await response.json()).toEqual({
+    message: `Non-admin user cannot set portlet-list name to favorites`,
+  });
+});
 
 test("PUT name regex", async ({
   request,
@@ -149,6 +187,90 @@ test("PUT items entityId regex", async ({
     const currentState = await getPortletList(request, listId);
     expect(currentState).toEqual(baselineState);
   }
+});
+
+
+test("PUT disallow non-admin to specify ownerUsername", async ({
+  request,
+}) => {
+  await loginViaApi(request, config.users.staff);
+  const listId = await createPortletList(request, `PUT_portlet-list_disallow_non-admin_to_specify_ownerUsername_${(new Date()).getTime()}`, [{entityId: "fname1"}]);
+  const baselineState = await getPortletList(request, listId);
+
+  const responseFailed = await request.put(
+    `${config.url}api/portlet-list/${listId}`,
+    { data: {
+        ownerUsername: config.users.student.username,
+      },
+    }
+  );
+  expect(responseFailed.status()).toEqual(400);
+  expect(await responseFailed.json()).toEqual({
+    message: `Non-admin user cannot change portlet-list owner`,
+  });
+
+  const currentState = await getPortletList(request, listId);
+  expect(currentState).toEqual(baselineState);
+});
+
+test("PUT disallow non-admin to specify name as favorites", async ({
+  request,
+}) => {
+  await loginViaApi(request, config.users.staff);
+  const listId = await createPortletList(request, `PUT_portlet-list_disallow_non-admin_to_specify_name_as_favorites_${(new Date()).getTime()}`, [{entityId: "fname1"}]);
+  const baselineState = await getPortletList(request, listId);
+
+  const responseFailed = await request.put(
+    `${config.url}api/portlet-list/${listId}`,
+    { data: {
+        name: "favorites",
+      },
+    }
+  );
+  expect(responseFailed.status()).toEqual(400);
+  expect(await responseFailed.json()).toEqual({
+    message: `Non-admin user cannot change portlet-list name to favorites`,
+  });
+
+  const currentState = await getPortletList(request, listId);
+  expect(currentState).toEqual(baselineState);
+});
+
+// This needs to be done in the same test to allow concurrent execution of tests (avoid collisions on the name field)
+test("POST / PUT allow admin to specify name as favorites", async ({
+  request,
+}) => {
+  await loginViaApi(request, config.users.admin);
+
+  // If this fails, check if 'admin' has a portlet list defined with a name of 'favorites'. If so, manually remove it, and rerun test.
+  const listId = await createPortletList(request, `favorites`, [{entityId: "fname1"}]);
+  const baselineState = await getPortletList(request, listId);
+
+  // Change to a unique name that is not 'favorites'
+  const responseUpdate1 = await request.put(
+    `${config.url}api/portlet-list/${listId}`,
+    { data: {
+        name: `post_put_allow_admin_to_specify_name_as_favorites_${(new Date()).getTime()}`,
+      },
+    }
+  );
+  expect(responseUpdate1.status()).toEqual(200);
+
+  // Change the name back to 'favorites'
+  const responseUpdate2 = await request.put(
+      `${config.url}api/portlet-list/${listId}`,
+      { data: {
+          name: "favorites",
+        },
+      }
+    );
+    expect(responseUpdate2.status()).toEqual(200);
+
+  const currentState = await getPortletList(request, listId);
+  expect(currentState).toEqual(baselineState);
+
+  // Clean up
+  await removePortletList(request, listId);
 });
 
 test("DELETE Confirm guest user cannot delete a real portlet list", async ({

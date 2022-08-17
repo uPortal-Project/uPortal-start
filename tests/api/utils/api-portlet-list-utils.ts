@@ -10,16 +10,11 @@ export async function createPortletList(
   items: Array<Record<string, string>>
 ): Promise<string> {
 
-  const payload = (items === undefined) ? {
-    name: portletListName,
-  } :
-  {
-    name: portletListName,
-    items: items
-  }
-
   const response = await request.post(`${config.url}api/portlet-list/`, {
-    data: payload,
+    data: {
+      name: portletListName,
+      items: items
+    },
   });
   const locationHeader: string = response.headers().location;
   expect(locationHeader).not.toEqual(undefined);

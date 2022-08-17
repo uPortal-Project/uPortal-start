@@ -32,7 +32,7 @@ export async function logoutViaApi(
   const responseText = await response.text();
   expect(responseText).toContain("Logout successful");
   // confirm known endpoint is unavailable for guest user
-  const responseCheck = await request.get(`${config.url}api/portlet-list/`);
+  await request.get(`${config.url}api/portlet-list/`);
   expect(response.status()).toEqual(200);
 }
 /*
