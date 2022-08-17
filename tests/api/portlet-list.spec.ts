@@ -291,6 +291,48 @@ test("DELETE Confirm guest user cannot delete a real portlet list", async ({
   expect(currentState).toEqual(baselineState);
 });
 
+test("DELETE Confirm admin can delete their own list", async ({
+  request,
+}) => {
+  await loginViaApi(request, config.users.admin);
+  const portletListUuid = await createPortletList(request, `DELETE_Confirm_admin_can_delete_their_own_list_${(new Date()).getTime()}`, [{entityId: "fname1"}]);
+
+  // Try to delete, and confirm success
+  await removePortletList(request, portletListUuid);
+});
+
+test("DELETE Confirm admin can delete someone elses list", async ({
+  request,
+}) => {
+  await loginViaApi(request, config.users.staff);
+  const portletListUuid = await createPortletList(request, `DELETE_Confirm_admin_can_delete_someone_elses_list_${(new Date()).getTime()}`, [{entityId: "fname1"}]);
+  await logoutViaApi(request);
+
+  // Log in as admin
+  await loginViaApi(request, config.users.admin);
+
+  // Try to delete, and confirm success
+  await removePortletList(request, portletListUuid);
+});
+
+test("DELETE Confirm non-admin cannot delete someone elses list", async ({
+  request,
+}) => {
+  await loginViaApi(request, config.users.staff);
+  const portletListUuid = await createPortletList(request, `DELETE_Confirm_non-admin_cannot_delete_someone_elses_list_${(new Date()).getTime()}`, [{entityId: "fname1"}]);
+  await logoutViaApi(request);
+
+  // Log in as a non-admin
+  await loginViaApi(request, config.users.student);
+
+  // Try to delete, and confirm failure
+  const response = await request.delete(`${config.url}api/portlet-list/${portletListUuid}`);
+  expect(response.status()).toEqual(400);
+  expect(await response.json()).toEqual({
+    message: `Unable to remove portlet list. Please check with your System Administrator.`,
+  });
+});
+
 test("happy path", async ({ request }) => {
   const dateString = new Date().getTime();
 
