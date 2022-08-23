@@ -24,6 +24,30 @@ export async function createPortletList(
 }
 
 /*
+ * Creates a portlet-list with a given name, and returns the portlet-list id.
+ */
+export async function createPortletListWithOwner(
+  request: APIRequestContext,
+  portletListName: string,
+  ownerUsername: string,
+  items: Array<Record<string, string>>
+): Promise<string> {
+
+  const response = await request.post(`${config.url}api/portlet-list/`, {
+    data: {
+      name: portletListName,
+      ownerUsername: ownerUsername,
+      items: items
+    },
+  });
+  const locationHeader: string = response.headers().location;
+  expect(locationHeader).not.toEqual(undefined);
+  expect(locationHeader.length).not.toEqual(0);
+  expect(response.status()).toEqual(201);
+  return locationHeader;
+}
+
+/*
  * Update a portlet-list with a given name, and optionally, a new array of items.
  */
 export async function updatePortletList(

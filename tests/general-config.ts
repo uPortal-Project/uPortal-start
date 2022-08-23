@@ -13,6 +13,12 @@ export const config = {
       password: "staff",
       displayName: "Samuel Staff",
     },
+    faculty: {
+      id: "xx",
+      username: "faculty",
+      password: "faculty",
+      displayName: "Felicia Faculty",
+    },
     student: {
       id: "29",
       username: "student",
