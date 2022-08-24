@@ -23,9 +23,7 @@ export async function loginViaApi(
 /*
  * Log out of uPortal via an APIRequestContext
  */
-export async function logoutViaApi(
-  request: APIRequestContext
-): Promise<void> {
+export async function logoutViaApi(request: APIRequestContext): Promise<void> {
   const url = `${config.url}Logout`;
   const response = await request.get(url);
   expect(response.status()).toEqual(200);

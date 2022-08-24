@@ -9,11 +9,10 @@ export async function createPortletList(
   portletListName: string,
   items: Array<Record<string, string>>
 ): Promise<string> {
-
   const response = await request.post(`${config.url}api/portlet-list/`, {
     data: {
       name: portletListName,
-      items: items
+      items: items,
     },
   });
   const locationHeader: string = response.headers().location;
@@ -32,12 +31,11 @@ export async function createPortletListWithOwner(
   ownerUsername: string,
   items: Array<Record<string, string>>
 ): Promise<string> {
-
   const response = await request.post(`${config.url}api/portlet-list/`, {
     data: {
       name: portletListName,
       ownerUsername: ownerUsername,
-      items: items
+      items: items,
     },
   });
   const locationHeader: string = response.headers().location;
@@ -56,18 +54,22 @@ export async function updatePortletList(
   portletListName: string,
   items: Array<Record<string, string>>
 ): Promise<void> {
+  const payload =
+    items === undefined
+      ? {
+          name: portletListName,
+        }
+      : {
+          name: portletListName,
+          items: items,
+        };
 
-  const payload = (items === undefined) ? {
-    name: portletListName,
-  } :
-  {
-    name: portletListName,
-    items: items
-  }
-
-  const response = await request.put(`${config.url}api/portlet-list/${portletListUuid}`, {
-    data: payload,
-  });
+  const response = await request.put(
+    `${config.url}api/portlet-list/${portletListUuid}`,
+    {
+      data: payload,
+    }
+  );
   expect(response.status()).toEqual(200);
 }
 
@@ -78,7 +80,9 @@ export async function removePortletList(
   request: APIRequestContext,
   portletListUuid: string
 ): Promise<void> {
-  const response = await request.delete(`${config.url}api/portlet-list/${portletListUuid}`);
+  const response = await request.delete(
+    `${config.url}api/portlet-list/${portletListUuid}`
+  );
   expect(response.status()).toEqual(200);
 }
 
@@ -115,10 +119,11 @@ export async function createPortletListFailsWith409(
   ownerUsername: string,
   portletListName: string,
   items: Array<Record<string, string>>
-  ): Promise<void> {
+): Promise<void> {
   const responseCreation = await request.post(
     `${config.url}api/portlet-list/`,
-    { data: {
+    {
+      data: {
         ownerUsername: ownerUsername,
         name: portletListName,
         items: items,
@@ -138,10 +143,11 @@ export async function updatePortletListFailsWith409(
   ownerUsername: string,
   portletListName: string,
   items: Array<Record<string, string>>
-  ): Promise<void> {
+): Promise<void> {
   const responseCreation = await request.put(
     `${config.url}api/portlet-list/${portletListUuid}`,
-    { data: {
+    {
+      data: {
         ownerUsername: ownerUsername,
         name: portletListName,
         items: items,

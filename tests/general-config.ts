@@ -27,6 +27,7 @@ export const config = {
     },
   },
   formats: {
-    auditDateTimeTz: /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) \+(\d{4})$/,
-  }
+    auditDateTimeTz:
+      /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) \+(\d{4})$/,
+  },
 };
