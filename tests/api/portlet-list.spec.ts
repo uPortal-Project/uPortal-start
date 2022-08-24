@@ -254,7 +254,7 @@ test("POST disallow non-admin to specify ownerUsername", async ({
 
   const response = await request.post(`${config.url}api/portlet-list/`, {
     data: {
-      name: `TESTING - portlet-list disallow non-admin to specify ownerUsername - ${new Date().toString()}`,
+      name: `TESTING_-_portlet-list_disallow_non-admin_to_specify_ownerUsername_-_${new Date().getTime()}`,
       ownerUsername: config.users.admin.username,
     },
   });
