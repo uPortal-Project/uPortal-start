@@ -6,7 +6,7 @@
     "eslint": "~8.23.0",
     "prettier": "~2.7.0",
     "type-coverage": "~2.22.0",
-    "typescript": "~4.7.0"
+    "typescript": "~4.8.0"
   },
   "scripts": {
     "lint": "npm run lint:tsc && npm run lint:type-coverage && npm run lint:eslint",
