@@ -45,8 +45,6 @@
           <name>width</name>
           <value>60%</value>
         </structure-attribute>
-        <channel fname="email-preview-demo" unremovable="false" hidden="false" immutable="false" ID="n9" dlm:moveAllowed="false" dlm:deleteAllowed="false"/>
-        <channel fname="weather" unremovable="false" hidden="false" immutable="false" ID="n10"/>
         <channel fname="bookmarks" unremovable="false" hidden="false" immutable="false" ID="n11" dlm:moveAllowed="false" dlm:deleteAllowed="false"/>
       </folder>
       <folder ID="s12" hidden="false" immutable="false" name="Column" type="regular" unremovable="false">
