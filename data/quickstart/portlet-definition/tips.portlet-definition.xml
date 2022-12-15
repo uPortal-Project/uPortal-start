@@ -90,12 +90,7 @@
         <value>'Customize &lt; Layouts' allows you change the number of columns on a tab</value>
         <value>'Add Tab' lets you create your own tab on which you can put any portlets you want</value>
         <value>The Service Desk can reset your layout</value>
-        <value>Gmail users -- you can preview your Gmail in the portal</value>
-        <value>The Weather portlet lets you add other locations, so you can dream of vacationing in Hawaii or Aspen</value>
         <value>Bug reports are always appreciated -- use http://issues.jasig.org</value>
-        <value>The email summary portlet can read and delete messages, but not reply to, or compose new, messages</value>
-        <value>The email summary portlet can show there are attachments, but cannot show you the contents of an attachment</value>
-        <value>The email summary portlet's 'Inbox' link will take you to your email service's web-based mail client</value>
         <value>This portal is built on uPortal, which is open-source software to which many leading universities contribute</value>
     </portlet-preference>
 </portlet-definition>
