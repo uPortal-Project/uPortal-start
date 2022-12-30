@@ -48,7 +48,7 @@ dataInit {
      */
     doLast {
         File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
-        File deployDir = new File (serverBase, "webapps/${project.name}")
+        File deployDir = rootProject.file(new File(serverBase, "webapps/${project.name}"))
 
         /*
          * The following specifies failonerror=false because it will produce an exception like...
@@ -81,7 +81,7 @@ dataInit {
      */
     doLast {
         File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
-        File deployDir = new File (serverBase, "webapps/${project.name}")
+        File deployDir = rootProject.file(new File(serverBase, "webapps/${project.name}"))
         String implementationEntitiesLocation = PortalShellInvoker.createGroovySafePath(rootProject.ext['buildProperties'].getProperty('implementation.entities.location'))
 
         ant.setLifecycleLogLevel('INFO')
@@ -108,7 +108,7 @@ dataImport {
         println "Export directory: ${dirEscaped}"
 
         File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
-        File deployDir = new File (serverBase, "webapps/${project.name}")
+        File deployDir = rootProject.file(new File(serverBase, "webapps/${project.name}"))
         println "classes: ${deployDir}/WEB-INF/classes"
 
         ant.setLifecycleLogLevel('INFO')
@@ -135,7 +135,7 @@ dataExport {
         println "Export directory: ${dirEscaped}"
 
         File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
-        File deployDir = new File (serverBase, "webapps/${project.name}")
+        File deployDir = rootProject.file(new File(serverBase, "webapps/${project.name}"))
         println "classes: ${deployDir}/WEB-INF/classes"
 
         ant.setLifecycleLogLevel('INFO')

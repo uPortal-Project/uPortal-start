@@ -49,7 +49,7 @@ dataInit {
      */
     doLast {
         File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
-        File deployDir = new File (serverBase, "webapps/${project.name}")
+        File deployDir = rootProject.file(new File(serverBase, "webapps/${project.name}"))
 
         ant.setLifecycleLogLevel('INFO')
         ant.java(fork: true, failonerror: true, dir: rootProject.projectDir, classname: 'org.jasig.portlet.announcements.SchemaCreator') {
@@ -70,7 +70,7 @@ dataInit {
      */
     doLast {
         File serverBase = rootProject.file(rootProject.ext['buildProperties'].getProperty('server.base'))
-        File deployDir = new File (serverBase, "webapps/${project.name}")
+        File deployDir = rootProject.file(new File(serverBase, "webapps/${project.name}"))
         String implementationEntitiesLocation = PortalShellInvoker.createGroovySafePath(rootProject.ext['buildProperties'].getProperty('implementation.entities.location'))
 
         ant.setLifecycleLogLevel('INFO')

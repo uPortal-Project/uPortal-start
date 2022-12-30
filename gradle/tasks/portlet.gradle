@@ -19,12 +19,12 @@ task deployPortletApp() {
             throw new GradleException("The specified portlet application does not exist: ${warfile}")
         }
 
-        File destinationDir = new File(buildDir, 'pluto')
+        File destinationDir = file(new File(buildDir, 'pluto'))
         destinationDir.mkdir()
-        File archiveOutput = new File(destinationDir, warfile.getName())
+        File archiveOutput = file(new File(destinationDir, warfile.getName()))
 
         File serverBase = file(project.rootProject.ext['buildProperties'].getProperty('server.base'))
-        File deployDir = new File(serverBase, "webapps/${FilenameUtils.removeExtension(warfile.getName())}")
+        File deployDir = file(new File(serverBase, "webapps/${FilenameUtils.removeExtension(warfile.getName())}"))
         logger.lifecycle("Deploying portlet application ${warfile} to location ${deployDir}")
 
         AssemblerConfig config = new AssemblerConfig()
