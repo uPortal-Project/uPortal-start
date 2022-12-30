@@ -4,6 +4,10 @@ CATALINA_OPTS="$CATALINA_OPTS -XX:+PrintCommandLineFlags"
 # Prevent "Unrecognized Name" SSL warning
 CATALINA_OPTS="$CATALINA_OPTS -Djsse.enableSNIExtension=false"
 
+# CVE-2021-44228 Log4j2
+CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.jndi.ldap.object.trustURLCodebase=false"
+CATALINA_OPTS="$CATALINA_OPTS -Dlog4j2.formatMsgNoLookups=true"
+
 # We need to send a 'portal.home' system property to the JVM;  use the value of PORTAL_HOME, if
 # present, or fall back to a value calculated from $CATALINA_BASE
 [ -z "$PORTAL_HOME" ] && PORTAL_HOME="$CATALINA_BASE/portal"
