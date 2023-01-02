@@ -3,7 +3,7 @@
     "@playwright/test": "~1.23.0",
     "@typescript-eslint/eslint-plugin": "~5.45.0",
     "@typescript-eslint/parser": "~5.45.0",
-    "eslint": "~8.28.0",
+    "eslint": "~8.31.0",
     "prettier": "~2.8.0",
     "type-coverage": "~2.24.0",
     "typescript": "~4.9.0"
