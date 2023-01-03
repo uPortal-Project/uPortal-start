@@ -29,7 +29,7 @@ dependencies {
     compileOnly servletApiDependency
 
     testCompile group: 'junit', name: 'junit', version: '4.13.2'
-    testCompile group: 'org.easymock', name: 'easymock', version: '5.0.1'
+    testCompile group: 'org.easymock', name: 'easymock', version: '5.1.0'
     testCompile("org.jasig.cas:cas-server-core:${casServerVersion}") {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'javax.xml', module: 'xmldsig'
