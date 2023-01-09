@@ -1,5 +1,7 @@
 dependencies {
     runtime "org.jasig.resourceserver:resource-server-webapp:${resourceServerVersion}@war"
+    runtime "javax.xml.bind:jaxb-api:2.3.1"
+    runtime "com.sun.xml.bind:jaxb-impl:2.3.3"
 }
 
 war {
