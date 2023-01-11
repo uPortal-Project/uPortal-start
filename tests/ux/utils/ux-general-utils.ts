@@ -11,25 +11,34 @@ const SEL_UPORTAL_LOGIN_SUBMIT = ".btn-submit";
  */
 export async function loginViaApi(
   request: APIRequestContext,
-  username: string,
-  password: string,
-  displayname: string
+  user: Record<string, string>
 ): Promise<void> {
-  const url = `${config.url}Login?userName=${username}&password=${password}`;
+  const url = `${config.url}Login?userName=${user.username}&password=${user.password}`;
   const response = await request.get(url);
   expect(response.status()).toEqual(200);
   const responseText = await response.text();
-  expect(responseText).toContain(displayname);
+  expect(responseText).toContain(user.displayName);
 }
 
+/*
+ * Log out of uPortal via an APIRequestContext
+ */
+export async function logoutViaApi(request: APIRequestContext): Promise<void> {
+  const url = `${config.url}Logout`;
+  const response = await request.get(url);
+  expect(response.status()).toEqual(200);
+  const responseText = await response.text();
+  expect(responseText).toContain("Logout successful");
+  // confirm known endpoint is unavailable for guest user
+  await request.get(`${config.url}api/portlet-list/`);
+  expect(response.status()).toEqual(200);
+}
 /*
  * Log into uPortal via the UX
  */
 export async function loginViaPage(
   page: Page,
-  username: string,
-  password: string,
-  displayname: string
+  user: Record<string, string>
 ): Promise<void> {
   // Navigate to uPortal welcome page prior to login
   const landingPageUrl = `${config.url}f/welcome/normal/render.uP`;
@@ -42,9 +51,9 @@ export async function loginViaPage(
 
   // Fill in username and password, and submit
   await page.waitForSelector(SEL_UPORTAL_LOGIN_USERNAME);
-  await page.fill(SEL_UPORTAL_LOGIN_USERNAME, username);
+  await page.fill(SEL_UPORTAL_LOGIN_USERNAME, user.username);
   await page.waitForSelector(SEL_UPORTAL_LOGIN_PASSWORD);
-  await page.fill(SEL_UPORTAL_LOGIN_PASSWORD, password);
+  await page.fill(SEL_UPORTAL_LOGIN_PASSWORD, user.password);
   await page.waitForSelector(SEL_UPORTAL_LOGIN_SUBMIT);
   await page.click(SEL_UPORTAL_LOGIN_SUBMIT);
 
@@ -55,6 +64,6 @@ export async function loginViaPage(
   // Confirm user is logged in
   const loggedInUserDisplay = page.locator("div.user-name");
   await expect(loggedInUserDisplay).toHaveText(
-    `You are signed in as ${displayname}`
+    `You are signed in as ${user.displayName}`
   );
 }
