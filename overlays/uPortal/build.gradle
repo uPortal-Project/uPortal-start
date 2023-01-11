@@ -39,7 +39,7 @@ war {
  * Skinning Support
  */
 import java.util.regex.Pattern
-File skinsDir = new File ("${projectDir}/src/main/webapp/media/skins/respondr")
+File skinsDir = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr")
 task skinGenerate() {
     group 'Skin'
     description 'Genarate a new uPortal skin for Respondr;  pass -DskinName={name} (required) to specify a name'
@@ -54,8 +54,8 @@ task skinGenerate() {
         if (!Pattern.matches(/[a-zA-Z0-9]{3,20}/, skinName)) {
             throw new GradleException('A valid skinName contains between 3 and 20 alphanumeric characters')
         }
-        File skinFile = file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}.less")
-        File skinDir = file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}")
+        File skinFile = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}.less")
+        File skinDir = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}")
         if (skinFile.exists() || skinDir.exists()) {
             throw new GradleException("Unable to generate a skin with the same neame as an existing skin:  ${skinName}")
         }
@@ -78,8 +78,8 @@ task skinGenerate() {
         }
 
         // Copy skinList.xml if it does not exist
-        File skinListFile = file("${projectDir}/src/main/webapp/media/skins/respondr/skinList.xml")
-        File respondrDir = file("${projectDir}/src/main/webapp/media/skins/respondr")
+        File skinListFile = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/skinList.xml")
+        File respondrDir = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr")
         if (!skinListFile.exists()) {
             copy {
                 from "${rootProject.projectDir}/etc/skin/skinList.xml"
@@ -159,7 +159,7 @@ else {
 import org.apereo.portal.start.shell.PortalShellInvoker
 
 ext {
-    shellDir = new File("${buildDir}/shell")
+    shellDir = rootProject.file("${buildDir}/shell")
 }
 
 dataInit {
@@ -178,7 +178,7 @@ dataInit {
 
         shellDir.mkdirs()
 
-        File scriptFile = new File(shellDir, 'dataInit.groovy')
+        File scriptFile = rootProject.file(new File(shellDir, 'dataInit.groovy'))
         scriptFile.delete()  // Clear from previous invocation, if present
         scriptFile.append(
 """
@@ -195,7 +195,7 @@ portalShellBuildHelper.db('db',
         boolean export = true
         String outputFile = ' '
 
-        File scriptFile = new File(shellDir, 'dataInit.groovy')
+        File scriptFile = rootProject.file(new File(shellDir, 'dataInit.groovy'))
         ['PortalDb', 'RawEventsDb', 'AggrEventsDb'].each { databaseQualifier ->
             scriptFile.append(
 """
@@ -227,7 +227,7 @@ portalShellBuildHelper.hibernateCreate('db-hibernate',
         String filesListFile = ' '
         String logDir = PortalShellInvoker.createGroovySafePath(buildDir.getPath())
 
-        File scriptFile = new File(shellDir, 'dataInit.groovy')
+        File scriptFile = rootProject.file(new File(shellDir, 'dataInit.groovy'))
         [ baseEntitiesLocation, implementationEntitiesLocation ].each { entitiesLocation ->
             scriptFile.append(
 """
@@ -245,7 +245,7 @@ portalShellBuildHelper.dataImport('data-import',
      * Execute the commands in the scriptFile.
      */
     doLast {
-        File scriptFile = new File(shellDir, 'dataInit.groovy')
+        File scriptFile = rootProject.file(new File(shellDir, 'dataInit.groovy'))
         PortalShellInvoker psi = new PortalShellInvoker()
         psi.invoke(project, scriptFile.getAbsolutePath())
     }
@@ -281,7 +281,7 @@ dataImport {
 
             // Prepare the scriptFile
             shellDir.mkdirs()
-            File scriptFile = new File(shellDir, 'dataImport.groovy')
+            File scriptFile = rootProject.file(new File(shellDir, 'dataImport.groovy'))
             scriptFile.delete()  // Clear from previous invocation, if present
             scriptFile.write(
 """
@@ -314,7 +314,7 @@ dataExport {
 
         // Prepare the scriptFile
         shellDir.mkdirs()
-        File scriptFile = new File(shellDir, 'dataExport.groovy')
+        File scriptFile = rootProject.file(new File(shellDir, 'dataExport.groovy'))
         scriptFile.delete()  // Clear from previous invocation, if present
         scriptFile.write(
 """
@@ -351,7 +351,7 @@ dataDelete {
         } else {
             // Prepare the scriptFile
             shellDir.mkdirs()
-            File scriptFile = new File(shellDir, 'dataDelete.groovy')
+            File scriptFile = rootProject.file(new File(shellDir, 'dataDelete.groovy'))
             scriptFile.delete()  // Clear from previous invocation, if present
             scriptFile.write(
 """
@@ -377,7 +377,7 @@ dataList {
 
         // Prepare the scriptFile
         shellDir.mkdirs()
-        File scriptFile = new File(shellDir, 'dataList.groovy')
+        File scriptFile = rootProject.file(new File(shellDir, 'dataList.groovy'))
         scriptFile.delete()  // Clear from previous invocation, if present
         scriptFile.write(
 """

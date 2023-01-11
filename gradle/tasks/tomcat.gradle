@@ -44,13 +44,13 @@ task tomcatInstall() {
 
         logger.lifecycle("Installing Tomcat servlet container version ${tomcatVersion} to location ${serverHome}")
 
-        File tomcatTmpDir = new File('build/tmp/tomcat')
+        File tomcatTmpDir = file('build/tmp/tomcat')
 
         // Clear & reset the tomcat directory
         tomcatTmpDir.deleteDir()
         tomcatTmpDir.mkdirs()
 
-        File tomcatTarFile = new File("${tomcatTmpDir}/tomcat-gunziped.tar")
+        File tomcatTarFile = file("${tomcatTmpDir}/tomcat-gunziped.tar")
 
         // Gunzip the Tomcat binaries
         File tomcatTarGz = configurations.tomcat.files.iterator().next()
@@ -130,7 +130,7 @@ task tomcatStart() {
         logger.lifecycle("Starting Tomcat servlet container in ${serverHome}")
         String executable = isWindows ? 'cmd' : './catalina.sh'
         ant.exec(dir: "${serverHome}/bin", executable: executable, spawn: true) {
-            env(key: "PORTAL_HOME", value: new File(portalHome).getCanonicalPath()) // Must be absolute
+            env(key: "PORTAL_HOME", value: file(portalHome).getCanonicalPath()) // Must be absolute
             if (isWindows) {
                 arg(value: '/c')
                 arg(value: 'catalina.bat')
