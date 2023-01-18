@@ -6,6 +6,8 @@ dependencies {
         exclude group: 'xerces', module: 'xercesImpl'
     }
     runtime "net.sf.ehcache:ehcache-core:${casEhcacheVersion}"
+    runtime "org.aspectj:aspectjrt:1.9.7"
+    runtime "org.aspectj:aspectjweaver:1.9.7"
     runtime "org.jasig.cas:cas-server-webapp:${casServerVersion}@war"
     runtime("org.jasig.cas:cas-server-extension-clearpass:${casServerVersion}") {
         exclude group: 'commons-logging', module: 'commons-logging'
@@ -42,4 +44,6 @@ war {
     exclude 'WEB-INF/lib/cas-client-core-3.2.1.jar'
     exclude 'WEB-INF/lib/commons-collections*jar'
     exclude 'WEB-INF/lib/xml-apis-1.0.b2.jar'
+    exclude 'WEB-INF/lib/aspectjrt-1.6.10.jar'
+    exclude 'WEB-INF/lib/aspectjweaver-1.6.10.jar'
 }
