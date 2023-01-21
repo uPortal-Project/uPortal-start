@@ -8,7 +8,7 @@
  */
 
 dependencies {
-    runtime "org.jasig.resourceserver:resource-server-webapp:${resourceServer13Version}@war"
+    runtime "org.jasig.resourceserver:resource-server-webapp:${resourceServerWebjarVersion}@war"
 
     runtime "org.webjars.npm:vue:${vueVersion}@jar"
 
