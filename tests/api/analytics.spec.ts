@@ -3,7 +3,7 @@ import { config } from "../general-config";
 import { loginViaApi } from "../ux/utils/ux-general-utils";
 
 test("post valid link", async ({ request }) => {
-  await loginViaApi(request, "admin", "admin", "Amy Administrator");
+  await loginViaApi(request, config.users.admin);
   const response = await request.post(
     `${config.url}api/analytics`, {
         data: {
@@ -17,7 +17,7 @@ test("post valid link", async ({ request }) => {
 });
 
 test("post invalid link", async ({ request }) => {
-  await loginViaApi(request, "admin", "admin", "Amy Administrator");
+  await loginViaApi(request, config.users.admin);
   const response = await request.post(
     `${config.url}api/analytics`, {
         data: {
@@ -28,12 +28,12 @@ test("post invalid link", async ({ request }) => {
   );
   expect(response.status()).toEqual(400);
   expect(await response.json()).toEqual({
-    message:"Specified eventType is not the correct length or has invalid characters."
+    message:"Post data was not in a JSON format, or the required attributes were not present."
     });
 });
 
 test("get logging level", async({ request}) => {
-  await loginViaApi(request, "admin", "admin", "Amy Administrator");
+  await loginViaApi(request, config.users.admin);
     const response = await request.get(
          `${config.url}api/analytics/level`
   );
