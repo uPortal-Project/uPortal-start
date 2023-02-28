@@ -1,0 +1,78 @@
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+configurations {
+	tomcat
+	shared
+}
+
+dependencies {
+	tomcat "org.apache.tomcat:tomcat:${tomcatVersion}@tar.gz"
+	shared "javax.ccpp:ccpp:${ccppVersion}"
+	shared "org.apache.portals.pluto:pluto-container-api:${plutoVersion}"
+	shared "org.apache.portals.pluto:pluto-container-driver-api:${plutoVersion}"
+	shared "org.apache.portals.pluto:pluto-taglib:${plutoVersion}"
+	shared "org.apereo.service.persondir:person-directory-api:${personDirectoryVersion}"
+	shared "${portletApiDependency}"
+}
+
+/*
+ * deployAopArchives is a custom task that moves HttpSession instrumented classes and needed
+ * dependencies to the correct place within ./gradle/tomcat.  There are three primary parts:
+ * 1. Build a jar that contains two cusomt classes, HttpSessionAspect and StandardSessionFacade
+ *    and puts them into the .gradle/tomcat/lib folder in their own jar.  HttpSession's implementing class
+ *    must be located in tomcat's lib folder or it won't be found, and the aspect must be with it.
+ * 2. Put the aspectjweaver.1.9.9.1 jar in the same lib folder
+ * 3. Update the catalina.jar that also lives in this lib folder by deleting the now duplicated
+ *    StandardSessionFacade.  The current implementation creates a duplicate jar with the missing file
+ *    and deletes the original file to prevent conflict.  Once this is done, it's hard to recover without
+ *    doing a tomcatInstall, so this may need additinoal work, if this function is run.
+ *    If this function is not run, uPortal on tomcat will run as normal.
+ */
+task deployAopArchives() {
+	dependsOn ':portalProperties'
+	dependsOn ':buildAopJar'
+	dependsOn ':buildCatalinaAopJar'
+	doLast {
+		String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
+		copy {
+			from "${serverHome}/webapps/uPortal/WEB-INF/lib/aspectjweaver-1.9.9.1.jar"
+			into "${serverHome}/lib"
+		}
+		delete "${serverHome}/lib/catalina.jar"
+	}
+}
+
+task buildAopJar(type: Zip) {
+	group 'Tomcat'
+	description 'Build AOP Archive for HttpSession testing'
+
+	// I'm not sure why, but :portalProperties does not expose server.home
+	// like it does in other functions.  This is directly related to type: Zip
+	// in the function designation.  If the tomcat server is located in another location,
+	// this property will need to be updated
+	String serverHome = ".gradle/tomcat"
+	from("${serverHome}/webapps/uPortal/WEB-INF/classes") {
+		include("org/apereo/portal/context/HttpSessionAspect.class")
+		include("org/apache/catalina/session/StandardSessionFacade.class")
+	}
+	archiveName 'uPortalAopArchive.jar'
+	destinationDir(file("${serverHome}/lib"))
+}
+
+task buildCatalinaAopJar(type: Zip) {
+	group 'Tomcat'
+	// I'm not sure why, but :portalProperties does not expose server.home
+	// like it does in other functions.  This is directly related to type: Zip
+	// in the function designation.  If the tomcat server is located in another location,
+	// this property will need to be updated
+	String serverHome = ".gradle/tomcat"
+	from zipTree("${serverHome}/lib/catalina.jar").matching {
+		exclude 'org/apache/catalina/session/StandardSessionFacade.class'
+	}
+	archiveName 'catalina-aop.jar'
+	destinationDir(file("${serverHome}/lib"))
+}
+
