@@ -3,19 +3,19 @@ repositories {
 	mavenCentral()
 }
 
-configurations {
-	tomcat
-	shared
+apply plugin: 'java'
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["custom/aop/src/main/java", "custom/aop/src", "aop/src/main/java", "aop/src", "src/main/java", "src"]
+        }
+    }
 }
 
 dependencies {
-	tomcat "org.apache.tomcat:tomcat:${tomcatVersion}@tar.gz"
-	shared "javax.ccpp:ccpp:${ccppVersion}"
-	shared "org.apache.portals.pluto:pluto-container-api:${plutoVersion}"
-	shared "org.apache.portals.pluto:pluto-container-driver-api:${plutoVersion}"
-	shared "org.apache.portals.pluto:pluto-taglib:${plutoVersion}"
-	shared "org.apereo.service.persondir:person-directory-api:${personDirectoryVersion}"
-	shared "${portletApiDependency}"
+    compileOnly "org.aspectj:aspectjrt:${aspectjVersion}"
+    runtimeOnly 'org.aspectj:aspectjweaver:1.9.9.1'
 }
 
 /*
@@ -33,37 +33,49 @@ dependencies {
  */
 task deployAopArchives() {
 	dependsOn ':portalProperties'
+	dependsOn ':downloadDependencies'
 	dependsOn ':buildAopJar'
 	dependsOn ':buildCatalinaAopJar'
 	doLast {
 		String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
+		def path = "${project.projectDir}/custom/aop/build/runtime"
 		copy {
-			from "${serverHome}/webapps/uPortal/WEB-INF/lib/aspectjweaver-1.9.9.1.jar"
+			from path
+			include "*.jar"
 			into "${serverHome}/lib"
 		}
 		delete "${serverHome}/lib/catalina.jar"
 	}
 }
 
+task downloadDependencies(type :Copy) {
+	def path = "${project.projectDir}/custom/aop/build/runtime"
+	from sourceSets.main.runtimeClasspath
+	into path
+
+	doFirst {
+		ant.delete(dir: path)
+		ant.mkdir(dir: path)
+	}
+}
+
 task buildAopJar(type: Zip) {
-	group 'Tomcat'
+	dependsOn ":custom:aop:compileJava"
+
 	description 'Build AOP Archive for HttpSession testing'
 
-	// I'm not sure why, but :portalProperties does not expose server.home
-	// like it does in other functions.  This is directly related to type: Zip
-	// in the function designation.  If the tomcat server is located in another location,
-	// this property will need to be updated
-	String serverHome = ".gradle/tomcat"
-	from("${serverHome}/webapps/uPortal/WEB-INF/classes") {
+	def path = "${project.projectDir}/custom/aop/build/runtime"
+	def destinationPath = "${project.projectDir}/custom/aop/build/runtime"
+	from (path) {
 		include("org/apereo/portal/context/HttpSessionAspect.class")
 		include("org/apache/catalina/session/StandardSessionFacade.class")
 	}
 	archiveName 'uPortalAopArchive.jar'
-	destinationDir(file("${serverHome}/lib"))
+	destinationDir(file(destinationPath))
 }
 
 task buildCatalinaAopJar(type: Zip) {
-	group 'Tomcat'
+	dependsOn ':tomcatInstall'
 	// I'm not sure why, but :portalProperties does not expose server.home
 	// like it does in other functions.  This is directly related to type: Zip
 	// in the function designation.  If the tomcat server is located in another location,

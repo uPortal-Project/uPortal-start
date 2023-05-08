@@ -8,6 +8,13 @@ task portalInit {
     dependsOn ':tomcatInstall'
     dependsOn allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
     dependsOn allprojects.collect { it.tasks.matching { it.name.equals('dataInit') } }
+
+    // when running the uPortal tomcatDeploy, you may also deploy session replication code
+    // if deploySessionReplicationAop is true in gradle.properties
+    def isDeploySessionReplicationEnabled = project.rootProject.properties.deploySessionReplicationAop.toBoolean()
+    if (isDeploySessionReplicationEnabled) {
+        dependsOn ":deployAopArchives"
+    }
 }
 
 task portalOpen() {
