@@ -64,7 +64,8 @@ task buildAopJar(type: Zip) {
 
 	description 'Build AOP Archive for HttpSession testing'
 
-	def path = "${project.projectDir}/custom/aop/build/runtime"
+//	def path = "${project.projectDir}/custom/aop/build/runtime"
+	def path = "${project.projectDir}/custom/aop/build/classes/java/main"
 	def destinationPath = "${project.projectDir}/custom/aop/build/runtime"
 	from (path) {
 		include("org/apereo/portal/context/HttpSessionAspect.class")
