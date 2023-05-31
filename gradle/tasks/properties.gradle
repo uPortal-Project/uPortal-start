@@ -7,7 +7,7 @@ import java.nio.file.Paths
 task javaVersionCheck() {
     group 'Verification'
     description 'Ensures the current Java version is supported'
-    
+
     doLast {
         def supportedJavaVersions = [ JavaVersion.VERSION_1_8, JavaVersion.VERSION_11 ];
         def currentJavaVersion = JavaVersion.current();
@@ -34,8 +34,8 @@ task javaVersionCheck() {
 task portalProperties() {
     group 'Portal'
     description 'Loads properties for the CLI tools for Packaging, Deploying, and Database Import/Export'
-    
-    doLast() {
+
+    configure {
 
         /*
          * The Properties object we need to load already exists.

@@ -147,6 +147,22 @@ else {
         }
     }
 
+    task skinDeployFiles(type: Copy) {
+        dependsOn project.rootProject.tasks.portalProperties
+
+        File serverBase = project.rootProject.file(project.rootProject.ext['buildProperties'].getProperty('server.home'))
+        logger.lifecycle("serverBase: ${serverBase}")
+        File deployDir = new File(serverBase, "webapps/${project.name}/media/skins/respondr")
+        logger.lifecycle("deployDir: ${deployDir}")
+
+        doFirst {
+            logger.lifecycle("Copying skin files from ${skinTmpDir} to ${deployDir}")
+        }
+
+        from skinTmpDir
+        into deployDir
+    }
+
     war.dependsOn {
         tasks.findAll { task -> task.name.startsWith('compileLess') }
     }
