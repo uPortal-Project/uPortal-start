@@ -178,6 +178,13 @@ ext {
     shellDir = rootProject.file("${buildDir}/shell")
 }
 
+// This is only needed because during uPortal's build and AOP weaving,
+// it modifies the class org.apache.catalina.session.StandardSessionFacade and
+// embeds AOP functionality.
+dependencies {
+	implementation "org.aspectj:aspectjweaver:1.9.9.1"
+}
+
 dataInit {
     description 'Drop and recreate uPortal tables and reimport data'
 

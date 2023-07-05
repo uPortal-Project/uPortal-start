@@ -78,6 +78,13 @@ task tomcatConfig() {
     description 'Configures Tomcat servlet container, used to update an existing Tomcat install'
     dependsOn ':portalProperties'
 
+    // when running the uPortal tomcatDeploy, you may also deploy session replication code
+    // if deploySessionReplicationAop is true in gradle.properties
+    def isDeploySessionReplicationEnabled = project.rootProject.properties.deploySessionReplicationAop.toBoolean()
+    if (isDeploySessionReplicationEnabled) {
+        dependsOn ":deployAopArchives"
+    }
+
     doLast {
         String serverHome = rootProject.ext['buildProperties'].getProperty('server.home')
 
