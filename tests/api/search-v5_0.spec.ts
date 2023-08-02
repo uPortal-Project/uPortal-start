@@ -13,6 +13,7 @@ test("search all", async ({ request }) => {
     portlets: [
       {
         description: "Daily Business Cartoon by Ted Goff, www.tedgoff.com",
+        "favorite": false,
         fname: "daily-business-cartoon",
         name: "Daily Business Cartoon",
         score: "4.0",
