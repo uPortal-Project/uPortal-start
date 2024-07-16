@@ -1,8 +1,8 @@
 {
   "devDependencies": {
     "@playwright/test": "~1.23.0",
-    "@typescript-eslint/eslint-plugin": "~5.49.0",
-    "@typescript-eslint/parser": "~5.49.0",
+    "@typescript-eslint/eslint-plugin": "~5.62.0",
+    "@typescript-eslint/parser": "~5.62.0",
     "eslint": "~8.57.0",
     "prettier": "~2.8.0",
     "type-coverage": "~2.29.0",
