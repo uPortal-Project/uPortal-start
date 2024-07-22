@@ -3,7 +3,7 @@
 # before building the Docker image.
 
 # This image requires Gradle;  it is not as slim as the web server-only image
-FROM gradle:6.9.1-jdk8-hotspot
+FROM gradle:7.2.0-jdk8-hotspot
 
 # Some of the uPortal tech requires elevated privileges
 USER root
