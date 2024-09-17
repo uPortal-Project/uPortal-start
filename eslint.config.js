@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import tsParser from '@typescript-eslint/parser';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import playwright from 'eslint-plugin-playwright';
+import unicorn from 'eslint-plugin-unicorn';
 
 export default [
   // Base JavaScript configuration
@@ -18,12 +19,17 @@ export default [
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
+      unicorn,
       playwright,
     },
     rules: {
       // Include TypeScript ESLint recommended rules
       ...tsPlugin.configs.recommended.rules,
       ...tsPlugin.configs['recommended-requiring-type-checking'].rules,
+
+      // Include Unicorn plugin recommended rules
+      ...unicorn.configs.recommended.rules,
+
       // Include Playwright plugin recommended rules
       ...playwright.configs.recommended.rules,
     },
