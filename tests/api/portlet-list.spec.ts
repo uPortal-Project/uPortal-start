@@ -46,7 +46,7 @@ test("GET Confirm retrieval of a specific bogus list nicely fails", async ({
 });
 
 test("GET list creation and retrieval with ownership", async ({ request }) => {
-  const key = `GET_list_retrieval_${new Date().getTime()}`;
+  const key = `GET_list_retrieval_${Date.now()}`;
 
   // Create list as staff
   await loginViaApi(request, config.users.staff);
@@ -163,7 +163,7 @@ test("GET list creation and retrieval with ownership", async ({ request }) => {
 test("POST confirm disallow duplicate name", async ({ request }) => {
   await loginViaApi(request, config.users.admin);
 
-  const dateString = new Date().getTime();
+  const dateString = Date.now();
   const payload = {
     data: {
       name: `TESTING_-_portlet-list_POST_confirm_disallow_duplicate_name_-_${dateString}`,
@@ -254,7 +254,7 @@ test("POST disallow non-admin to specify ownerUsername", async ({
 
   const response = await request.post(`${config.url}api/portlet-list/`, {
     data: {
-      name: `TESTING_-_portlet-list_disallow_non-admin_to_specify_ownerUsername_-_${new Date().getTime()}`,
+      name: `TESTING_-_portlet-list_disallow_non-admin_to_specify_ownerUsername_-_${Date.now()}`,
       ownerUsername: config.users.admin.username,
     },
   });
@@ -285,7 +285,7 @@ test("POST disallow duplicate entity ids", async ({ request }) => {
 
   const response = await request.post(`${config.url}api/portlet-list/`, {
     data: {
-      name: `POST_disallow_duplicate_entity_ids_${new Date().getTime()}`,
+      name: `POST_disallow_duplicate_entity_ids_${Date.now()}`,
       items: [
         { entityId: "fname1" },
         { entityId: "fname2" },
@@ -304,7 +304,7 @@ test("PUT name regex", async ({ request }) => {
   await loginViaApi(request, config.users.admin);
   const listId = await createPortletList(
     request,
-    `PUT_portlet-list_name_regex_${new Date().getTime()}`,
+    `PUT_portlet-list_name_regex_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   const baselineState = await getPortletList(request, listId);
@@ -326,7 +326,7 @@ test("PUT ownerUsername regex", async ({ request }) => {
   await loginViaApi(request, config.users.admin);
   const listId = await createPortletList(
     request,
-    `PUT_portlet-list_name_regex_${new Date().getTime()}`,
+    `PUT_portlet-list_name_regex_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   const baselineState = await getPortletList(request, listId);
@@ -348,7 +348,7 @@ test("PUT items entityId regex", async ({ request }) => {
   await loginViaApi(request, config.users.admin);
   const listId = await createPortletList(
     request,
-    `PUT_portlet-list_name_regex_${new Date().getTime()}`,
+    `PUT_portlet-list_name_regex_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   const baselineState = await getPortletList(request, listId);
@@ -370,7 +370,7 @@ test("PUT disallow non-admin to specify ownerUsername", async ({ request }) => {
   await loginViaApi(request, config.users.staff);
   const listId = await createPortletList(
     request,
-    `PUT_portlet-list_disallow_non-admin_to_specify_ownerUsername_${new Date().getTime()}`,
+    `PUT_portlet-list_disallow_non-admin_to_specify_ownerUsername_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   const baselineState = await getPortletList(request, listId);
@@ -398,7 +398,7 @@ test("PUT disallow non-admin to specify name as favorites", async ({
   await loginViaApi(request, config.users.staff);
   const listId = await createPortletList(
     request,
-    `PUT_portlet-list_disallow_non-admin_to_specify_name_as_favorites_${new Date().getTime()}`,
+    `PUT_portlet-list_disallow_non-admin_to_specify_name_as_favorites_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   const baselineState = await getPortletList(request, listId);
@@ -424,7 +424,7 @@ test("PUT confirm disallow extra fields", async ({ request }) => {
   await loginViaApi(request, config.users.staff);
   const listId = await createPortletList(
     request,
-    `PUT_confirm_disallow_extra_fields_${new Date().getTime()}`,
+    `PUT_confirm_disallow_extra_fields_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   const baselineState = await getPortletList(request, listId);
@@ -453,7 +453,7 @@ test("PUT Confirm guest user cannot update a real portlet list", async ({
   await loginViaApi(request, config.users.staff);
   const listId = await createPortletList(
     request,
-    `PUT_confirm_guest_user_cannot_update_a_real_portlet_list_${new Date().getTime()}`,
+    `PUT_confirm_guest_user_cannot_update_a_real_portlet_list_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   const baselineState = await getPortletList(request, listId);
@@ -480,7 +480,7 @@ test("PUT Confirm non-admin cannot update someone elses list", async ({
   await loginViaApi(request, config.users.staff);
   const listId = await createPortletList(
     request,
-    `PUT_confirm_non-admin_cannot_update_someone_elses_list_${new Date().getTime()}`,
+    `PUT_confirm_non-admin_cannot_update_someone_elses_list_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   const baselineState = await getPortletList(request, listId);
@@ -508,7 +508,7 @@ test("PUT Confirm non-admin is blocked from changing the list ownership", async 
   await loginViaApi(request, config.users.staff);
   const listId = await createPortletList(
     request,
-    `PUT_confirm_non-admin_is_blocked_from_changing_the_list_ownership_${new Date().getTime()}`,
+    `PUT_confirm_non-admin_is_blocked_from_changing_the_list_ownership_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   const baselineState = await getPortletList(request, listId);
@@ -533,7 +533,7 @@ test("PUT Confirm admin can change ownership of someone elses list", async ({
   await loginViaApi(request, config.users.staff);
   const listId = await createPortletList(
     request,
-    `PUT_confirm_admin_can_change__ownership_of_someone_elses_list_${new Date().getTime()}`,
+    `PUT_confirm_admin_can_change__ownership_of_someone_elses_list_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   await logoutViaApi(request);
@@ -559,7 +559,7 @@ test("PUT Confirm duplicate items are disallowed", async ({ request }) => {
   await loginViaApi(request, config.users.staff);
   const listId = await createPortletList(
     request,
-    `PUT_confirm_duplicate_items_are_disallowed_${new Date().getTime()}`,
+    `PUT_confirm_duplicate_items_are_disallowed_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   const baselineState = await getPortletList(request, listId);
@@ -586,7 +586,7 @@ test("PUT Confirm duplicate items are disallowed", async ({ request }) => {
 });
 
 test("PUT confirm disallow duplicate name", async ({ request }) => {
-  const key = `PUT_confirm_disallow_duplicate_name_${new Date().getTime()}`;
+  const key = `PUT_confirm_disallow_duplicate_name_${Date.now()}`;
   await loginViaApi(request, config.users.staff);
   const listId = await createPortletList(request, key, [
     { entityId: "fname1" },
@@ -618,7 +618,7 @@ test("PUT confirm disallow duplicate name", async ({ request }) => {
 });
 
 test("PUT confirm noop resave", async ({ request }) => {
-  const key = `PUT_confirm_noop_resave_${new Date().getTime()}`;
+  const key = `PUT_confirm_noop_resave_${Date.now()}`;
   await loginViaApi(request, config.users.staff);
   const listId = await createPortletList(request, key, [
     { entityId: "fname1" },
@@ -654,7 +654,7 @@ test("POST / PUT allow admin to specify name as favorites", async ({
     `${config.url}api/portlet-list/${listId}`,
     {
       data: {
-        name: `post_put_allow_admin_to_specify_name_as_favorites_${new Date().getTime()}`,
+        name: `post_put_allow_admin_to_specify_name_as_favorites_${Date.now()}`,
       },
     }
   );
@@ -686,7 +686,7 @@ test("DELETE Confirm guest user cannot delete a real portlet list", async ({
   await loginViaApi(request, config.users.admin);
   const portletListUuid = await createPortletList(
     request,
-    `DELETE_Confirm_guest_user_cannot_delete_a_real_portlet_list_${new Date().getTime()}`,
+    `DELETE_Confirm_guest_user_cannot_delete_a_real_portlet_list_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   const baselineState = await getPortletList(request, portletListUuid);
@@ -708,7 +708,7 @@ test("DELETE Confirm admin can delete their own list", async ({ request }) => {
   await loginViaApi(request, config.users.admin);
   const portletListUuid = await createPortletList(
     request,
-    `DELETE_Confirm_admin_can_delete_their_own_list_${new Date().getTime()}`,
+    `DELETE_Confirm_admin_can_delete_their_own_list_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
 
@@ -722,7 +722,7 @@ test("DELETE Confirm admin can delete someone elses list", async ({
   await loginViaApi(request, config.users.staff);
   const portletListUuid = await createPortletList(
     request,
-    `DELETE_Confirm_admin_can_delete_someone_elses_list_${new Date().getTime()}`,
+    `DELETE_Confirm_admin_can_delete_someone_elses_list_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   await logoutViaApi(request);
@@ -740,7 +740,7 @@ test("DELETE Confirm non-admin cannot delete someone elses list", async ({
   await loginViaApi(request, config.users.staff);
   const portletListUuid = await createPortletList(
     request,
-    `DELETE_Confirm_non-admin_cannot_delete_someone_elses_list_${new Date().getTime()}`,
+    `DELETE_Confirm_non-admin_cannot_delete_someone_elses_list_${Date.now()}`,
     [{ entityId: "fname1" }]
   );
   await logoutViaApi(request);
@@ -759,7 +759,7 @@ test("DELETE Confirm non-admin cannot delete someone elses list", async ({
 });
 
 test("happy path", async ({ request }) => {
-  const dateString = new Date().getTime();
+  const dateString = Date.now();
 
   const portletListName = `portlet-list_happy_path_${dateString}`;
 
