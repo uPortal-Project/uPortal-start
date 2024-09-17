@@ -1,14 +1,15 @@
 import js from '@eslint/js';
 import tsParser from '@typescript-eslint/parser';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
+import playwright from 'eslint-plugin-playwright';
 
 export default [
-  // ESLint's recommended rules for JavaScript
+  // Base JavaScript configuration
   js.configs.recommended,
 
-  // Configuration for TypeScript files
+  // Configuration for all TypeScript files
   {
-    files: ['**/*.ts'],
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -17,11 +18,14 @@ export default [
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
+      playwright,
     },
     rules: {
       // Include TypeScript ESLint recommended rules
       ...tsPlugin.configs.recommended.rules,
       ...tsPlugin.configs['recommended-requiring-type-checking'].rules,
+      // Include Playwright plugin recommended rules
+      ...playwright.configs.recommended.rules,
     },
   },
 ];
