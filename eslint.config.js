@@ -4,6 +4,7 @@ import tsPlugin from '@typescript-eslint/eslint-plugin';
 import playwright from 'eslint-plugin-playwright';
 import unicorn from 'eslint-plugin-unicorn';
 import sonarjs from 'eslint-plugin-sonarjs';
+import noJquery from 'eslint-plugin-no-jquery';
 
 export default [
   // Base JavaScript configuration
@@ -23,6 +24,7 @@ export default [
       unicorn,
       playwright,
       sonarjs,
+      'no-jquery': noJquery,
     },
     rules: {
       // Include TypeScript ESLint recommended rules
@@ -37,6 +39,9 @@ export default [
 
       // Include SonarJS plugin recommended rules
       ...sonarjs.configs.recommended.rules,
+
+      // Include no-jquery plugin rules to ban all uses of jQuery
+      ...noJquery.configs.all.rules,
     },
   },
 ];
