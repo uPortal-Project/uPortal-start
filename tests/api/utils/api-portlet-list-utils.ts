@@ -54,15 +54,10 @@ export async function updatePortletList(
   portletListName: string,
   items: Array<Record<string, string>>
 ): Promise<void> {
-  const payload =
-    items === undefined
-      ? {
-          name: portletListName,
-        }
-      : {
-          name: portletListName,
-          items: items,
-        };
+  const payload = {
+    name: portletListName,
+    items: items,
+  };
 
   const response = await request.put(
     `${config.url}api/portlet-list/${portletListUuid}`,

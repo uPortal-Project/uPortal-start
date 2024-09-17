@@ -6,6 +6,7 @@
     "@typescript-eslint/parser": "~8.6.0",
     "eslint": "~9.10.0",
     "eslint-plugin-playwright": "~1.6.0",
+    "eslint-plugin-sonarjs": "~2.0.0",
     "eslint-plugin-unicorn": "~55.0.0",
     "prettier": "~3.3.0",
     "type-coverage": "~2.29.0",

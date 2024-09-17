@@ -3,6 +3,7 @@ import tsParser from '@typescript-eslint/parser';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import playwright from 'eslint-plugin-playwright';
 import unicorn from 'eslint-plugin-unicorn';
+import sonarjs from 'eslint-plugin-sonarjs';
 
 export default [
   // Base JavaScript configuration
@@ -21,6 +22,7 @@ export default [
       '@typescript-eslint': tsPlugin,
       unicorn,
       playwright,
+      sonarjs,
     },
     rules: {
       // Include TypeScript ESLint recommended rules
@@ -32,6 +34,9 @@ export default [
 
       // Include Playwright plugin recommended rules
       ...playwright.configs.recommended.rules,
+
+      // Include SonarJS plugin recommended rules
+      ...sonarjs.configs.recommended.rules,
     },
   },
 ];

@@ -793,7 +793,6 @@ test("happy path", async ({ request }) => {
     updatedBy: config.users.student.username,
     updatedOn: expect.stringMatching(config.formats.auditDateTimeTz),
   };
-  //expect(jsonSpecificList).toEqual(expect.objectContaining(expectedCreatedList));
   expect(jsonSpecificList).toEqual(expectedCreatedList);
 
   // Retrieve all lists and confirm baseline portlet-lists and the new list equals the current set of lists
