@@ -1,12 +1,17 @@
 {
+  "type": "module",
   "devDependencies": {
     "@playwright/test": "~1.23.0",
-    "@typescript-eslint/eslint-plugin": "~5.62.0",
-    "@typescript-eslint/parser": "~5.62.0",
-    "eslint": "~8.57.0",
+    "@typescript-eslint/eslint-plugin": "~8.6.0",
+    "@typescript-eslint/parser": "~8.6.0",
+    "eslint": "~9.10.0",
+    "eslint-plugin-no-jquery": "~3.0.0",
+    "eslint-plugin-playwright": "~1.6.0",
+    "eslint-plugin-sonarjs": "~2.0.0",
+    "eslint-plugin-unicorn": "~55.0.0",
     "prettier": "~3.3.0",
     "type-coverage": "~2.29.0",
-    "typescript": "~4.9.0"
+    "typescript": "~5.6.0"
   },
   "scripts": {
     "lint": "npm run lint:tsc && npm run lint:type-coverage && npm run lint:eslint",
@@ -14,17 +19,6 @@
     "lint:type-coverage": "type-coverage",
     "lint:eslint": "eslint tests",
     "format": "prettier --write tests"
-  },
-  "eslintConfig": {
-    "root": true,
-    "parserOptions": {
-      "project": "./tsconfig.json"
-    },
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:@typescript-eslint/recommended-requiring-type-checking"
-    ]
   },
   "typeCoverage": {
     "atLeast": 100,
