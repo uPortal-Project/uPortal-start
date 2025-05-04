@@ -80,8 +80,6 @@
     <readOnly>false</readOnly>
     <value>
         <![CDATA[
-            <script src="/resource-server/webjars/vue/dist/vue.min.js"></script>
-            <script type="text/javascript" src="/resource-server/webjars/uportal__esco-content-menu/dist/esco.min.js" defer></script>
 
             <esco-content-grid
               portlet-api-url="/uPortal/api/v4-3/dlm/portletRegistry.json?category=Administration"
