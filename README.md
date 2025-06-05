@@ -1,8 +1,8 @@
-![uPortal logo](docs/en/images/uPortal-logo.jpg)
+![uPortal logo](https://github.com/uPortal-Project/uPortal/blob/master/docs/images/uPortal.png)
 
-[![build status](https://github.com/uPortal-Project/uPortal-start/workflows/CI/badge.svg?branch=master)](https://github.com/uPortal-Project/uPortal-start/actions)
+[![CI](https://github.com/uPortal-Project/uPortal-start/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/uPortal-Project/uPortal-start/actions/workflows/CI.yml)
 
-[:fr: Français](docs/fr)
+[:fr: Français docs](docs/fr)
 
 ## About uPortal-start
 
