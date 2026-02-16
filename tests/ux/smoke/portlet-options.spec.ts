@@ -1,21 +1,10 @@
-import { test, expect, Page } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import { config } from "../../general-config";
-
-async function loginUrl(page: Page, user: Record<string, string>) {
-  await page.goto(
-    `${config.url}Login?userName=${user.username}&password=${user.password}`
-  );
-  const loggedIn = page.locator("div.user-name");
-  await expect(loggedIn).toContainText(user.displayName);
-}
-
-async function logout(page: Page) {
-  await page.goto(`${config.url}Logout`);
-}
+import { loginViaUrl, logout } from "../utils/ux-general-utils";
 
 test.describe("Portlet Options menu", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.student);
+    await loginViaUrl(page, config.users.student);
   });
 
   test.afterEach(async ({ page }) => {
@@ -102,7 +91,7 @@ test.describe("Portlet Options menu", () => {
 
 test.describe("Portlet maximized view", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.student);
+    await loginViaUrl(page, config.users.student);
   });
 
   test.afterEach(async ({ page }) => {
@@ -164,7 +153,7 @@ test.describe("Portlet maximized view", () => {
 
 test.describe("Portlet edit mode", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.student);
+    await loginViaUrl(page, config.users.student);
   });
 
   test.afterEach(async ({ page }) => {
@@ -203,7 +192,7 @@ test.describe("Portlet edit mode", () => {
 
 test.describe("Portlet direct URL", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.student);
+    await loginViaUrl(page, config.users.student);
   });
 
   test.afterEach(async ({ page }) => {

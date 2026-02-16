@@ -97,6 +97,10 @@ jobs:
             echo "Attempt $i/60 - waiting 2s..."
             sleep 2
           done
+          if ! curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/uPortal/ | grep -qE "200|302"; then
+            echo "Portal did not become ready after 120s. Failing the build."
+            exit 1
+          fi
       - name: Install npm dependencies
         run: npm ci
       - name: Install Playwright browsers

@@ -1,24 +1,12 @@
-import { test, expect, Page } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import { config } from "../../general-config";
-
-// Log in via URL-based login (faster than CAS form for smoke tests)
-async function loginUrl(page: Page, user: Record<string, string>) {
-  await page.goto(
-    `${config.url}Login?userName=${user.username}&password=${user.password}`
-  );
-  const loggedIn = page.locator("div.user-name");
-  await expect(loggedIn).toContainText(user.displayName);
-}
-
-async function logout(page: Page) {
-  await page.goto(`${config.url}Logout`);
-}
+import { loginViaUrl, logout } from "../utils/ux-general-utils";
 
 // --- Admin ---
 
 test.describe("Admin smoke tests", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.admin);
+    await loginViaUrl(page, config.users.admin);
   });
 
   test.afterEach(async ({ page }) => {
@@ -54,7 +42,7 @@ test.describe("Admin smoke tests", () => {
     ).toBeVisible();
   });
 
-  test("waffle menu is present and opens", async ({ page }) => {
+  test("waffle menu is present", async ({ page }) => {
     const waffle = page.locator("waffle-menu");
     await expect(waffle).toBeAttached();
   });
@@ -69,7 +57,7 @@ test.describe("Admin smoke tests", () => {
 
 test.describe("Student smoke tests", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.student);
+    await loginViaUrl(page, config.users.student);
   });
 
   test.afterEach(async ({ page }) => {
@@ -142,7 +130,7 @@ test.describe("Student smoke tests", () => {
 
 test.describe("Faculty smoke tests", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.faculty);
+    await loginViaUrl(page, config.users.faculty);
   });
 
   test.afterEach(async ({ page }) => {
@@ -182,7 +170,7 @@ test.describe("Faculty smoke tests", () => {
 
 test.describe("Staff smoke tests", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.staff);
+    await loginViaUrl(page, config.users.staff);
   });
 
   test.afterEach(async ({ page }) => {

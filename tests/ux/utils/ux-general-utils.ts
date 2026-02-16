@@ -67,3 +67,24 @@ export async function loginViaPage(
     `You are signed in as ${user.displayName}`
   );
 }
+
+/*
+ * Log into uPortal via URL-based login (faster than CAS form for smoke tests)
+ */
+export async function loginViaUrl(
+  page: Page,
+  user: Record<string, string>
+): Promise<void> {
+  await page.goto(
+    `${config.url}Login?userName=${user.username}&password=${user.password}`
+  );
+  const loggedIn = page.locator("div.user-name");
+  await expect(loggedIn).toContainText(user.displayName);
+}
+
+/*
+ * Log out of uPortal via the browser
+ */
+export async function logout(page: Page): Promise<void> {
+  await page.goto(`${config.url}Logout`);
+}

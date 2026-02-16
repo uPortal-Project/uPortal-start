@@ -1,21 +1,10 @@
-import { test, expect, Page } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import { config } from "../../general-config";
-
-async function loginUrl(page: Page, user: Record<string, string>) {
-  await page.goto(
-    `${config.url}Login?userName=${user.username}&password=${user.password}`
-  );
-  const loggedIn = page.locator("div.user-name");
-  await expect(loggedIn).toContainText(user.displayName);
-}
-
-async function logout(page: Page) {
-  await page.goto(`${config.url}Logout`);
-}
+import { loginViaUrl, logout } from "../utils/ux-general-utils";
 
 test.describe("Waffle menu", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.student);
+    await loginViaUrl(page, config.users.student);
   });
 
   test.afterEach(async ({ page }) => {
@@ -54,7 +43,7 @@ test.describe("Waffle menu", () => {
 
 test.describe("Notifications", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.student);
+    await loginViaUrl(page, config.users.student);
   });
 
   test.afterEach(async ({ page }) => {
@@ -84,7 +73,7 @@ test.describe("Notifications", () => {
 
 test.describe("Customize", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.student);
+    await loginViaUrl(page, config.users.student);
   });
 
   test.afterEach(async ({ page }) => {
@@ -103,7 +92,7 @@ test.describe("Customize", () => {
 
 test.describe("Feedback link", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.student);
+    await loginViaUrl(page, config.users.student);
   });
 
   test.afterEach(async ({ page }) => {

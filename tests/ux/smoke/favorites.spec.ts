@@ -1,17 +1,6 @@
 import { test, expect, Page } from "@playwright/test";
 import { config } from "../../general-config";
-
-async function loginUrl(page: Page, user: Record<string, string>) {
-  await page.goto(
-    `${config.url}Login?userName=${user.username}&password=${user.password}`
-  );
-  const loggedIn = page.locator("div.user-name");
-  await expect(loggedIn).toContainText(user.displayName);
-}
-
-async function logout(page: Page) {
-  await page.goto(`${config.url}Logout`);
-}
+import { loginViaUrl, logout } from "../utils/ux-general-utils";
 
 /**
  * Get the portletId for a given portlet title on the current page.
@@ -43,7 +32,7 @@ async function getPortletId(
 
 test.describe("Favorites", () => {
   test.beforeEach(async ({ page }) => {
-    await loginUrl(page, config.users.student);
+    await loginViaUrl(page, config.users.student);
   });
 
   test.afterEach(async ({ page }) => {
@@ -59,6 +48,7 @@ test.describe("Favorites", () => {
         `/uPortal/api/layout?action=addFavorite&channelId=${id}`,
         { method: "POST", credentials: "same-origin" }
       );
+      if (!res.ok) throw new Error(`addFavorite failed: ${res.status}`);
       return res.json();
     }, portletId);
 
@@ -71,21 +61,23 @@ test.describe("Favorites", () => {
         "/uPortal/api/v4-3/dlm/portletRegistry.json?favorites=true",
         { credentials: "same-origin" }
       );
+      if (!res.ok) throw new Error(`portletRegistry failed: ${res.status}`);
       const data = await res.json();
-      const favs: string[] = [];
-      const find = (obj: any) => {
-        if (obj.portlets) {
-          for (const p of obj.portlets) {
-            if (p.favorite) favs.push(p.title);
+      return collectFavorites(data.registry);
+
+      function collectFavorites(obj: any): string[] {
+        const favs: string[] = [];
+        (function walk(node: any) {
+          if (node.portlets) {
+            for (const p of node.portlets) {
+              if (p.favorite) favs.push(p.title);
+            }
           }
-        }
-        if (obj.subcategories)
-          for (const s of obj.subcategories) find(s);
-        if (obj.categories)
-          for (const c of obj.categories) find(c);
-      };
-      find(data.registry);
-      return favs;
+          if (node.subcategories) for (const s of node.subcategories) walk(s);
+          if (node.categories) for (const c of node.categories) walk(c);
+        })(obj);
+        return favs;
+      }
     });
 
     expect(favorites).toContain("Calendar");
@@ -96,6 +88,7 @@ test.describe("Favorites", () => {
         `/uPortal/api/layout?action=removeFavorite&channelId=${id}`,
         { method: "POST", credentials: "same-origin" }
       );
+      if (!res.ok) throw new Error(`removeFavorite failed: ${res.status}`);
       return res.json();
     }, portletId);
 
@@ -111,6 +104,7 @@ test.describe("Favorites", () => {
         `/uPortal/api/layout?action=addFavorite&channelId=${id}`,
         { method: "POST", credentials: "same-origin" }
       );
+      if (!res.ok) throw new Error(`addFavorite failed: ${res.status}`);
       return res.json();
     }, portletId);
 
@@ -122,6 +116,7 @@ test.describe("Favorites", () => {
         `/uPortal/api/layout?action=removeFavorite&channelId=${id}`,
         { method: "POST", credentials: "same-origin" }
       );
+      if (!res.ok) throw new Error(`removeFavorite failed: ${res.status}`);
       return res.json();
     }, portletId);
 
@@ -133,21 +128,23 @@ test.describe("Favorites", () => {
         "/uPortal/api/v4-3/dlm/portletRegistry.json?favorites=true",
         { credentials: "same-origin" }
       );
+      if (!res.ok) throw new Error(`portletRegistry failed: ${res.status}`);
       const data = await res.json();
-      const favs: string[] = [];
-      const find = (obj: any) => {
-        if (obj.portlets) {
-          for (const p of obj.portlets) {
-            if (p.favorite) favs.push(p.title);
+      return collectFavorites(data.registry);
+
+      function collectFavorites(obj: any): string[] {
+        const favs: string[] = [];
+        (function walk(node: any) {
+          if (node.portlets) {
+            for (const p of node.portlets) {
+              if (p.favorite) favs.push(p.title);
+            }
           }
-        }
-        if (obj.subcategories)
-          for (const s of obj.subcategories) find(s);
-        if (obj.categories)
-          for (const c of obj.categories) find(c);
-      };
-      find(data.registry);
-      return favs;
+          if (node.subcategories) for (const s of node.subcategories) walk(s);
+          if (node.categories) for (const c of node.categories) walk(c);
+        })(obj);
+        return favs;
+      }
     });
 
     expect(favorites).not.toContain("Bookmarks");
