@@ -8,24 +8,24 @@
  */
 
 dependencies {
-    runtime "org.jasig.resourceserver:resource-server-webapp:${resourceServerWebjarVersion}@war"
+    runtimeOnly "org.jasig.resourceserver:resource-server-webapp:${resourceServerWebjarVersion}@war"
 
-    runtime "org.webjars.npm:vue:${vueVersion}@jar"
+    runtimeOnly "org.webjars.npm:vue:${vueVersion}@jar"
 
     // uPortal Web Components Webjars
-    runtime "org.webjars.npm:uportal__api-template-vue:${uPortalWebComponentsVersion}@jar"
-    runtime "org.webjars.npm:uportal__content-carousel:${uPortalWebComponentsVersion}@jar"
-    runtime "org.webjars.npm:uportal__esco-content-menu:${uPortalWebComponentsVersion}@jar"
-    runtime "org.webjars.npm:uportal__waffle-menu:${uPortalWebComponentsVersion}@jar"
+    runtimeOnly "org.webjars.npm:uportal__api-template-vue:${uPortalWebComponentsVersion}@jar"
+    runtimeOnly "org.webjars.npm:uportal__content-carousel:${uPortalWebComponentsVersion}@jar"
+    runtimeOnly "org.webjars.npm:uportal__esco-content-menu:${uPortalWebComponentsVersion}@jar"
+    runtimeOnly "org.webjars.npm:uportal__waffle-menu:${uPortalWebComponentsVersion}@jar"
 
     // Notification Webjars
-    runtime "org.webjars.npm:uportal__notification-banner:${notificationWebComponentsVersion}@jar"
-    runtime "org.webjars.npm:uportal__notification-icon:${notificationWebComponentsVersion}@jar"
-    runtime "org.webjars.npm:uportal__notification-list:${notificationWebComponentsVersion}@jar"
-    runtime "org.webjars.npm:uportal__notification-modal:${notificationWebComponentsVersion}@jar"
+    runtimeOnly "org.webjars.npm:uportal__notification-banner:${notificationWebComponentsVersion}@jar"
+    runtimeOnly "org.webjars.npm:uportal__notification-icon:${notificationWebComponentsVersion}@jar"
+    runtimeOnly "org.webjars.npm:uportal__notification-list:${notificationWebComponentsVersion}@jar"
+    runtimeOnly "org.webjars.npm:uportal__notification-modal:${notificationWebComponentsVersion}@jar"
 
 }
 
 war {
-    archiveName 'resource-server.war'
+    archiveFileName.set('resource-server.war')
 }

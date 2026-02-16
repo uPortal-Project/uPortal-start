@@ -1,7 +1,7 @@
 dependencies {
-    runtime "org.apache.portals.pluto:pluto-testsuite:${plutoVersion}@war"
+    runtimeOnly "org.apache.portals.pluto:pluto-testsuite:${plutoVersion}@war"
 }
 
 war {
-    archiveName 'pluto-testsuite.war'
+    archiveFileName.set('pluto-testsuite.war')
 }

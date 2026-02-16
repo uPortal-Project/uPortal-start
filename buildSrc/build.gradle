@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.apache.portals.pluto:pluto-util:${plutoVersion}"
+    implementation "org.apache.portals.pluto:pluto-util:${plutoVersion}"
 
     compileOnly "org.jasig.portal:uPortal-tools:${uPortalVersion}"
 }
