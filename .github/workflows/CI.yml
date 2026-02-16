@@ -63,3 +63,52 @@ jobs:
         run: ./gradlew -i -S hsqlStop
       - name: Generate Skin
         run: ./gradlew -i -S skinGenerate -DskinName=test
+
+  playwright:
+    name: "Playwright E2E tests"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 8
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Initialize portal
+        run: ./gradlew -i -S portalInit
+      - name: Start Tomcat
+        run: ./gradlew -i -S tomcatStart
+      - name: Wait for portal
+        run: |
+          echo "Waiting for uPortal to be ready..."
+          for i in $(seq 1 60); do
+            if curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/uPortal/ | grep -qE "200|302"; then
+              echo "Portal is ready"
+              break
+            fi
+            echo "Attempt $i/60 - waiting 2s..."
+            sleep 2
+          done
+      - name: Install npm dependencies
+        run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      - name: Run Playwright tests
+        run: npx playwright test --config=tests/uportal-pw.config.ts
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+      - name: Stop Tomcat
+        if: always()
+        run: ./gradlew -i -S tomcatStop

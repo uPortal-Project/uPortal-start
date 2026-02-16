@@ -423,3 +423,7 @@ modules.xml
 !**/src/test/**/*.tar.gz
 !**/src/test/**/*.tgz
 !**/src/test/**/*.zip
+
+### Playwright ###
+test-results/
+playwright-report/
