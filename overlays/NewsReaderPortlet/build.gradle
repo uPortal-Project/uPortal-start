@@ -5,13 +5,12 @@ apply plugin: GradleImportExportPlugin
 apply plugin: GradlePlutoPlugin
 
 dependencies {
-    runtime "org.jasig.portlet:NewsReaderPortlet:${newsReaderPortletVersion}@war"
-    compile configurations.jdbc
+    runtimeOnly "org.jasig.portlet:NewsReaderPortlet:${newsReaderPortletVersion}@war"
     jdbc "org.jasig.portal:uPortal-hibernate3-dialects:${uPortalVersion}"
 }
 
 war {
-    archiveName 'NewsReaderPortlet.war'
+    archiveFileName.set('NewsReaderPortlet.war')
     /*
      * For uPortal 5 (and beyond), the Community Best Practice for WAR files published to Maven
      * Central is that they should *not* contain JDBC driver jars;  all such WAR files are
@@ -37,7 +36,6 @@ war {
 import org.apereo.portal.start.shell.PortalShellInvoker
 
 dependencies {
-    impexp configurations.jdbc
     impexp "${portletApiDependency}"
     impexp "${servletApiDependency}"
 }

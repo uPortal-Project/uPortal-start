@@ -3,13 +3,12 @@ import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
 apply plugin: GradlePlutoPlugin
 
 dependencies {
-    runtime "org.jasig.portlet:BookmarksPortlet:${bookmarksPortletVersion}@war"
-    compile configurations.jdbc
+    runtimeOnly "org.jasig.portlet:BookmarksPortlet:${bookmarksPortletVersion}@war"
     jdbc "org.jasig.portal:uPortal-hibernate3-dialects:${uPortalVersion}"
 }
 
 war {
-    archiveName 'BookmarksPortlet.war'
+    archiveFileName.set('BookmarksPortlet.war')
     exclude 'WEB-INF/tags/uwfn.tld'
     /*
      * For uPortal 5 (and beyond), the Community Best Practice for WAR files published to Maven

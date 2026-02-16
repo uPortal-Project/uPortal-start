@@ -3,9 +3,9 @@ import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
 apply plugin: GradlePlutoPlugin
 
 dependencies {
-    runtime "org.jasig.portlet:basiclti-portlet:${basicltiPortletVersion}@war"
+    runtimeOnly "org.jasig.portlet:basiclti-portlet:${basicltiPortletVersion}@war"
 }
 
 war {
-    archiveName 'basiclti-portlet.war'
+    archiveFileName.set('basiclti-portlet.war')
 }

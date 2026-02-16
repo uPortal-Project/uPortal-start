@@ -2,7 +2,6 @@ import scaldingspoon.gradle.WarOverlayPlugin
 
 subprojects {
 
-    apply plugin: 'maven'
     apply plugin: WarOverlayPlugin
     apply plugin: org.apereo.portal.start.gradle.plugins.GradleTomcatDeployPlugin
 
@@ -22,6 +21,10 @@ subprojects {
         jdbc
         shell
         impexp
+        // Gradle 8: Configuration-as-dependency is no longer allowed;
+        // use extendsFrom so overlay deps inherit jdbc drivers
+        implementation.extendsFrom jdbc
+        impexp.extendsFrom jdbc
     }
 
     dependencies {
