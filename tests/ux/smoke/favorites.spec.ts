@@ -1,34 +1,6 @@
-import { test, expect, Page } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import { config } from "../../general-config";
 import { loginViaUrl, logout } from "../utils/ux-general-utils";
-
-/**
- * Get the portletId for a given portlet title on the current page.
- * The ID is embedded in inline scripts inside `.up-portlet-options-item.favorite`.
- */
-async function getPortletId(
-  page: Page,
-  portletTitle: string
-): Promise<string> {
-  return page.evaluate((title) => {
-    const wrappers = document.querySelectorAll(".up-portlet-wrapper");
-    for (const wrapper of wrappers) {
-      const link = wrapper.querySelector(".portlet-title a");
-      if (link && link.getAttribute("title") === title) {
-        const script = wrapper.querySelector(
-          ".up-portlet-options-item.favorite script"
-        );
-        if (script) {
-          const match = script.textContent!.match(
-            /portletId\s*:\s*'(\d+)'/
-          );
-          if (match) return match[1];
-        }
-      }
-    }
-    throw new Error(`Portlet "${title}" not found on page`);
-  }, portletTitle);
-}
 
 test.describe("Favorites", () => {
   test.beforeEach(async ({ page }) => {
@@ -39,115 +11,90 @@ test.describe("Favorites", () => {
     await logout(page);
   });
 
-  test("add a portlet to favorites via API", async ({ page }) => {
-    const portletId = await getPortletId(page, "Calendar");
+  test("add a portlet to favorites via Options menu", async ({ page }) => {
+    const calendarWrapper = page.locator(
+      ".up-portlet-wrapper:has(.portlet-title a[title='Calendar'])"
+    );
 
-    // Add to favorites
-    const addResponse = await page.evaluate(async (id) => {
-      const res = await fetch(
-        `/uPortal/api/layout?action=addFavorite&channelId=${id}`,
-        { method: "POST", credentials: "same-origin" }
-      );
-      if (!res.ok) throw new Error(`addFavorite failed: ${res.status}`);
-      return res.json();
-    }, portletId);
+    // Open Options dropdown
+    await calendarWrapper
+      .locator(".portlet-options-menu .dropdown-toggle")
+      .click();
 
-    expect(addResponse.response).toContain("Calendar");
-    expect(addResponse.response).toContain("favorite");
+    // Click "Add to my Favorites"
+    const favLink = calendarWrapper.locator(
+      ".up-portlet-options-item.favorite a"
+    );
+    await expect(favLink).toContainText("Add to my Favorites");
+    await favLink.click();
 
-    // Verify via portlet registry API
-    const favorites = await page.evaluate(async () => {
-      const res = await fetch(
-        "/uPortal/api/v4-3/dlm/portletRegistry.json?favorites=true",
-        { credentials: "same-origin" }
-      );
-      if (!res.ok) throw new Error(`portletRegistry failed: ${res.status}`);
-      const data = await res.json();
-      return collectFavorites(data.registry);
+    // Verify success notification appears
+    await expect(page.locator("#up-notification")).toContainText(
+      "You have added Calendar as a favorite"
+    );
 
-      function collectFavorites(obj: any): string[] {
-        const favs: string[] = [];
-        (function walk(node: any) {
-          if (node.portlets) {
-            for (const p of node.portlets) {
-              if (p.favorite) favs.push(p.title);
-            }
-          }
-          if (node.subcategories) for (const s of node.subcategories) walk(s);
-          if (node.categories) for (const c of node.categories) walk(c);
-        })(obj);
-        return favs;
-      }
-    });
-
-    expect(favorites).toContain("Calendar");
+    // Reload and verify the link now says "Remove from my favorites"
+    await page.reload();
+    await calendarWrapper
+      .locator(".portlet-options-menu .dropdown-toggle")
+      .click();
+    await expect(
+      calendarWrapper.locator(".up-portlet-options-item.favorite a")
+    ).toContainText("Remove from my favorites");
 
     // Clean up — remove the favorite
-    const removeResponse = await page.evaluate(async (id) => {
-      const res = await fetch(
-        `/uPortal/api/layout?action=removeFavorite&channelId=${id}`,
-        { method: "POST", credentials: "same-origin" }
-      );
-      if (!res.ok) throw new Error(`removeFavorite failed: ${res.status}`);
-      return res.json();
-    }, portletId);
-
-    expect(removeResponse.response).toContain("Removed");
+    await calendarWrapper
+      .locator(".up-portlet-options-item.favorite a")
+      .click();
+    await expect(page.locator("#up-notification")).toContainText(
+      "Removed from Favorites successfully"
+    );
   });
 
-  test("remove a portlet from favorites via API", async ({ page }) => {
-    const portletId = await getPortletId(page, "Bookmarks");
+  test("remove a portlet from favorites via Options menu", async ({
+    page,
+  }) => {
+    const calendarWrapper = page.locator(
+      ".up-portlet-wrapper:has(.portlet-title a[title='Calendar'])"
+    );
 
-    // First add it and verify
-    const addResponse = await page.evaluate(async (id) => {
-      const res = await fetch(
-        `/uPortal/api/layout?action=addFavorite&channelId=${id}`,
-        { method: "POST", credentials: "same-origin" }
-      );
-      if (!res.ok) throw new Error(`addFavorite failed: ${res.status}`);
-      return res.json();
-    }, portletId);
+    // First add Calendar to favorites
+    await calendarWrapper
+      .locator(".portlet-options-menu .dropdown-toggle")
+      .click();
+    await calendarWrapper
+      .locator(".up-portlet-options-item.favorite a")
+      .click();
+    await expect(page.locator("#up-notification")).toContainText(
+      "You have added Calendar as a favorite"
+    );
 
-    expect(addResponse.response).toContain("Bookmarks");
+    // Reload so the link changes to "Remove"
+    await page.reload();
+    await calendarWrapper
+      .locator(".portlet-options-menu .dropdown-toggle")
+      .click();
 
-    // Then remove it
-    const removeResponse = await page.evaluate(async (id) => {
-      const res = await fetch(
-        `/uPortal/api/layout?action=removeFavorite&channelId=${id}`,
-        { method: "POST", credentials: "same-origin" }
-      );
-      if (!res.ok) throw new Error(`removeFavorite failed: ${res.status}`);
-      return res.json();
-    }, portletId);
+    // Click "Remove from my favorites"
+    const removeLink = calendarWrapper.locator(
+      ".up-portlet-options-item.favorite a"
+    );
+    await expect(removeLink).toContainText("Remove from my favorites");
+    await removeLink.click();
 
-    expect(removeResponse.response).toContain("Removed");
+    // Verify removal notification
+    await expect(page.locator("#up-notification")).toContainText(
+      "Removed from Favorites successfully"
+    );
 
-    // Verify it's gone
-    const favorites = await page.evaluate(async () => {
-      const res = await fetch(
-        "/uPortal/api/v4-3/dlm/portletRegistry.json?favorites=true",
-        { credentials: "same-origin" }
-      );
-      if (!res.ok) throw new Error(`portletRegistry failed: ${res.status}`);
-      const data = await res.json();
-      return collectFavorites(data.registry);
-
-      function collectFavorites(obj: any): string[] {
-        const favs: string[] = [];
-        (function walk(node: any) {
-          if (node.portlets) {
-            for (const p of node.portlets) {
-              if (p.favorite) favs.push(p.title);
-            }
-          }
-          if (node.subcategories) for (const s of node.subcategories) walk(s);
-          if (node.categories) for (const c of node.categories) walk(c);
-        })(obj);
-        return favs;
-      }
-    });
-
-    expect(favorites).not.toContain("Bookmarks");
+    // Reload and verify it switched back to "Add"
+    await page.reload();
+    await calendarWrapper
+      .locator(".portlet-options-menu .dropdown-toggle")
+      .click();
+    await expect(
+      calendarWrapper.locator(".up-portlet-options-item.favorite a")
+    ).toContainText("Add to my Favorites");
   });
 
   test("Options menu shows Add to my Favorites link", async ({ page }) => {
