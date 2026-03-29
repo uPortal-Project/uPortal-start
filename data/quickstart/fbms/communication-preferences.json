@@ -1,0 +1,250 @@
+{
+    "fname": "communication-preferences",
+    "version": 6,
+    "schema": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "$id": "http://localhost:8090/communication-preferences.json",
+        "title": "Communication Preferences",
+        "description": "Please provide a current personal primary cell number or email address. Failure to do so will cause our self-service features to not work for you. Email addresses with any SCCCD domain are not allowed as they cannot be used for password resets. Restricted email domains are: my.scccd.edu; scccd.edu; scccd.net; fresnocitycollege.edu; cloviscollege.edu; and reedleycollege.edu",
+        "type": "object",
+        "properties": {
+            "contact_information": {
+                "$id": "/properties/contact_information",
+                "title": "My Contact Information",
+                "description": "You may provide a cell number or email address or both. This is required for all students. Be aware that confidential information may be sent to the cell numbers and/or email address provided here.",
+                "type": "object",
+                "properties": {
+                    "primary_cell_number": {
+                        "$id": "/properties/contact_information/primary_cell_number",
+                        "title": "Primary Cell Number",
+                        "description": "(Must be a 10 digit number in format: ###-###-####)",
+                        "type": "string",
+                        "pattern": "^\\d{3}-\\d{3}-\\d{4}$",
+                        "messages": {
+                            "pattern": "Must be 10 digit number in format: ###-###-####."
+                        }
+                    },
+                    "secondary_cell_number": {
+                        "$id": "/properties/contact_information/secondary_cell_number",
+                        "title": "Secondary Cell Number (optional)",
+                        "description": "(This number can be used for an emergency contact. Must be a 10 digit number in format: ###-###-####)",
+                        "type": "string",
+                        "pattern": "^\\d{3}-\\d{3}-\\d{4}$",
+                        "messages": {
+                            "pattern": "Must be 10 digit number in format: ###-###-####."
+                        }
+                    },
+                    "email_address": {
+                        "$id": "/properties/contact_information/email_address",
+                        "title": "Personal Email Address",
+                        "description": "(SCCCD school email addresses are not allowed.)",
+                        "type": "string",
+                        "pattern": "^.+@.+\\..+$",
+                        "messages": {
+                            "pattern": "Please enter a valid email address."
+                        }
+                    }
+                }
+            },
+            "channels": {
+                "$id": "/properties/channels",
+                "title": "My Subscriptions",
+                "description": "The following messaging services are available for you to subscribe. Some services are available at multiple campuses; your primary campus will be selected by default.",
+                "type": "object",
+                "properties": {
+                    "emergency": {
+                        "$id": "/properties/channels/emergency",
+                        "title": "1st2know Emergency Alert Notifications",
+                        "description": "This service will notify you of any emergencies happening on campus that could be potentially life threatening.",
+                        "type": "object",
+                        "properties": {
+                            "default-selections-enforced": {
+                                "$id": "/properties/channels/emergency/default-selections-enforced",
+                                "title": "The system has detected that you are an active student, instructor, or employee and you will receive emergency notifications by default per District Procedure. A link to the District Procedure is available at the bottom of this page.",
+                                "type": "string",
+                                "enum": [
+                                    "Default"
+                                ]
+                            }
+                        }
+                    },
+                    "admissions": {
+                        "$id": "/properties/channels/admissions",
+                        "title": "Admissions and Records Notifications",
+                        "description": "This channel will assist your academic success by notifying you of any important dates, requirements, or issues relating to admissions, registration and fees, graduation or student records.",
+                        "type": "object",
+                        "properties": {
+                            "receive": {
+                                "$id": "/properties/channels/admissions/receive",
+                                "title": "Receive?",
+                                "type": "string",
+                                "enum": [
+                                    "Yes",
+                                    "No"
+                                ]
+                            }
+                        }
+                    },
+                    "financial-aid": {
+                        "$id": "/properties/channels/financial-aid",
+                        "title": "Financial Aid Notifications",
+                        "description": "This channel will notify you of important financial aid information, scholarship or grant opportunities, and upcoming deadlines.",
+                        "type": "object",
+                        "properties": {
+                            "receive": {
+                                "$id": "/properties/channels/financial-aid/receive",
+                                "title": "Receive?",
+                                "type": "string",
+                                "enum": [
+                                    "Yes",
+                                    "No"
+                                ]
+                            }
+                        }
+                    },
+                    "counseling": {
+                        "$id": "/properties/channels/counseling",
+                        "title": "Counseling Notifications",
+                        "description": "This channel will notify you of important dates and opportunities to connect with academic counseling and special programs such as EOPS, DSPS, CalWorks, Veterans, Trio, etc.",
+                        "type": "object",
+                        "properties": {
+                            "receive": {
+                                "$id": "/properties/channels/counseling/receive",
+                                "title": "Receive?",
+                                "type": "string",
+                                "enum": [
+                                    "Yes",
+                                    "No"
+                                ]
+                            }
+                        }
+                    },
+                    "support-services": {
+                        "$id": "/properties/channels/support-services",
+                        "title": "Support Services Notifications",
+                        "description": "This channel will notify you of opportunities to connect with student support resources on campus including Library, Tutorial, Career Centers, Transfer Centers, Food Pantry, Transportation, Health and Psych Services.",
+                        "type": "object",
+                        "properties": {
+                            "receive": {
+                                "$id": "/properties/channels/support-services/receive",
+                                "title": "Receive?",
+                                "type": "string",
+                                "enum": [
+                                    "Yes",
+                                    "No"
+                                ]
+                            }
+                        }
+                    },
+                    "business-office": {
+                        "$id": "/properties/channels/business-office",
+                        "title": "Business Office Notifications",
+                        "description": "This channel will notify you of important business office deadlines, past due balances, and business office holds impacting your student account.",
+                        "type": "object",
+                        "properties": {
+                            "receive": {
+                                "$id": "/properties/channels/business-office/receive",
+                                "title": "Receive?",
+                                "type": "string",
+                                "enum": [
+                                    "Yes",
+                                    "No"
+                                ]
+                            }
+                        }
+                    },
+                    "campus-communications": {
+                        "$id": "/properties/channels/campus-communications",
+                        "title": "Campus Specific Communications",
+                        "description": "Subscription to this channel will make your contact information available to various other SCCCD and College managed communications platforms. Specific topics will vary but will be focused on information specific to the College you attend, or information directly related to your student experience.",
+                        "type": "object",
+                        "properties": {
+                            "receive": {
+                                "$id": "/properties/channels/campus-communications/receive",
+                                "title": "Receive?",
+                                "type": "string",
+                                "enum": [
+                                    "Yes",
+                                    "No"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "metadata": {
+        "channels": {
+            "emergency": {
+                "default-selections-enforced": {
+                    "classNames": "standalone-label",
+                    "ui:widget": "radio",
+                    "ui:options": {
+                        "inline": true
+                    }
+                },
+                "receive": {
+                    "ui:widget": "radio",
+                    "ui:options": {
+                        "inline": true
+                    }
+                },
+                "locations": {
+                    "ui:widget": "checkboxes",
+                    "ui:options": {
+                        "inline": true
+                    }
+                }
+            },
+            "admissions": {
+                "receive": {
+                    "ui:widget": "radio",
+                    "ui:options": {
+                        "inline": true
+                    }
+                }
+            },
+            "financial-aid": {
+                "receive": {
+                    "ui:widget": "radio",
+                    "ui:options": {
+                        "inline": true
+                    }
+                }
+            },
+            "counseling": {
+                "receive": {
+                    "ui:widget": "radio",
+                    "ui:options": {
+                        "inline": true
+                    }
+                }
+            },
+            "support-services": {
+                "receive": {
+                    "ui:widget": "radio",
+                    "ui:options": {
+                        "inline": true
+                    }
+                }
+            },
+            "business-office": {
+                "receive": {
+                    "ui:widget": "radio",
+                    "ui:options": {
+                        "inline": true
+                    }
+                }
+            },
+            "campus-communications": {
+                "receive": {
+                    "ui:widget": "radio",
+                    "ui:options": {
+                        "inline": true
+                    }
+                }
+            }
+        }
+    }
+}
