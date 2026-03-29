@@ -18,3 +18,5 @@ include 'overlays:ResourceServingWebapp'
 include 'overlays:SimpleContentPortlet'
 include 'overlays:uPortal'
 include 'overlays:WebProxyPortlet'
+
+include 'overlays:fbms'
