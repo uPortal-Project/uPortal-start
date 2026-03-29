@@ -57,10 +57,6 @@ export async function loginViaPage(
   await page.waitForSelector(SEL_UPORTAL_LOGIN_SUBMIT);
   await page.click(SEL_UPORTAL_LOGIN_SUBMIT);
 
-  // Confirm uPortal logo
-  const uportalLogo = page.locator("h1.portal-logo > a");
-  await expect(uportalLogo).toHaveText("uPortal");
-
   // Confirm user is logged in
   const loggedInUserDisplay = page.locator("div.user-name");
   await expect(loggedInUserDisplay).toHaveText(

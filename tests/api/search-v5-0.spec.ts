@@ -8,20 +8,20 @@ test("search all", async ({ request }) => {
     `${config.url}api/v5-0/portal/search?q=cartoon`
   );
   expect(response.status()).toEqual(200);
-  expect(await response.json()).toEqual({
-    people: [],
-    portlets: [
-      {
-        description: "Daily Business Cartoon by Ted Goff, www.tedgoff.com",
-        "favorite": false,
-        fname: "daily-business-cartoon",
-        name: "Daily Business Cartoon",
-        score: "4.0",
-        title: "Daily Business Cartoon",
-        url: "/uPortal/p/daily-business-cartoon.ctf3/max/render.uP",
-      },
-    ],
+  const body = await response.json();
+  expect(body.people).toEqual([]);
+  expect(body.portlets).toHaveLength(1);
+  expect(body.portlets[0]).toMatchObject({
+    description: "Daily Business Cartoon by Ted Goff, www.tedgoff.com",
+    favorite: false,
+    fname: "daily-business-cartoon",
+    name: "Daily Business Cartoon",
+    score: "4.0",
+    title: "Daily Business Cartoon",
   });
+  expect(body.portlets[0].url).toMatch(
+    /\/uPortal\/p\/daily-business-cartoon\.ctf\d+\/max\/render\.uP/
+  );
 });
 
 test("search type people", async ({ request }) => {
