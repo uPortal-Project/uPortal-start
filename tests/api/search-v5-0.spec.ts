@@ -8,7 +8,10 @@ test("search all", async ({ request }) => {
     `${config.url}api/v5-0/portal/search?q=cartoon`
   );
   expect(response.status()).toEqual(200);
-  const body = await response.json();
+  const body: {
+    people: unknown[];
+    portlets: { description: string; favorite: boolean; fname: string; name: string; score: string; title: string; url: string }[];
+  } = await response.json();
   expect(body.people).toEqual([]);
   expect(body.portlets).toHaveLength(1);
   expect(body.portlets[0]).toMatchObject({

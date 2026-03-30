@@ -26,6 +26,11 @@ ext {
     isWindows = OperatingSystem.current().isWindows()
 }
 
+node {
+    version = nodejsVersion
+    download = true
+}
+
 /*
  * Load the buildProperties collection, which is used by the CLI Tools.
  * (NOTE:  This item must come first.)

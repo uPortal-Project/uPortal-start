@@ -112,8 +112,8 @@ test.describe("Portlet maximized view", () => {
       page.locator(".portlet-options-menu .dropdown-toggle")
     ).toBeVisible();
 
-    // Portlet content should be visible
-    await expect(page.getByText("no bookmarks")).toBeVisible();
+    // Portlet content is rendered by JavaScript; wait for it to load
+    await expect(page.locator(".bookmarksPortlet")).toBeVisible();
   });
 
   test("Calendar portlet opens in maximized mode with expanded content", async ({
