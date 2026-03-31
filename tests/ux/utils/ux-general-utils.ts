@@ -83,4 +83,7 @@ export async function loginViaUrl(
  */
 export async function logout(page: Page): Promise<void> {
   await page.goto(`${config.url}Logout`);
+  // Navigate back to the portal so the next test's loginViaUrl starts
+  // from a known state instead of the CAS logout page
+  await page.goto(config.url);
 }
