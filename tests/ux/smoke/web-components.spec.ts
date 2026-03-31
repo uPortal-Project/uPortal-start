@@ -83,10 +83,10 @@ test.describe("Customize", () => {
   test("customize button is visible for logged-in users", async ({
     page,
   }) => {
-    const customizeBtn = page.locator(
+    const customizeButton = page.locator(
       "button:has-text('Customize'), a:has-text('Customize')"
     );
-    await expect(customizeBtn).toBeVisible();
+    await expect(customizeButton).toBeVisible();
   });
 });
 
