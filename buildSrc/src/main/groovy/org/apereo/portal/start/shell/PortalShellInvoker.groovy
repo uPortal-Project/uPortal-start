@@ -12,7 +12,7 @@ class PortalShellInvoker {
         File serverBase = project.rootProject.file(project.rootProject.ext['buildProperties'].getProperty('server.base'))
         File deployDir = new File (serverBase, "webapps/${project.name}")
 
-        File libsDir = project.rootProject.file(project.rootProject.getProperty('libsDir'))
+        File libsDir = new File(project.rootProject.buildDir, 'libs')
         libsDir.mkdirs()
         project.configurations.shell.files.each {
             project.ant.copy(todir: libsDir, file: it.absolutePath)

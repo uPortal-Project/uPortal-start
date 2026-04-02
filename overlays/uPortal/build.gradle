@@ -2,8 +2,7 @@ import org.apereo.portal.start.gradle.plugins.GradleImportExportPlugin
 import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
 
 dependencies {
-    runtime "org.jasig.portal:uPortal-webapp:${uPortalVersion}@war"
-    compile configurations.jdbc
+    runtimeOnly "org.jasig.portal:uPortal-webapp:${uPortalVersion}@war"
 }
 
 apply plugin: GradleImportExportPlugin
@@ -16,7 +15,7 @@ node {
 }
 
 war {
-    archiveName 'uPortal.war'
+    archiveFileName.set('uPortal.war')
     /*
      * For uPortal 5 (and beyond), the Community Best Practice for WAR files published to Maven
      * Central is that they should *not* contain JDBC driver jars;  all such WAR files are
