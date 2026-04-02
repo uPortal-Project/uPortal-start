@@ -24,6 +24,8 @@ dependencies {
     runtime "org.webjars.npm:uportal__notification-list:${notificationWebComponentsVersion}@jar"
     runtime "org.webjars.npm:uportal__notification-modal:${notificationWebComponentsVersion}@jar"
 
+    runtime "org.webjars.npm:uportal__form-builder:${formBuilderVersion}@jar"
+
 }
 
 war {
