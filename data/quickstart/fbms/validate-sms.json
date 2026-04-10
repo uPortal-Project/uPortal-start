@@ -1,0 +1,19 @@
+{
+  "fname": "validate-sms",
+  "version": 1,
+  "schema": {
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$id": "http://localhost:8090/validate-sms.json",
+    "title": "Mobile Number Validation",
+    "description": "The system detected that your primary cell number has changed.  A text message has been sent to the primary cell number containing a validation code.  Please locate the code in the message and enter it below.",
+    "type": "object",
+    "properties": {
+      "validation_code": {
+        "$id": "/properties/validation_code",
+        "title": "Validation Code",
+        "type": "number"
+      }
+    }
+  },
+  "metadata": {}
+}
