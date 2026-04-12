@@ -3,12 +3,11 @@ import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
 apply plugin: GradlePlutoPlugin
 
 dependencies {
-    runtime "org.jasig.portlet.notification:notification-portlet-webapp:${notificationPortletVersion}@war"
-    compile configurations.jdbc
+    runtimeOnly "org.jasig.portlet.notification:notification-portlet-webapp:${notificationPortletVersion}@war"
 }
 
 war {
-    archiveName 'NotificationPortlet.war'
+    archiveFileName.set('NotificationPortlet.war')
     /*
      * For uPortal 5 (and beyond), the Community Best Practice for WAR files published to Maven
      * Central is that they should *not* contain JDBC driver jars;  all such WAR files are
