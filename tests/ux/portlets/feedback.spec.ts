@@ -29,8 +29,8 @@ test.describe("Feedback Portlet — User View", () => {
     await loginViaUrl(page, config.users.student);
     await page.goto(FEEDBACK_URL);
 
-    // Click the "yes" radio/label
-    await page.locator("label[for='yes'], #yes").first().click();
+    // Click the "yes" radio/label (IDs are portlet-namespaced)
+    await page.locator("label[for$='yes']").first().click();
 
     // Submit button should now be enabled
     const submitBtn = page.locator(
