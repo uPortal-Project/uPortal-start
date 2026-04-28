@@ -18,6 +18,22 @@ export default [
       parserOptions: {
         project: './tsconfig.json',
       },
+      // Test files run a mix of Node (Playwright runner) and browser code
+      // (callbacks passed to page.evaluate / page.waitForFunction execute in
+      // the browser). Declare both global namespaces so ESLint's no-undef
+      // rule doesn't flag legitimate uses of `window`, `document`, etc.
+      globals: {
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        URL: 'readonly',
+        URLSearchParams: 'readonly',
+        Element: 'readonly',
+        HTMLElement: 'readonly',
+        NodeListOf: 'readonly',
+        process: 'readonly',
+        console: 'readonly',
+      },
     },
     plugins: {
       '@typescript-eslint': tsPlugin,

@@ -5,6 +5,8 @@ const config: PlaywrightTestConfig = {
     viewport: { width: 1280, height: 720 },
     ignoreHTTPSErrors: true,
     video: "on-first-retry",
+    trace: "retain-on-failure",
+    screenshot: "only-on-failure",
   },
   reporter: [["list"], ["html", { open: "never" }]],
   retries: 0,

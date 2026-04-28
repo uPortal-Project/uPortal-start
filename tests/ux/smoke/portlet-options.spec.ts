@@ -1,6 +1,10 @@
 import { test, expect } from "@playwright/test";
 import { config } from "../../general-config";
-import { loginViaUrl, logout } from "../utils/ux-general-utils";
+import {
+  loginViaUrl,
+  logout,
+  openPortletOptions,
+} from "../utils/ux-general-utils";
 
 test.describe("Portlet Options menu", () => {
   test.beforeEach(async ({ page }) => {
@@ -18,9 +22,7 @@ test.describe("Portlet Options menu", () => {
     const calendarWrapper = page.locator(
       ".up-portlet-wrapper:has(.portlet-title a[title='Calendar'])"
     );
-    await calendarWrapper
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
+    await openPortletOptions(calendarWrapper);
 
     const menu = calendarWrapper.locator(".portlet-options-menu .dropdown-menu");
     await expect(menu).toBeVisible();
@@ -59,9 +61,7 @@ test.describe("Portlet Options menu", () => {
     const bookmarksWrapper = page.locator(
       ".up-portlet-wrapper:has(.portlet-title a[title='Bookmarks'])"
     );
-    await bookmarksWrapper
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
+    await openPortletOptions(bookmarksWrapper);
 
     const menu = bookmarksWrapper.locator(
       ".portlet-options-menu .dropdown-menu"
@@ -136,10 +136,8 @@ test.describe("Portlet maximized view", () => {
   }) => {
     await page.goto(`${config.url}p/calendar`);
 
-    // Open Options in maximized mode
-    await page
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
+    // Open Options in maximized mode (single portlet on the page)
+    await openPortletOptions(page.locator(".up-portlet-wrapper"));
 
     // Should have "Return to dashboard" instead of Maximize
     await expect(
@@ -164,8 +162,8 @@ test.describe("Portlet edit mode", () => {
     // Navigate to Bookmarks in maximized + edit mode via Options menu
     await page.goto(`${config.url}p/bookmarks`);
 
-    // Click Edit in Options
-    await page.locator(".portlet-options-menu .dropdown-toggle").click();
+    // Open Options and click Edit
+    await openPortletOptions(page.locator(".up-portlet-wrapper"));
     await page.locator(".up-portlet-options-item.edit a").click();
 
     // Wait for edit mode content to load

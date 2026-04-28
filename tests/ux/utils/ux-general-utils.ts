@@ -1,4 +1,4 @@
-import { expect, Page, APIRequestContext } from "@playwright/test";
+import { expect, Page, APIRequestContext, Locator } from "@playwright/test";
 import { config } from "../../general-config";
 
 const SEL_UPORTAL_LOGIN = "#portalCASLoginLink";
@@ -86,4 +86,60 @@ export async function logout(page: Page): Promise<void> {
   // Navigate back to the portal so the next test's loginViaUrl starts
   // from a known state instead of the CAS logout page
   await page.goto(config.url);
+}
+
+/*
+ * Force-unhide the .portlet-options-menu wrappers on the current page.
+ *
+ * The XSL renders these with class="hidden" and a jQuery document.ready
+ * handler removes the class on portlets that have menu items. In headless
+ * Playwright runs the timing is variable enough that the click target may
+ * still be hidden when a test interacts with it. Real users hit it because
+ * jQuery does eventually run; smoke tests need a deterministic unhide.
+ *
+ * Call after every page.goto(...) / page.reload() that lands on a view with
+ * portlet options to interact with.
+ */
+export async function unhidePortletOptionsMenus(page: Page): Promise<void> {
+  await page.evaluate(() => {
+    for (const element of document.querySelectorAll(
+      ".portlet-options-menu.hidden"
+    )) {
+      element.classList.remove("hidden");
+    }
+  });
+}
+
+/*
+ * Open the BS5 dropdown for a portlet's Options menu via the Bootstrap API.
+ *
+ * Why not just call .click() on the .dropdown-toggle?  In headless Chromium
+ * the event sequence Playwright dispatches doesn't always trigger Bootstrap
+ * 5's dropdown handler that's bound at document load.  Calling
+ * `bootstrap.Dropdown(toggle).show()` is what the click handler does anyway
+ * and is reliable across browsers and timing.  Real users still get their
+ * dropdowns through the click path.
+ *
+ * Also unhides the parent .portlet-options-menu in case
+ * unhidePortletOptionsMenus hasn't been called for this page state yet.
+ */
+export async function openPortletOptions(wrapper: Locator): Promise<void> {
+  await wrapper.evaluate((wrapperElement) => {
+    interface BootstrapDropdownInstance {
+      show(): void;
+    }
+    type WithBootstrap = typeof window & {
+      bootstrap?: {
+        Dropdown?: new (element: Element) => BootstrapDropdownInstance;
+      };
+    };
+    const optionsMenu = wrapperElement.querySelector(".portlet-options-menu");
+    if (!optionsMenu) return;
+    optionsMenu.classList.remove("hidden");
+    const toggle = optionsMenu.querySelector(".dropdown-toggle");
+    const Dropdown = (window as WithBootstrap).bootstrap?.Dropdown;
+    if (toggle && Dropdown) {
+      new Dropdown(toggle).show();
+    }
+  });
 }
