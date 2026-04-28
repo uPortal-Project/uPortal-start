@@ -2,6 +2,22 @@ import { test, expect } from "@playwright/test";
 import { loginViaUrl } from "../utils/ux-general-utils";
 import { config } from "../../general-config";
 
+interface TinyMceEditor {
+  setContent(content: string): void;
+}
+
+interface TinyMce {
+  activeEditor?: TinyMceEditor;
+  editors?: { length: number };
+}
+
+declare global {
+  interface Window {
+    tinymce?: TinyMce;
+    tinyMCE?: TinyMce;
+  }
+}
+
 const ANNOUNCEMENTS_URL = `${config.url}p/announcements/max/render.uP`;
 const ANNOUNCEMENTS_ADMIN_URL = `${config.url}p/announcementsAdmin/max/render.uP`;
 
@@ -58,8 +74,8 @@ test.describe("Announcements Admin Portlet", () => {
     // TinyMCE editor should have initialized
     await page.waitForTimeout(2000);
     const mceState = await page.evaluate(() => {
-      const t = (window as any).tinymce || (window as any).tinyMCE;
-      return { editors: t?.editors?.length || 0 };
+      const t = window.tinymce ?? window.tinyMCE;
+      return { editors: t?.editors?.length ?? 0 };
     });
     expect(mceState.editors).toBeGreaterThan(0);
   });
@@ -78,11 +94,11 @@ test.describe("Announcements Admin Portlet", () => {
 
     // Wait for TinyMCE to init, then set content via API
     await page.waitForFunction(
-      () => !!(window as any).tinymce?.activeEditor,
-      { timeout: 10000 }
+      () => Boolean(window.tinymce?.activeEditor),
+      { timeout: 10_000 }
     );
     await page.evaluate(() => {
-      (window as any).tinymce.activeEditor.setContent(
+      window.tinymce?.activeEditor?.setContent(
         "<p>Playwright test message body</p>"
       );
     });
@@ -101,7 +117,7 @@ test.describe("Announcements Admin Portlet", () => {
     await page.getByRole("button", { name: "Save Announcement" }).click();
 
     // Verify announcement appears in topic view
-    await expect(page.getByText(title)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(title)).toBeVisible({ timeout: 10_000 });
 
     // Delete it — delete is a form submit with a confirm dialog
     page.once("dialog", (dialog) => dialog.accept());
@@ -109,7 +125,6 @@ test.describe("Announcements Admin Portlet", () => {
     await row.locator("button[type='submit']").click();
 
     // Verify it's gone
-    await page.waitForLoadState("networkidle");
-    await expect(page.getByText(title)).not.toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(title)).not.toBeVisible({ timeout: 10_000 });
   });
 });

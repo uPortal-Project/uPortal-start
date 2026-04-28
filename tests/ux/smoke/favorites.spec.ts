@@ -1,6 +1,10 @@
 import { test, expect, Page } from "@playwright/test";
 import { config } from "../../general-config";
-import { loginViaUrl, logout } from "../utils/ux-general-utils";
+import {
+  loginViaUrl,
+  logout,
+  openPortletOptions,
+} from "../utils/ux-general-utils";
 
 /**
  * Ensure Calendar is in the expected favorites state before a test runs.
@@ -14,9 +18,7 @@ async function ensureCalendarFavoriteState(
   const calendarWrapper = page.locator(
     ".up-portlet-wrapper:has(.portlet-title a[title='Calendar'])"
   );
-  await calendarWrapper
-    .locator(".portlet-options-menu .dropdown-toggle")
-    .click();
+  await openPortletOptions(calendarWrapper);
 
   const favLink = calendarWrapper.locator(
     ".up-portlet-options-item.favorite a"
@@ -30,7 +32,7 @@ async function ensureCalendarFavoriteState(
   } else {
     await favLink.click();
     // Wait for the notification confirming the toggle before reloading
-    await expect(page.locator("#up-notification")).toBeVisible();
+    await expect(page.locator(".modern-notification")).toBeVisible();
     await page.reload();
   }
 }
@@ -53,9 +55,7 @@ test.describe("Favorites", () => {
     );
 
     // Open Options dropdown
-    await calendarWrapper
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
+    await openPortletOptions(calendarWrapper);
 
     // Click "Add to my Favorites"
     const favLink = calendarWrapper.locator(
@@ -65,15 +65,13 @@ test.describe("Favorites", () => {
     await favLink.click();
 
     // Verify success notification appears
-    await expect(page.locator("#up-notification")).toContainText(
+    await expect(page.locator(".modern-notification")).toContainText(
       "You have added Calendar as a favorite"
     );
 
     // Reload and verify the link now says "Remove from my favorites"
     await page.reload();
-    await calendarWrapper
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
+    await openPortletOptions(calendarWrapper);
     await expect(
       calendarWrapper.locator(".up-portlet-options-item.favorite a")
     ).toContainText("Remove from my favorites");
@@ -82,7 +80,7 @@ test.describe("Favorites", () => {
     await calendarWrapper
       .locator(".up-portlet-options-item.favorite a")
       .click();
-    await expect(page.locator("#up-notification")).toContainText(
+    await expect(page.locator(".modern-notification")).toContainText(
       "Removed from Favorites successfully"
     );
   });
@@ -98,9 +96,7 @@ test.describe("Favorites", () => {
     );
 
     // Open Options dropdown
-    await calendarWrapper
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
+    await openPortletOptions(calendarWrapper);
 
     // Click "Remove from my favorites"
     const removeLink = calendarWrapper.locator(
@@ -110,15 +106,13 @@ test.describe("Favorites", () => {
     await removeLink.click();
 
     // Verify removal notification
-    await expect(page.locator("#up-notification")).toContainText(
+    await expect(page.locator(".modern-notification")).toContainText(
       "Removed from Favorites successfully"
     );
 
     // Reload and verify it switched back to "Add"
     await page.reload();
-    await calendarWrapper
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
+    await openPortletOptions(calendarWrapper);
     await expect(
       calendarWrapper.locator(".up-portlet-options-item.favorite a")
     ).toContainText("Add to my Favorites");
@@ -132,9 +126,7 @@ test.describe("Favorites", () => {
     const calendarWrapper = page.locator(
       ".up-portlet-wrapper:has(.portlet-title a[title='Calendar'])"
     );
-    await calendarWrapper
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
+    await openPortletOptions(calendarWrapper);
 
     // Verify the favorite option is visible
     const favOption = calendarWrapper.locator(
