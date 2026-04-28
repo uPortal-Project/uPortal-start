@@ -32,7 +32,7 @@ async function ensureCalendarFavoriteState(
   } else {
     await favLink.click();
     // Wait for the notification confirming the toggle before reloading
-    await expect(page.locator("#up-notification")).toBeVisible();
+    await expect(page.locator(".modern-notification")).toBeVisible();
     await page.reload();
   }
 }
@@ -65,7 +65,7 @@ test.describe("Favorites", () => {
     await favLink.click();
 
     // Verify success notification appears
-    await expect(page.locator("#up-notification")).toContainText(
+    await expect(page.locator(".modern-notification")).toContainText(
       "You have added Calendar as a favorite"
     );
 
@@ -80,7 +80,7 @@ test.describe("Favorites", () => {
     await calendarWrapper
       .locator(".up-portlet-options-item.favorite a")
       .click();
-    await expect(page.locator("#up-notification")).toContainText(
+    await expect(page.locator(".modern-notification")).toContainText(
       "Removed from Favorites successfully"
     );
   });
@@ -106,7 +106,7 @@ test.describe("Favorites", () => {
     await removeLink.click();
 
     // Verify removal notification
-    await expect(page.locator("#up-notification")).toContainText(
+    await expect(page.locator(".modern-notification")).toContainText(
       "Removed from Favorites successfully"
     );
 

@@ -137,7 +137,9 @@ test.describe("Portlet maximized view", () => {
     await page.goto(`${config.url}p/calendar`);
 
     // Open Options in maximized mode (single portlet on the page)
-    await openPortletOptions(page.locator(".up-portlet-wrapper"));
+    await openPortletOptions(
+      page.locator(".up-portlet-wrapper:has(.portlet-options-menu)")
+    );
 
     // Should have "Return to dashboard" instead of Maximize
     await expect(
@@ -163,7 +165,9 @@ test.describe("Portlet edit mode", () => {
     await page.goto(`${config.url}p/bookmarks`);
 
     // Open Options and click Edit
-    await openPortletOptions(page.locator(".up-portlet-wrapper"));
+    await openPortletOptions(
+      page.locator(".up-portlet-wrapper:has(.portlet-options-menu)")
+    );
     await page.locator(".up-portlet-options-item.edit a").click();
 
     // Wait for edit mode content to load
