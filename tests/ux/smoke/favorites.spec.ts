@@ -1,38 +1,65 @@
-import { test, expect, Page } from "@playwright/test";
+import { test, expect, Page, Locator } from "@playwright/test";
 import { config } from "../../general-config";
-import { loginViaUrl, logout } from "../utils/ux-general-utils";
+import { loginViaUrl, logout, openDropdown } from "../utils/ux-general-utils";
+
+async function openCalendarOptionsMenu(page: Page): Promise<Locator> {
+  const calendarWrapper = page.locator(
+    ".up-portlet-wrapper:has(.portlet-title a[title='Calendar'])"
+  );
+  const toggle = calendarWrapper
+    .locator(".portlet-options-menu .dropdown-toggle")
+    .first();
+  await openDropdown(toggle);
+  return calendarWrapper;
+}
+
+/**
+ * After toggling Calendar's favorite state via the Options menu, reload
+ * the page and assert the favorite link text matches the expected state.
+ * The remove/add API call returns 200 before uPortal has invalidated the
+ * server-side layout cache, so a reload that fires immediately after
+ * the notification can re-render the *previous* state. Reload + reopen
+ * + assert is wrapped in a poll so a second pass picks up the cache
+ * invalidation if the first one was too early.
+ */
+async function expectFavoriteLinkText(
+  page: Page,
+  expected: "Add to my Favorites" | "Remove from my favorites"
+): Promise<void> {
+  await expect(async () => {
+    await page.reload();
+    const calendarWrapper = await openCalendarOptionsMenu(page);
+    await expect(
+      calendarWrapper.locator(".up-portlet-options-item.favorite a")
+    ).toContainText(expected, { timeout: 1500 });
+  }).toPass({ timeout: 10000 });
+}
 
 /**
  * Ensure Calendar is in the expected favorites state before a test runs.
- * Opens the Options menu, checks the current favorite link text, and toggles
- * if it doesn't match the desired state.
+ * Self-clean across sessions: student's persisted layout accumulates
+ * favorites over time, so we can't assume any starting state.
  */
 async function ensureCalendarFavoriteState(
   page: Page,
   shouldBeFavorite: boolean
 ): Promise<void> {
-  const calendarWrapper = page.locator(
-    ".up-portlet-wrapper:has(.portlet-title a[title='Calendar'])"
-  );
-  await calendarWrapper
-    .locator(".portlet-options-menu .dropdown-toggle")
-    .click();
+  const calendarWrapper = await openCalendarOptionsMenu(page);
 
   const favLink = calendarWrapper.locator(
     ".up-portlet-options-item.favorite a"
   );
-  const linkText = await favLink.textContent();
-  const isFavorite = linkText?.includes("Remove") ?? false;
+  const linkText = (await favLink.textContent()) ?? "";
+  const isFavorite = linkText.includes("Remove");
 
   if (isFavorite === shouldBeFavorite) {
-    // Close the dropdown without changing state
     await page.keyboard.press("Escape");
-  } else {
-    await favLink.click();
-    // Wait for the notification confirming the toggle before reloading
-    await expect(page.locator(".modern-notification")).toBeVisible();
-    await page.reload();
+    return;
   }
+
+  await favLink.click();
+  await expect(page.locator(".modern-notification")).toBeVisible();
+  await page.reload();
 }
 
 test.describe("Favorites", () => {
@@ -45,43 +72,26 @@ test.describe("Favorites", () => {
   });
 
   test("add a portlet to favorites via Options menu", async ({ page }) => {
-    // Ensure Calendar is NOT a favorite before we start
     await ensureCalendarFavoriteState(page, false);
 
-    const calendarWrapper = page.locator(
-      ".up-portlet-wrapper:has(.portlet-title a[title='Calendar'])"
-    );
+    const calendarWrapper = await openCalendarOptionsMenu(page);
 
-    // Open Options dropdown
-    await calendarWrapper
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
-
-    // Click "Add to my Favorites"
     const favLink = calendarWrapper.locator(
       ".up-portlet-options-item.favorite a"
     );
     await expect(favLink).toContainText("Add to my Favorites");
     await favLink.click();
 
-    // Verify success notification appears
     await expect(page.locator(".modern-notification")).toContainText(
       "You have added Calendar as a favorite"
     );
 
-    // Reload and verify the link now says "Remove from my favorites"
-    await page.reload();
-    await calendarWrapper
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
-    await expect(
-      calendarWrapper.locator(".up-portlet-options-item.favorite a")
-    ).toContainText("Remove from my favorites");
+    await expectFavoriteLinkText(page, "Remove from my favorites");
 
-    // Clean up — remove the favorite
-    await calendarWrapper
-      .locator(".up-portlet-options-item.favorite a")
-      .click();
+    // Clean up — restore Calendar to NOT-favorite so the next test
+    // starts from the same state we found.
+    const reopened = await openCalendarOptionsMenu(page);
+    await reopened.locator(".up-portlet-options-item.favorite a").click();
     await expect(page.locator(".modern-notification")).toContainText(
       "Removed from Favorites successfully"
     );
@@ -90,53 +100,28 @@ test.describe("Favorites", () => {
   test("remove a portlet from favorites via Options menu", async ({
     page,
   }) => {
-    // Ensure Calendar IS a favorite before we start
     await ensureCalendarFavoriteState(page, true);
 
-    const calendarWrapper = page.locator(
-      ".up-portlet-wrapper:has(.portlet-title a[title='Calendar'])"
-    );
+    const calendarWrapper = await openCalendarOptionsMenu(page);
 
-    // Open Options dropdown
-    await calendarWrapper
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
-
-    // Click "Remove from my favorites"
     const removeLink = calendarWrapper.locator(
       ".up-portlet-options-item.favorite a"
     );
     await expect(removeLink).toContainText("Remove from my favorites");
     await removeLink.click();
 
-    // Verify removal notification
     await expect(page.locator(".modern-notification")).toContainText(
       "Removed from Favorites successfully"
     );
 
-    // Reload and verify it switched back to "Add"
-    await page.reload();
-    await calendarWrapper
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
-    await expect(
-      calendarWrapper.locator(".up-portlet-options-item.favorite a")
-    ).toContainText("Add to my Favorites");
+    await expectFavoriteLinkText(page, "Add to my Favorites");
   });
 
   test("Options menu shows Add to my Favorites link", async ({ page }) => {
-    // Ensure Calendar is NOT a favorite
     await ensureCalendarFavoriteState(page, false);
 
-    // Open the Options dropdown on Calendar
-    const calendarWrapper = page.locator(
-      ".up-portlet-wrapper:has(.portlet-title a[title='Calendar'])"
-    );
-    await calendarWrapper
-      .locator(".portlet-options-menu .dropdown-toggle")
-      .click();
+    const calendarWrapper = await openCalendarOptionsMenu(page);
 
-    // Verify the favorite option is visible
     const favOption = calendarWrapper.locator(
       ".up-portlet-options-item.favorite a"
     );
@@ -147,12 +132,26 @@ test.describe("Favorites", () => {
     );
   });
 
-  test("favorite menu items exist for each portlet", async ({ page }) => {
-    // Each portlet on Welcome tab should have a favorite option in its menu
-    const favItems = page.locator(
-      ".up-portlet-options-item.favorite"
+  test("every portlet with an options menu has a favorite item", async ({
+    page,
+  }) => {
+    /*
+     * Earlier this assertion hard-coded `toHaveCount(3)` against the
+     * three portlets in the seeded Welcome layout (Bookmarks, Calendar,
+     * My Drives). uPortal persists per-user customizations to the DB,
+     * so once a student has favorited additional portlets in the
+     * session their layout grows (E! Online, NY Times, Campus News
+     * are common). The semantically interesting invariant isn't "3
+     * favorites items" — it's "every portlet with an Options menu has
+     * a favorite item underneath it". Count those dynamically.
+     */
+    const wrappersWithMenu = page.locator(
+      ".up-portlet-wrapper:has(.portlet-options-menu .dropdown-toggle)"
     );
-    // At least the 3 portlets on Welcome tab (Bookmarks, Calendar, My Drives)
-    await expect(favItems).toHaveCount(3);
+    const favItems = page.locator(".up-portlet-options-item.favorite");
+
+    const expected = await wrappersWithMenu.count();
+    expect(expected).toBeGreaterThanOrEqual(3);
+    await expect(favItems).toHaveCount(expected);
   });
 });

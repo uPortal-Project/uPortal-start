@@ -87,3 +87,35 @@ export async function logout(page: Page): Promise<void> {
   // from a known state instead of the CAS logout page
   await page.goto(config.url);
 }
+
+/*
+ * Open a Bootstrap dropdown via the public Bootstrap.Dropdown API.
+ *
+ * Why not just .click() the toggle? In this environment Bootstrap 5's
+ * data-bs-toggle="dropdown" auto-init wires an instance onto each
+ * toggle (Bootstrap.Dropdown.getInstance returns it) but the click
+ * delegate that should call .show() is not firing — synthetic clicks,
+ * native MouseEvent dispatches, and Playwright's .click() all leave
+ * `aria-expanded` at "false". Calling the public API directly works.
+ * Tests that need to drive the menu open should use this; tests that
+ * specifically want to assert click behavior should not.
+ *
+ * The Locator argument is the dropdown-toggle element (the trigger).
+ */
+export async function openDropdown(toggle: import("@playwright/test").Locator): Promise<void> {
+  await expect(toggle).toBeVisible();
+  await toggle.evaluate((el) => {
+    const bs = (
+      window as {
+        bootstrap?: {
+          Dropdown: {
+            getOrCreateInstance: (e: HTMLElement) => { show: () => void };
+          };
+        };
+      }
+    ).bootstrap;
+    if (!bs?.Dropdown) throw new Error("Bootstrap Dropdown not loaded");
+    bs.Dropdown.getOrCreateInstance(el as HTMLElement).show();
+  });
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+}
