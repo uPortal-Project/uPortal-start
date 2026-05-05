@@ -31,7 +31,7 @@ test.describe("Jasig Widget Portlets", () => {
     // Should show a definition (or "No definition found")
     await expect(
       page.locator(".defContainer, .defs, #defs, [id$='defs']").first()
-    ).toBeAttached({ timeout: 10000 });
+    ).toBeAttached({ timeout: 10_000 });
   });
 
   test("links widget renders", async ({ page }) => {
@@ -46,14 +46,17 @@ test.describe("Jasig Widget Portlets", () => {
     page,
   }) => {
     const jsErrors: string[] = [];
-    page.on("pageerror", (err) => jsErrors.push(err.message));
+    page.on("pageerror", (error) => jsErrors.push(error.message));
 
     await loginViaUrl(page, config.users.admin);
     await page.goto(DICTIONARY_URL);
-    await page.waitForLoadState("networkidle");
+    await expect(
+      page.locator(".dictionarySearchForm, [class*='dictionary']").first()
+    ).toBeVisible();
 
     const criticalErrors = jsErrors.filter(
-      (e) => !e.includes("noConflict") && !e.includes("is not defined")
+      (error) =>
+        !error.includes("noConflict") && !error.includes("is not defined")
     );
     expect(criticalErrors).toEqual([]);
   });

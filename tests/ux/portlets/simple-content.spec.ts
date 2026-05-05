@@ -2,6 +2,24 @@ import { test, expect, Page } from "@playwright/test";
 import { loginViaUrl } from "../utils/ux-general-utils";
 import { config } from "../../general-config";
 
+interface CKEditorInstance {
+  getData(): string;
+  setData(html: string, callback?: () => void): void;
+  updateElement(): void;
+  destroy(updateElement: boolean): void;
+  element: { $: HTMLTextAreaElement };
+}
+
+interface CKEditorGlobal {
+  instances: Record<string, CKEditorInstance>;
+}
+
+declare global {
+  interface Window {
+    CKEDITOR?: CKEditorGlobal;
+  }
+}
+
 // "what-is-uportal" and "logging-in" are SimpleContentPortlet instances
 // deployed in the quickstart data. The same `cms` portlet hosts every
 // web-component snippet in the portal (notification-list, customize,
@@ -18,22 +36,20 @@ const LOGGING_IN_CONFIG_URL = `${LOGGING_IN_URL}?pCm=config`;
  */
 async function waitForCkeditor(page: Page): Promise<string> {
   await page.waitForFunction(() => {
-    const ck = (window as { CKEDITOR?: { instances?: Record<string, unknown> } })
-      .CKEDITOR;
-    return !!ck && Object.keys(ck.instances || {}).length > 0;
+    const ck = window.CKEDITOR;
+    return !!ck && Object.keys(ck.instances ?? {}).length > 0;
   });
   return page.evaluate(() => {
-    const ck = (window as { CKEDITOR: { instances: Record<string, unknown> } })
-      .CKEDITOR;
+    const ck = window.CKEDITOR;
+    if (!ck) throw new Error("CKEDITOR global missing");
     return Object.keys(ck.instances)[0];
   });
 }
 
 async function getCkeditorContent(page: Page): Promise<string> {
   return page.evaluate(() => {
-    const ck = (window as {
-      CKEDITOR: { instances: Record<string, { getData: () => string }> };
-    }).CKEDITOR;
+    const ck = window.CKEDITOR;
+    if (!ck) throw new Error("CKEDITOR global missing");
     const id = Object.keys(ck.instances)[0];
     return ck.instances[id].getData();
   });
@@ -54,22 +70,14 @@ async function saveContent(page: Page, html: string): Promise<void> {
   await Promise.all([
     page.waitForURL(/pCm=view/),
     page.evaluate((newContent) => {
-      const ck = (
-        window as {
-          CKEDITOR: {
-            instances: Record<
-              string,
-              { destroy: (updateElement: boolean) => void }
-            >;
-          };
-        }
-      ).CKEDITOR;
+      const ck = window.CKEDITOR;
+      if (!ck) throw new Error("CKEDITOR global missing");
       const id = Object.keys(ck.instances)[0];
       ck.instances[id].destroy(true);
 
-      const textarea = document.querySelector(
+      const textarea = document.querySelector<HTMLTextAreaElement>(
         "textarea[id$='content']"
-      ) as HTMLTextAreaElement | null;
+      );
       if (!textarea) throw new Error("content textarea not found");
       textarea.value = newContent;
 
@@ -78,7 +86,9 @@ async function saveContent(page: Page, html: string): Promise<void> {
       form.submit();
     }, html),
   ]);
-  await page.waitForLoadState("networkidle");
+  // Wait for the post-action render to settle by checking the URL
+  // landed in view mode (the controller calls setPortletMode(VIEW)).
+  await page.waitForURL(/render\.uP/);
 }
 
 test.describe("Simple Content Portlet", () => {
@@ -103,7 +113,7 @@ test.describe("Simple Content Portlet", () => {
     // CKEditor should mount on the textarea
     await expect(
       page.locator("textarea, .cke, iframe[class*='cke']").first()
-    ).toBeAttached({ timeout: 10000 });
+    ).toBeAttached({ timeout: 10_000 });
   });
 
   test("admin can save edited content via the CKEditor Save button", async ({
@@ -145,31 +155,15 @@ test.describe("Simple Content Portlet", () => {
     await waitForCkeditor(page);
 
     // Stage a change in the editor (no need to commit it perfectly —
-    // we're testing that cancel discards whatever is staged).
-    await page.evaluate(
-      (newContent) =>
-        new Promise<void>((resolve) => {
-          const ck = (
-            window as {
-              CKEDITOR: {
-                instances: Record<
-                  string,
-                  {
-                    setData: (s: string, cb: () => void) => void;
-                    updateElement: () => void;
-                  }
-                >;
-              };
-            }
-          ).CKEDITOR;
-          const id = Object.keys(ck.instances)[0];
-          ck.instances[id].setData(newContent, () => {
-            ck.instances[id].updateElement();
-            resolve();
-          });
-        }),
-      `<p>${marker}</p>`
-    );
+    // we're testing that cancel discards whatever is staged). Fire-
+    // and-forget setData; we only need *something* in there before we
+    // click cancel, and the visible textarea state is enough.
+    await page.evaluate((newContent) => {
+      const ck = window.CKEDITOR;
+      if (!ck) throw new Error("CKEDITOR global missing");
+      const id = Object.keys(ck.instances)[0];
+      ck.instances[id].setData(newContent);
+    }, `<p>${marker}</p>`);
 
     // The cancel form has its own submit button labeled "Return without saving"
     await page.locator("form#command button[name='cancel']").click();

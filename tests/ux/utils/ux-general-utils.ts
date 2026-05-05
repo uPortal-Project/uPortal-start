@@ -1,5 +1,21 @@
-import { expect, Page, APIRequestContext } from "@playwright/test";
+import { expect, Page, APIRequestContext, Locator } from "@playwright/test";
 import { config } from "../../general-config";
+
+interface BootstrapDropdownInstance {
+  show(): void;
+}
+
+interface BootstrapGlobal {
+  Dropdown: {
+    getOrCreateInstance(element: Element): BootstrapDropdownInstance;
+  };
+}
+
+declare global {
+  interface Window {
+    bootstrap?: BootstrapGlobal;
+  }
+}
 
 const SEL_UPORTAL_LOGIN = "#portalCASLoginLink";
 const SEL_UPORTAL_LOGIN_USERNAME = "#username";
@@ -89,6 +105,30 @@ export async function logout(page: Page): Promise<void> {
 }
 
 /*
+ * Force-unhide the .portlet-options-menu wrappers on the current page.
+ *
+ * The XSL renders these with class="hidden" and a jQuery document.ready
+ * handler removes the class on portlets that have menu items. In headless
+ * Playwright runs the timing is variable enough that the click target may
+ * still be hidden when a test interacts with it. Real users hit it because
+ * jQuery does eventually run; smoke tests need a deterministic unhide.
+ *
+ * Call after every page.goto(...) / page.reload() that lands on a view
+ * where a test interacts with portlet options. `openDropdown` covers the
+ * Bootstrap-side of the open path; this helper covers the upstream
+ * jQuery-side that gates whether the toggle is rendered at all.
+ */
+export async function unhidePortletOptionsMenus(page: Page): Promise<void> {
+  await page.evaluate(() => {
+    for (const element of document.querySelectorAll(
+      ".portlet-options-menu.hidden"
+    )) {
+      element.classList.remove("hidden");
+    }
+  });
+}
+
+/*
  * Open a Bootstrap dropdown via the public Bootstrap.Dropdown API.
  *
  * Why not just .click() the toggle? In this environment Bootstrap 5's
@@ -102,20 +142,12 @@ export async function logout(page: Page): Promise<void> {
  *
  * The Locator argument is the dropdown-toggle element (the trigger).
  */
-export async function openDropdown(toggle: import("@playwright/test").Locator): Promise<void> {
+export async function openDropdown(toggle: Locator): Promise<void> {
   await expect(toggle).toBeVisible();
-  await toggle.evaluate((el) => {
-    const bs = (
-      window as {
-        bootstrap?: {
-          Dropdown: {
-            getOrCreateInstance: (e: HTMLElement) => { show: () => void };
-          };
-        };
-      }
-    ).bootstrap;
+  await toggle.evaluate((element) => {
+    const bs = window.bootstrap;
     if (!bs?.Dropdown) throw new Error("Bootstrap Dropdown not loaded");
-    bs.Dropdown.getOrCreateInstance(el as HTMLElement).show();
+    bs.Dropdown.getOrCreateInstance(element).show();
   });
   await expect(toggle).toHaveAttribute("aria-expanded", "true");
 }
