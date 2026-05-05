@@ -39,4 +39,24 @@ test.describe("Calendar Portlet", () => {
     );
     expect(criticalErrors).toEqual([]);
   });
+
+  test("event list renders without leaking Underscore template sigils", async ({
+    page,
+  }) => {
+    // Regression guard: uPortal's respondr.xsl globally sets
+    // up._.templateSettings to Mustache-style {{ }} delimiters, but
+    // Calendar's Underscore templates use <% %> / <%= %>. If a future
+    // refactor drops the per-call templateSettings override, the raw
+    // template source leaks into the events column instead of being
+    // interpolated. Catching that here is cheap.
+    await loginViaUrl(page, config.users.admin);
+    await page.goto(CALENDAR_URL);
+
+    const eventList = page.locator(".upcal-event-list");
+    await expect(eventList).toBeVisible();
+    // The list resolves to either the "No events" alert or one or
+    // more day rows. Either way, no Underscore sigils should appear.
+    await expect(eventList).not.toContainText("<%");
+    await expect(eventList).not.toContainText("<%=");
+  });
 });
