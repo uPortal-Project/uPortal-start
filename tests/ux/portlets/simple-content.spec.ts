@@ -1,11 +1,85 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Page } from "@playwright/test";
 import { loginViaUrl } from "../utils/ux-general-utils";
 import { config } from "../../general-config";
 
 // "what-is-uportal" and "logging-in" are SimpleContentPortlet instances
-// deployed in the quickstart data
+// deployed in the quickstart data. The same `cms` portlet hosts every
+// web-component snippet in the portal (notification-list, customize,
+// favorites-carousel, waffle-menu, etc.), so round-tripping content
+// through this portlet exercises the foundation those components ride on.
 const WHAT_IS_UPORTAL_URL = `${config.url}p/what-is-uportal/max/render.uP`;
 const LOGGING_IN_URL = `${config.url}p/logging-in/max/render.uP`;
+const WHAT_IS_UPORTAL_CONFIG_URL = `${WHAT_IS_UPORTAL_URL}?pCm=config`;
+const LOGGING_IN_CONFIG_URL = `${LOGGING_IN_URL}?pCm=config`;
+
+/**
+ * Wait for CKEditor to mount and return the id of the (first) instance.
+ * Config mode initializes CKEDITOR.replace() asynchronously after DOMReady.
+ */
+async function waitForCkeditor(page: Page): Promise<string> {
+  await page.waitForFunction(() => {
+    const ck = (window as { CKEDITOR?: { instances?: Record<string, unknown> } })
+      .CKEDITOR;
+    return !!ck && Object.keys(ck.instances || {}).length > 0;
+  });
+  return page.evaluate(() => {
+    const ck = (window as { CKEDITOR: { instances: Record<string, unknown> } })
+      .CKEDITOR;
+    return Object.keys(ck.instances)[0];
+  });
+}
+
+async function getCkeditorContent(page: Page): Promise<string> {
+  return page.evaluate(() => {
+    const ck = (window as {
+      CKEDITOR: { instances: Record<string, { getData: () => string }> };
+    }).CKEDITOR;
+    const id = Object.keys(ck.instances)[0];
+    return ck.instances[id].getData();
+  });
+}
+
+/**
+ * Save new content by destroying CKEditor, overwriting the underlying
+ * <textarea> directly, and submitting the form.
+ *
+ * Why not setData()? CKEditor 4's setData is asynchronous and races with
+ * its own dataReady → updateElement bookkeeping. Even with the callback
+ * form, the editor's submit-time hook can re-sync from a stale internal
+ * model and silently send the old content to the server. Tearing down
+ * the editor before we touch the textarea removes every CKEditor
+ * surface that could re-sync, so the form posts exactly what we set.
+ */
+async function saveContent(page: Page, html: string): Promise<void> {
+  await Promise.all([
+    page.waitForURL(/pCm=view/),
+    page.evaluate((newContent) => {
+      const ck = (
+        window as {
+          CKEDITOR: {
+            instances: Record<
+              string,
+              { destroy: (updateElement: boolean) => void }
+            >;
+          };
+        }
+      ).CKEDITOR;
+      const id = Object.keys(ck.instances)[0];
+      ck.instances[id].destroy(true);
+
+      const textarea = document.querySelector(
+        "textarea[id$='content']"
+      ) as HTMLTextAreaElement | null;
+      if (!textarea) throw new Error("content textarea not found");
+      textarea.value = newContent;
+
+      const form = textarea.form;
+      if (!form) throw new Error("content textarea has no form");
+      form.submit();
+    }, html),
+  ]);
+  await page.waitForLoadState("networkidle");
+}
 
 test.describe("Simple Content Portlet", () => {
   test("renders static content (what-is-uportal)", async ({ page }) => {
@@ -24,15 +98,84 @@ test.describe("Simple Content Portlet", () => {
 
   test("config mode loads CKEditor for admin", async ({ page }) => {
     await loginViaUrl(page, config.users.admin);
+    await page.goto(WHAT_IS_UPORTAL_CONFIG_URL);
 
-    // Config mode uses CKEditor for rich-text editing
-    const configUrl = `${config.url}p/what-is-uportal/max/render.uP?pCm=config`;
-    await page.goto(configUrl);
-
-    // CKEditor should be present (loaded via resource-server)
-    // or at minimum the config form should be visible
+    // CKEditor should mount on the textarea
     await expect(
       page.locator("textarea, .cke, iframe[class*='cke']").first()
     ).toBeAttached({ timeout: 10000 });
+  });
+
+  test("admin can save edited content via the CKEditor Save button", async ({
+    page,
+  }) => {
+    const stamp = Date.now();
+    const marker = `Playwright save round-trip ${stamp}`;
+    const newContent = `<p>${marker}</p>`;
+
+    await loginViaUrl(page, config.users.admin);
+
+    // --- Capture the existing content so we can restore it ---
+    await page.goto(WHAT_IS_UPORTAL_CONFIG_URL);
+    await waitForCkeditor(page);
+    const originalContent = await getCkeditorContent(page);
+
+    // --- Replace content and save ---
+    await saveContent(page, newContent);
+
+    // After save the controller switches the portlet back to VIEW mode
+    // and re-renders on the same response, so the new content should be
+    // visible right here.
+    await expect(page.locator("body")).toContainText(marker);
+
+    // --- Restore the original content ---
+    await page.goto(WHAT_IS_UPORTAL_CONFIG_URL);
+    await waitForCkeditor(page);
+    await saveContent(page, originalContent);
+
+    await expect(page.locator("body")).not.toContainText(marker);
+  });
+
+  test("cancel discards unsaved changes", async ({ page }) => {
+    const stamp = Date.now();
+    const marker = `Playwright cancel-discard ${stamp}`;
+
+    await loginViaUrl(page, config.users.admin);
+    await page.goto(LOGGING_IN_CONFIG_URL);
+    await waitForCkeditor(page);
+
+    // Stage a change in the editor (no need to commit it perfectly —
+    // we're testing that cancel discards whatever is staged).
+    await page.evaluate(
+      (newContent) =>
+        new Promise<void>((resolve) => {
+          const ck = (
+            window as {
+              CKEDITOR: {
+                instances: Record<
+                  string,
+                  {
+                    setData: (s: string, cb: () => void) => void;
+                    updateElement: () => void;
+                  }
+                >;
+              };
+            }
+          ).CKEDITOR;
+          const id = Object.keys(ck.instances)[0];
+          ck.instances[id].setData(newContent, () => {
+            ck.instances[id].updateElement();
+            resolve();
+          });
+        }),
+      `<p>${marker}</p>`
+    );
+
+    // The cancel form has its own submit button labeled "Return without saving"
+    await page.locator("form#command button[name='cancel']").click();
+
+    // Re-fetch the view URL and confirm the marker never landed
+    await page.goto(LOGGING_IN_URL);
+    await expect(page.locator("body")).not.toContainText(marker);
   });
 });
