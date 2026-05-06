@@ -40,7 +40,7 @@
     </permissions>
     <parameter>
         <name>iconUrl</name>
-        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/mimetypes/video-x-generic.png</value>
+        <value>/resource-server/rs/tango/0.8.90/32x32/mimetypes/video-x-generic.png</value>
     </parameter>
     <parameter>
         <name>hasHelp</name>

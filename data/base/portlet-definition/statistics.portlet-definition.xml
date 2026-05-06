@@ -43,6 +43,6 @@
     </parameter>
     <parameter>
         <name>iconUrl</name>
-        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/mimetypes/x-office-spreadsheet.png</value>
+        <value>/resource-server/rs/tango/0.8.90/32x32/mimetypes/x-office-spreadsheet.png</value>
     </parameter>
 </portlet-definition>
