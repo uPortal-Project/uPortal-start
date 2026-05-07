@@ -147,4 +147,18 @@ test.describe("Visual resource-server smoke", () => {
     expect(listeners.legacyHits, "legacy /ResourceServingWebapp/ URLs requested").toEqual([]);
     expect(listeners.consoleErrors, "console errors").toEqual([]);
   });
+
+  // configLinks.jsp (uportal-links portlet config view) used to load
+  // /ResourceServingWebapp/rs/lodash/4.17.4/lodash.min.js and rs/template
+  // via the legacy context. JasigWidgetPortlets 2.4.3-SNAPSHOT drops lodash
+  // and switches the template tag to /resource-server/. The page only
+  // renders for admins.
+  test("uportal-links config loads no /ResourceServingWebapp/ resources", async ({ page }) => {
+    await loginViaUrl(page, config.users.admin);
+    await smokePage(
+      page,
+      config.url + "p/uportal-links/max/render.uP?pCm=config",
+      "uportal-links-config"
+    );
+  });
 });
