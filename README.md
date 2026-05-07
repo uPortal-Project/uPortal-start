@@ -83,6 +83,27 @@ running the following command:
   - [How To Customize Text](#how-to-customize-text)
   - [How To Run Integration Tests](#how-to-run-integration-tests)
 
+### Bootstrap `gradle.properties`
+
+Before your first build, copy the canonical version pins into `gradle.properties`:
+
+```console
+    $ cp gradle.properties.example gradle.properties
+```
+
+`gradle.properties` is intentionally not committed (`.gitignore`d). The committed
+`gradle.properties.example` always reflects the canonical released versions of uPortal and
+the bundled portlets.  Your local `gradle.properties` is yours to edit — pin a `-SNAPSHOT`
+of uPortal or any portlet to test local changes against an unreleased build, then revert
+when you're done.
+
+**For institutional deployers maintaining a fork**:  the recommended pattern is to comment
+out the `/gradle.properties` line in your fork's `.gitignore`, then commit your version
+pins to your fork normally.  Upstream changes flow through `gradle.properties.example`, so
+`git merge upstream/master` will no longer conflict on your pinned versions — instead, you
+get a clean `git diff` of `gradle.properties.example` showing exactly which versions
+upstream bumped, and you can apply them selectively to your committed `gradle.properties`.
+
 ### How To Set Up Everything the First Time
 
 The remaining examples (below) illustrate how to perform the most common uPortal tasks
