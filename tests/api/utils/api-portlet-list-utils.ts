@@ -17,7 +17,7 @@ export async function createPortletList(
   });
   const locationHeader: string = response.headers().location;
   expect(locationHeader).not.toEqual(undefined);
-  expect(locationHeader.length).not.toEqual(0);
+  expect(locationHeader).not.toHaveLength(0);
   expect(response.status()).toEqual(201);
   return locationHeader;
 }
@@ -40,7 +40,7 @@ export async function createPortletListWithOwner(
   });
   const locationHeader: string = response.headers().location;
   expect(locationHeader).not.toEqual(undefined);
-  expect(locationHeader.length).not.toEqual(0);
+  expect(locationHeader).not.toHaveLength(0);
   expect(response.status()).toEqual(201);
   return locationHeader;
 }

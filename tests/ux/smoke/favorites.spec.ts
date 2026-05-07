@@ -32,7 +32,7 @@ async function expectFavoriteLinkText(
     await expect(
       calendarWrapper.locator(".up-portlet-options-item.favorite a")
     ).toContainText(expected, { timeout: 1500 });
-  }).toPass({ timeout: 10000 });
+  }).toPass({ timeout: 10_000 });
 }
 
 /**

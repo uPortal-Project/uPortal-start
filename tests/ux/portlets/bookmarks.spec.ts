@@ -39,10 +39,10 @@ test.describe("Bookmarks Portlet", () => {
     await page.goto(BOOKMARKS_EDIT_URL);
 
     await expect(
-      page.getByRole("button", { name: /Add Bookmark/i })
+      page.getByRole("button", { name: /add bookmark/i })
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: /Add Folder/i })
+      page.getByRole("button", { name: /add folder/i })
     ).toBeVisible();
   });
 
@@ -57,7 +57,7 @@ test.describe("Bookmarks Portlet", () => {
     await page.goto(BOOKMARKS_EDIT_URL);
 
     // --- Add ---
-    await page.getByRole("button", { name: /Add Bookmark/i }).click();
+    await page.getByRole("button", { name: /add bookmark/i }).click();
 
     const addForm = emptyBookmarkForm(page);
     await expect(addForm).toBeVisible();
@@ -107,7 +107,7 @@ test.describe("Bookmarks Portlet", () => {
     await page.goto(BOOKMARKS_EDIT_URL);
 
     // --- Add folder ---
-    await page.getByRole("button", { name: /Add Folder/i }).click();
+    await page.getByRole("button", { name: /add folder/i }).click();
 
     const addForm = emptyFolderForm(page);
     await expect(addForm).toBeVisible();

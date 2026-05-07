@@ -22,7 +22,7 @@ test.describe("Web Proxy Portlet", () => {
     // assert on them without flake risk.
     await expect(page.locator("body")).toContainText("Example Domain");
     await expect(page.locator("body")).toContainText(
-      /This domain is for use in (illustrative|documentation) examples/i
+      /this domain is for use in (illustrative|documentation) examples/i
     );
   });
 
@@ -44,14 +44,17 @@ test.describe("Web Proxy Portlet", () => {
 
   test("no critical JavaScript errors on load", async ({ page }) => {
     const jsErrors: string[] = [];
-    page.on("pageerror", (err) => jsErrors.push(err.message));
+    page.on("pageerror", (error) => jsErrors.push(error.message));
 
     await loginViaUrl(page, config.users.admin);
     await page.goto(PROXY_URL);
-    await page.waitForLoadState("networkidle");
+    // Wait for the proxied body text — proves both the proxy fetch
+    // and any client JS the upstream included have executed.
+    await expect(page.locator("body")).toContainText("Example Domain");
 
     const criticalErrors = jsErrors.filter(
-      (e) => !e.includes("noConflict") && !e.includes("is not defined")
+      (error) =>
+        !error.includes("noConflict") && !error.includes("is not defined")
     );
     expect(criticalErrors).toEqual([]);
   });

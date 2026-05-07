@@ -25,17 +25,21 @@ test.describe("Calendar Portlet", () => {
 
   test("no JavaScript errors on load", async ({ page }) => {
     const jsErrors: string[] = [];
-    page.on("pageerror", (err) => jsErrors.push(err.message));
+    page.on("pageerror", (error) => jsErrors.push(error.message));
 
     await loginViaUrl(page, config.users.admin);
     await page.goto(CALENDAR_URL);
 
-    // Wait for any async JS to settle
-    await page.waitForLoadState("networkidle");
+    // Wait for the calendar's main container to render — proxy for
+    // "the page's main async JS has run".
+    await expect(
+      page.locator(".upcal-wideview, .upcal-narrowview").first()
+    ).toBeVisible();
 
     // Filter out known non-critical errors (e.g., from portal chrome)
     const criticalErrors = jsErrors.filter(
-      (e) => !e.includes("noConflict") && !e.includes("is not defined")
+      (error) =>
+        !error.includes("noConflict") && !error.includes("is not defined")
     );
     expect(criticalErrors).toEqual([]);
   });

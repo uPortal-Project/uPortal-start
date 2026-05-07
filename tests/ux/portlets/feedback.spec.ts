@@ -33,10 +33,10 @@ test.describe("Feedback Portlet — User View", () => {
     await page.locator("label[for$='yes']").first().click();
 
     // Submit button should now be enabled
-    const submitBtn = page.locator(
+    const submitButton = page.locator(
       "button[type='submit']:not([disabled]), input[type='submit']:not([disabled])"
     ).first();
-    await expect(submitBtn).toBeVisible();
+    await expect(submitButton).toBeVisible();
   });
 });
 
