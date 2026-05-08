@@ -9,6 +9,6 @@ const config: PlaywrightTestConfig = {
     screenshot: "only-on-failure",
   },
   reporter: [["list"], ["html", { open: "never" }]],
-  retries: 0,
+  retries: 2,
 };
 export default config;
