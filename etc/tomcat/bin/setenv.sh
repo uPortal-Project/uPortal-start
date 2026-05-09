@@ -1,8 +1,13 @@
 # Display settings at startup
 CATALINA_OPTS="$CATALINA_OPTS -XX:+PrintCommandLineFlags"
 
-# Prevent "Unrecognized Name" SSL warning
-CATALINA_OPTS="$CATALINA_OPTS -Djsse.enableSNIExtension=false"
+# SNI must stay enabled. Do NOT add `-Djsse.enableSNIExtension=false` here:
+# every modern HTTPS endpoint (Google, every CDN-fronted host) requires SNI
+# to choose the right cert, and disabling it makes the server hand back a
+# default cert that fails JVM chain validation with "PKIX path building
+# failed". The JDK 7-era "Unrecognized Name" SSL warning that prompted the
+# historical disable is obsolete on JDK 8+. See docs/tls-troubleshooting.md
+# for diagnosis guidance if cert errors do show up.
 
 # CVE-2021-44228 Log4j2
 CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.jndi.ldap.object.trustURLCodebase=false"
