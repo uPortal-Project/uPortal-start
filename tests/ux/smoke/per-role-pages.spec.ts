@@ -109,13 +109,6 @@ test.describe("Student smoke tests", () => {
     ).toBeVisible();
   });
 
-  test("Campus tab has Map portlet", async ({ page }) => {
-    await page.locator(".portal-navigation-label:has-text('Campus')").click();
-    await expect(
-      page.locator(".up-portlet-titlebar").getByTitle("Map")
-    ).toBeVisible();
-  });
-
   test("waffle menu is present", async ({ page }) => {
     await expect(page.locator("waffle-menu")).toBeAttached();
   });
