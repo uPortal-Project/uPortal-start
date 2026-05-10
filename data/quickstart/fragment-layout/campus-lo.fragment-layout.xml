@@ -51,7 +51,6 @@
           <name>width</name>
           <value>60%</value>
         </structure-attribute>
-        <channel fname="google-maps-portlet" unremovable="false" hidden="false" immutable="false" ID="n10"/>
       </folder>
     </folder>
   </folder>
