@@ -4,8 +4,13 @@ set CATALINA_OPTS=%CATALINA_OPTS% -XX:+PrintCommandLineFlags
 rem Discourage address map swapping by setting Xms and Xmx to the same value
 rem http://confluence.atlassian.com/display/DOC/Garbage+Collector+Performance+Issues
 
-rem Prevent "Unrecognized Name" SSL warning
-set CATALINA_OPTS=%CATALINA_OPTS% -Djsse.enableSNIExtension=false
+rem SNI must stay enabled. Do NOT add `-Djsse.enableSNIExtension=false` here:
+rem every modern HTTPS endpoint (Google, every CDN-fronted host) requires SNI
+rem to choose the right cert, and disabling it makes the server hand back a
+rem default cert that fails JVM chain validation with "PKIX path building
+rem failed". The JDK 7-era "Unrecognized Name" SSL warning that prompted the
+rem historical disable is obsolete on JDK 8+. See docs/tls-troubleshooting.md
+rem for diagnosis guidance if cert errors do show up.
 
 rem CVE-2021-44228 Log4j2
 set CATALINA_OPTS=%CATALINA_OPTS% -Dcom.sun.jndi.ldap.object.trustURLCodebase=false
