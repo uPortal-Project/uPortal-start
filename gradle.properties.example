@@ -17,7 +17,7 @@ resourceServerVersion=1.0.48
 # Includes newer front-end dependencies and web components
 resourceServerWebjarVersion=1.5.3
 simpleContentPortletVersion=3.4.2
-uPortalVersion=5.17.5
+uPortalVersion=5.17.7
 webProxyPortletVersion=2.4.1
 
 # Versions of WebJars included with resource-server
