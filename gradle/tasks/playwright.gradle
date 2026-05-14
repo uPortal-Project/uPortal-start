@@ -29,7 +29,12 @@ task playwrightFormat(type: NpmTask, dependsOn: npmInstall) {
     args = ['run', 'format']
 }
 
-task playwrightRun(type: NpxTask, dependsOn: [project.tasks.playwrightNpxInstall, project.tasks.playwrightLint]) {
+task playwrightRun(type: NpxTask, dependsOn: [
+        project.tasks.playwrightNpxInstall,
+        project.tasks.playwrightLint,
+        ':overlays:uPortal:playwrightSkinFixture',
+        ':overlays:uPortal:tomcatDeploy',
+]) {
     group 'Testing'
     description 'Runs Playwright scripts as per tests/uportal-pw.config.ts'
     environment = [
@@ -37,6 +42,16 @@ task playwrightRun(type: NpxTask, dependsOn: [project.tasks.playwrightNpxInstall
     ]
     command = 'playwright'
     args = ['test', '--config=tests/uportal-pw.config.ts']
+}
+
+// prepareSkinResources copies the .less sources into the work dir that
+// compileLess0 reads. Order it after the fixture so the regenerated
+// playwrightSkin files (not the stale committed copies) get compiled.
+// Deferred to projectsEvaluated so the cross-project lookup doesn't trigger
+// eager configuration of :overlays:uPortal.
+gradle.projectsEvaluated {
+    tasks.getByPath(':overlays:uPortal:prepareSkinResources').mustRunAfter(
+            ':overlays:uPortal:playwrightSkinFixture')
 }
 
 // Works best when only a single test is enabled ( test.only(...) )

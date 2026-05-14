@@ -92,6 +92,60 @@ task skinGenerate() {
     }
 }
 
+// Regenerate the playwrightSkin fixture from etc/skin/ before each Playwright run.
+// The committed copies of playwrightSkin.less and playwrightSkin/ exist so gradle's
+// skin-compile chain (below) registers compileLess tasks at configuration time;
+// this task overwrites them at execution time so any drift in the etc/skin/
+// templates fails the regression test rather than silently passing.
+task playwrightSkinFixture() {
+    group 'Testing'
+    description 'Regenerate the playwrightSkin scaffold consumed by tests/ux/skin/custom-skin.spec.ts'
+
+    String skinName = 'playwrightSkin'
+    File skinFile = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}.less")
+    File skinDir = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}")
+
+    doLast {
+        delete skinFile, skinDir
+
+        copy {
+            from "${rootProject.projectDir}/etc/skin/skinName.less"
+            into skinsDir
+            rename { return "${skinName}.less" }
+            expand(skinName: skinName)
+        }
+        copy {
+            from "${rootProject.projectDir}/etc/skin/skinName"
+            into skinDir
+            expand(skinName: skinName)
+        }
+
+        File skinListFile = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/skinList.xml")
+        if (!skinListFile.exists()) {
+            copy {
+                from "${rootProject.projectDir}/etc/skin/skinList.xml"
+                into skinsDir
+            }
+        }
+        String skinListContent = skinListFile.text
+        if (!skinListContent.contains("<skin-key>${skinName}</skin-key>")) {
+            String entry = """
+  <skin>
+    <skin-key>${skinName}</skin-key>
+    <skin-name>${skinName}</skin-name>
+    <skin-description>
+      Test fixture skin used by tests/ux/skin/custom-skin.spec.ts to guard the
+      common.less import path (regression test for uPortal PR #2982).
+      Regenerated on every playwrightRun by :overlays:uPortal:playwrightSkinFixture.
+    </skin-description>
+  </skin>
+
+</skins>"""
+            skinListFile.text = skinListContent.replace('</skins>', entry)
+        }
+    }
+}
+
 // Set up resources from custom skins so we can compile with NodeJS & lessc
 boolean taskIsDataImport = project.gradle.startParameter.taskNames.any {
   it.contains('dataImport')

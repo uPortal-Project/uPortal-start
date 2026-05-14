@@ -411,6 +411,12 @@ modules.xml
 # Project-specific ignores
 /build.properties
 
+# gradle.properties is committed as gradle.properties.example with canonical
+# release versions. Developers copy it to gradle.properties for local builds
+# and may pin SNAPSHOTs of uPortal/portlets while iterating; that local copy
+# should not be committed.
+/gradle.properties
+
 # Project specific includes
 !**/filters/local.properties
 !bootstrap/lib/*.jar

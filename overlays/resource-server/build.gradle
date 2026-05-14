@@ -12,6 +12,11 @@ dependencies {
 
     runtime "org.webjars.npm:vue:${vueVersion}@jar"
 
+    // CKEditor 4 — used by SimpleContentPortlet's configureContent.jsp.
+    // 4.22.1 is the last free 4.x release; all 4.x CVEs through that point
+    // are patched (see uPortal CVE remediation queue).
+    runtime "org.webjars.npm:ckeditor4:${ckeditor4Version}@jar"
+
     // uPortal Web Components Webjars
     runtime "org.webjars.npm:uportal__api-template-vue:${uPortalWebComponentsVersion}@jar"
     runtime "org.webjars.npm:uportal__content-carousel:${uPortalWebComponentsVersion}@jar"

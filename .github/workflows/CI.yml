@@ -34,6 +34,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Bootstrap gradle.properties
+        run: cp gradle.properties.example gradle.properties
+        shell: bash
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -70,6 +73,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Bootstrap gradle.properties
+        run: cp gradle.properties.example gradle.properties
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
