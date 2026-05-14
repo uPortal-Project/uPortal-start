@@ -165,10 +165,14 @@
 
         <!-- Access log processes all example.
              Documentation at: /docs/config/valve.html
-             Note: The pattern used is equivalent to using pattern="common" -->
+             Note: The pattern below is "combined" (Apache httpd's standard
+             extended log format) — it captures Referer and User-Agent in
+             addition to the "common" fields. See docs/access-log-audit.md
+             for how to use those fields when triangulating which page is
+             still requesting a given URL. -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
                prefix="localhost_access_log" suffix=".txt"
-               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+               pattern="%h %l %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot;" />
 
       </Host>
     </Engine>
