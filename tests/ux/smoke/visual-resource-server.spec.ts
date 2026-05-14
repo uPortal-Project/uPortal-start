@@ -119,7 +119,7 @@ test.describe("Visual resource-server smoke", () => {
     // (4.23+ are LTS-only requiring a paid license). It's marketing
     // pressure, not a runtime defect — the editor works fine.
     const realErrors = listeners.consoleErrors.filter(
-      (e) => !/CKEditor.*version is not secure/.test(e)
+      (error) => !/CKEditor.*version is not secure/.test(error)
     );
     expect(listeners.legacyHits, "legacy /ResourceServingWebapp/ URLs requested").toEqual([]);
     expect(realErrors, "real console errors (excluding CKEditor LTS nag)").toEqual([]);
@@ -136,13 +136,13 @@ test.describe("Visual resource-server smoke", () => {
     });
     // Allow the news-feeds AJAX to settle.
     await page.waitForTimeout(3000);
-    const bodyText = await page.locator("body").innerText();
+    const bodyText = await page.locator("body").textContent();
     await page.screenshot({
       path: "test-results/visual-smoke/news-portlet.png",
       fullPage: true,
     });
     expect(bodyText, "raw {{...}} placeholders visible in rendered DOM").not.toMatch(
-      /\{\{[#/]?[A-Za-z]/
+      /{{[#/]?[A-Za-z]/
     );
     expect(listeners.legacyHits, "legacy /ResourceServingWebapp/ URLs requested").toEqual([]);
     expect(listeners.consoleErrors, "console errors").toEqual([]);
