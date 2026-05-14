@@ -81,7 +81,13 @@ async function smokePage(
 
   expect(listeners.legacyHits, `legacy /ResourceServingWebapp/ URLs requested at ${url}`).toEqual([]);
   expect(listeners.netIssues, `network failures at ${url}`).toEqual([]);
-  expect(listeners.consoleErrors, `console errors at ${url}`).toEqual([]);
+  // CKEditor 4.22.1 emits one console error nagging about LTS upgrade on every
+  // page where it's instantiated (configLinks.jsp, SimpleContentPortlet config).
+  // It's marketing pressure, not a runtime defect — filter it out.
+  const realErrors = listeners.consoleErrors.filter(
+    (error) => !/CKEditor.*version is not secure/.test(error)
+  );
+  expect(realErrors, `console errors at ${url}`).toEqual([]);
 }
 
 test.describe("Visual resource-server smoke", () => {
@@ -136,7 +142,11 @@ test.describe("Visual resource-server smoke", () => {
     });
     // Allow the news-feeds AJAX to settle.
     await page.waitForTimeout(3000);
-    const bodyText = await page.locator("body").textContent();
+    // innerText excludes <script type="text/template"> bodies; textContent would
+    // include the template source (which legitimately contains {{var}} syntax)
+    // and trigger a false positive in the assertion below.
+    // eslint-disable-next-line unicorn/prefer-dom-node-text-content
+    const bodyText = await page.locator("body").innerText();
     await page.screenshot({
       path: "test-results/visual-smoke/news-portlet.png",
       fullPage: true,
