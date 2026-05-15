@@ -73,3 +73,7 @@ that means either:
   Tomcat-internal forward, or a monitoring probe).
 
 In that case fall back to inspecting the source: `grep -r 'ResourceServingWebapp' overlays/` (or the equivalent path in your customizations repo) usually finds the literal string in a JSP, skin XML, or Spring config.
+
+## Future direction
+
+The file-based access log this doc grep's against is the lowest-common-denominator audit surface — useful precisely because Tomcat emits it already, with no extra infrastructure to run. A more durable path for observability work is OpenTelemetry's [Logs Data Model](https://opentelemetry.io/docs/specs/otel/logs/data-model/): structured log records ingested by a collector and fanned out to the deployer's logging backend, where attribute-based queries replace text grep entirely. uPortal-start does not currently ship OTEL instrumentation; adding it is tracked separately and would be the right long-term place for the audits described above.
