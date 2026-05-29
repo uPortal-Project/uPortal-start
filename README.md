@@ -21,10 +21,10 @@ uPortal-start help you manage:
 
 The following software packages are required for working with uPortal-start:
 
-  - A Java Development Kit (JDK), version 8 ([Oracle JDK 8][], [Corretto JDK 8][], [Adopt OpenJDK 8][], or [Zulu JDK 8][])
+  - A Java Development Kit (JDK), version 11 ([Oracle JDK 11][], [Corretto 11][], [Eclipse Temurin 11][], or [Azul Zulu 11][])
   - A suitable [Git Client][] for your OS
 
-Download and install the **latest JDK 8 release**.  Make sure you select the full JDK;  _a JRE is
+Download and install the **latest JDK 11 release**.  Make sure you select the full JDK;  _a JRE is
 not sufficient!_
 
 :warning: _Always use Git_ to obtain a copy of uPortal-start.  (Please ignore the _Download ZIP_
@@ -345,10 +345,10 @@ The intent is for Playwright installation and execution to be controlled by the 
 
 [Apereo uPortal]: https://www.apereo.org/projects/uportal
 [uPortal 5.0 Manual]: https://uPortal-Project.github.io/uPortal
-[Oracle JDK 8]: https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
-[Corretto JDK 8]: https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/downloads-list.html
-[Adopt OpenJDK 8]: https://adoptopenjdk.net/?variant=openjdk8
-[Zulu JDK 8]: https://www.azul.com/downloads/zulu-community/?&version=java-8-lts
+[Oracle JDK 11]: https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html
+[Corretto 11]: https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html
+[Eclipse Temurin 11]: https://adoptium.net/temurin/releases/?version=11
+[Azul Zulu 11]: https://www.azul.com/downloads/?version=java-11-lts&package=jdk
 [Git Client]: https://git-scm.com/downloads
 [Apache Tomcat Servlet Container]: https://tomcat.apache.org/
 [Maven Central]: https://search.maven.org/
