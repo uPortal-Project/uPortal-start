@@ -16,7 +16,7 @@ notificationPortletVersion=4.8.4
 resourceServerVersion=1.0.48
 # Includes newer front-end dependencies and web components
 resourceServerWebjarVersion=1.5.3
-simpleContentPortletVersion=3.4.3
+simpleContentPortletVersion=3.4.4
 uPortalVersion=5.17.8
 webProxyPortletVersion=2.4.1
 
