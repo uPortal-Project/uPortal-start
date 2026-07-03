@@ -6,7 +6,7 @@ dependencies {
         exclude group: 'xerces', module: 'xercesImpl'
     }
     runtime "net.sf.ehcache:ehcache-core:${casEhcacheVersion}"
-    runtime "org.aspectj:aspectjrt:1.9.7"
+    runtime "org.aspectj:aspectjrt:1.9.25.1"
     runtime "org.aspectj:aspectjweaver:1.9.7"
     runtime "org.jasig.cas:cas-server-webapp:${casServerVersion}@war"
     runtime("org.jasig.cas:cas-server-extension-clearpass:${casServerVersion}") {
