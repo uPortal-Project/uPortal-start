@@ -42,12 +42,70 @@ import java.util.regex.Pattern
 File skinsDir = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr")
 task skinGenerate() {
     group 'Skin'
-    description 'Genarate a new uPortal skin for Respondr;  pass -DskinName={name} (required) to specify a name'
+    description 'Generate a new SCSS-based uPortal skin for Respondr;  pass -DskinName={name} (required) to specify a name'
 
     doLast {
         String skinName = System.getProperty('skinName');
         if (skinName == null || skinName.isEmpty()) {
-            throw new GradleException('You must specify a skinName JVM argment to invoke the skinGenerate task')
+            throw new GradleException('You must specify a skinName JVM argument to invoke the skinGenerate task')
+        }
+
+        // We have a name;  but is it valid?
+        if (!Pattern.matches(/[a-zA-Z0-9]{3,20}/, skinName)) {
+            throw new GradleException('A valid skinName contains between 3 and 20 alphanumeric characters')
+        }
+        File skinFile = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}.scss")
+        File skinDir = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}")
+        if (skinFile.exists() || skinDir.exists()) {
+            throw new GradleException("Unable to generate a skin with the same name as an existing skin:  ${skinName}")
+        }
+
+        skinsDir.mkdirs()
+
+        // First the ${skinName}.scss entry-point file (uses Groovy expand for import paths)
+        copy {
+            from "${rootProject.projectDir}/etc/skin/skinName.scss"
+            into skinsDir
+            rename { return "${skinName}.scss" }
+            expand(skinName: skinName)
+        }
+
+        // Then the contents of the ${skinName}/scss folder (plain copy, no expand -- SCSS uses $ for variables)
+        File skinScssDir = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}/scss")
+        copy {
+            from "${rootProject.projectDir}/etc/skin/skinName/scss"
+            into skinScssDir
+        }
+
+        // Copy skin.xml
+        copy {
+            from "${rootProject.projectDir}/etc/skin/skinName/skin.xml"
+            into skinDir
+        }
+
+        // Copy skinList.xml if it does not exist
+        File skinListFile = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/skinList.xml")
+        File respondrDir = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr")
+        if (!skinListFile.exists()) {
+            copy {
+                from "${rootProject.projectDir}/etc/skin/skinList.xml"
+                into respondrDir
+            }
+        }
+
+        logger.lifecycle("Generated new SCSS skin ${skinName} at the following location:  ${skinsDir}")
+        logger.lifecycle("IMPORTANT!  To use the ${skinName} skin (instead of the default) change the 'PREFdynamicSkinName' preference in dynamic-respondr-skin")
+    }
+}
+
+task skinGenerateLess() {
+    group 'Skin'
+    description 'Generate a new LESS-based uPortal skin for Respondr (legacy);  pass -DskinName={name} (required) to specify a name'
+
+    doLast {
+        String skinName = System.getProperty('skinName');
+        if (skinName == null || skinName.isEmpty()) {
+            throw new GradleException('You must specify a skinName JVM argument to invoke the skinGenerateLess task')
         }
 
         // We have a name;  but is it valid?
@@ -57,7 +115,7 @@ task skinGenerate() {
         File skinFile = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}.less")
         File skinDir = rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}")
         if (skinFile.exists() || skinDir.exists()) {
-            throw new GradleException("Unable to generate a skin with the same neame as an existing skin:  ${skinName}")
+            throw new GradleException("Unable to generate a skin with the same name as an existing skin:  ${skinName}")
         }
 
         skinsDir.mkdirs()
@@ -72,9 +130,15 @@ task skinGenerate() {
 
         // Then the contents of the ${skinName} folder
         copy {
-            from "${rootProject.projectDir}/etc/skin/skinName"
-            into skinDir
+            from "${rootProject.projectDir}/etc/skin/skinName/less"
+            into rootProject.file("${projectDir}/src/main/webapp/media/skins/respondr/${skinName}/less")
             expand(skinName: skinName)
+        }
+
+        // Copy skin.xml
+        copy {
+            from "${rootProject.projectDir}/etc/skin/skinName/skin.xml"
+            into skinDir
         }
 
         // Copy skinList.xml if it does not exist
@@ -87,7 +151,7 @@ task skinGenerate() {
             }
         }
 
-        logger.lifecycle("Generated new skin ${skinName} at the following location:  ${skinsDir}")
+        logger.lifecycle("Generated new LESS skin ${skinName} at the following location:  ${skinsDir}")
         logger.lifecycle("IMPORTANT!  To use the ${skinName} skin (instead of the default) change the 'PREFdynamicSkinName' preference in dynamic-respondr-skin")
     }
 }
@@ -189,7 +253,7 @@ else {
     // Identify custom skins located in skinsDir
     logger.lifecycle "Preparing Gradle tasks to compile the following custom skin files defined in ${skinsDir}"
     FileTree skinFiles = fileTree(dir: skinsDir, include: "*.less")
-    // Step 3:  Use NodeJS & lessc to compile custom skin(sz)
+    // Step 3:  Use NodeJS & lessc to compile custom skin(s) (LESS)
     skinFiles.eachWithIndex { f, index ->
         String it = f.toString()
         // Strip the path
@@ -198,6 +262,24 @@ else {
 
         task "compileLess${index}"(type: NpmTask, dependsOn: prepareSkinResources) {
             args = ['run', 'compile-less', "${skinTmpDir}${skinFileName}", "${skinTmpDir}${skinFileName.replace('.less', '.css')}"]
+        }
+    }
+
+    // Step 4:  Use NodeJS & sass to compile custom skin(s) (SCSS)
+    // Bootstrap SCSS source is included in the upstream uPortal WAR's webjars;
+    // --load-path tells sass where to find bare @import "bootstrap" references.
+    String bootstrapScssLoadPath = "${buildDir}/tmp/skin/uPortal/webjars/bootstrap/scss"
+    FileTree scssFiles = fileTree(dir: skinsDir, include: "*.scss")
+    scssFiles.eachWithIndex { f, index ->
+        String it = f.toString()
+        // Strip the path
+        String skinFileName = it.substring(it.lastIndexOf(File.separator) + 1)
+        logger.lifecycle "  -> ${skinFileName} (scss) $index"
+
+        task "compileScss${index}"(type: NpmTask, dependsOn: prepareSkinResources) {
+            args = ['run', 'compile-scss', '--',
+                    "--load-path=${bootstrapScssLoadPath}",
+                    "${skinTmpDir}${skinFileName}:${skinTmpDir}${skinFileName.replace('.scss', '.css')}"]
         }
     }
 
@@ -218,7 +300,7 @@ else {
     }
 
     war.dependsOn {
-        tasks.findAll { task -> task.name.startsWith('compileLess') }
+        tasks.findAll { task -> task.name.startsWith('compileLess') || task.name.startsWith('compileScss') }
     }
 }
 
