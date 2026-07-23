@@ -2,9 +2,11 @@
   "name": "uportal-start",
   "private": true,
   "scripts": {
-    "compile-less": "lessc"
+    "compile-less": "lessc",
+    "compile-scss": "sass"
   },
   "devDependencies": {
-    "less": "^3.13.0"
+    "less": "^3.13.0",
+    "sass": "^1.77.0"
   }
 }
