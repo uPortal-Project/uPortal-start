@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<portlet-definition version="4.0" xsi:schemaLocation="https://source.jasig.org/schemas/uportal/io/portlet-definition https://source.jasig.org/schemas/uportal/io/portlet-definition/portlet-definition-4.0.xsd" xmlns:ns2="https://source.jasig.org/schemas/uportal" xmlns="https://source.jasig.org/schemas/uportal/io/portlet-definition" xmlns:ns4="https://source.jasig.org/schemas/uportal/io/portlet-type" xmlns:ns3="https://source.jasig.org/schemas/uportal/io/subscribed-fragment" xmlns:ns5="https://source.jasig.org/schemas/uportal/io/event-aggregation" xmlns:ns6="https://source.jasig.org/schemas/uportal/io/user" xmlns:ns7="https://source.jasig.org/schemas/uportal/io/stylesheet-descriptor" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns8="https://source.jasig.org/schemas/uportal/io/permission-owner">
+    <title>Menu Header</title>
+    <name>Menu Header</name>
+    <fname>content-menu</fname>
+    <desc>New kind of header menu</desc>
+    <type>Portlet</type>
+    <timeout>12000</timeout>
+    <portlet-descriptor>
+        <ns2:isFramework>true</ns2:isFramework>
+        <ns2:portletName>JspInvoker</ns2:portletName>
+    </portlet-descriptor>
+    <group>Everyone</group>
+    <parameter>
+        <name>disableDynamicTitle</name>
+        <value>true</value>
+    </parameter>
+    <portlet-preference>
+        <name>JspInvokerPortletController.viewLocation</name>
+        <readOnly>false</readOnly>
+        <value>/jsp/Invoker/content-menu</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>JspInvokerPortletController.beans</name>
+        <readOnly>false</readOnly>
+        <value>personManager</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>portalLogoutUrl</name>
+        <readOnly>false</readOnly>
+        <value>/uPortal/Logout</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>alternativeBanner</name>
+        <readOnly>true</readOnly>
+        <value>https://www.toureiffel.paris/sites/default/files/styles/1440x810/public/2017-10/monument-landing-header-bg_0.jpg?itok=_dSLLBlZ</value>
+    </portlet-preference>
+        <portlet-preference>
+        <name>favoriteApiUrl</name>
+        <readOnly>true</readOnly>
+        <value>/uPortal/api/layout</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>layoutApiUrl</name>
+        <readOnly>true</readOnly>
+        <value>/uPortal/api/v4-3/dlm/layout.json</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>portletApiUrl</name>
+        <readOnly>true</readOnly>
+        <value>/uPortal/api/v4-3/dlm/portletRegistry.json?category=All%20categories</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>userInfoApiUrl</name>
+        <readOnly>true</readOnly>
+        <value>/uPortal/api/v5-1/userinfo</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>favoritesPortletCardSize</name>
+        <readOnly>true</readOnly>
+        <value>small</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>gridPortletCardSize</name>
+        <readOnly>true</readOnly>
+        <value>auto</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>hideActionMode</name>
+        <readOnly>true</readOnly>
+        <value>never</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>hidePortalNav</name>
+        <readOnly>true</readOnly>
+        <value>false</value>
+    </portlet-preference>
+<!--
+    <portlet-preference>
+        <name>organizationApiUrl</name>
+        <readOnly>true</readOnly>
+        <value>/context/rest/orgsInfos/</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>moreUserInfoUrl</name>
+        <readOnly>true</readOnly>
+        <value>/uPortal/p/</value>
+    </portlet-preference>
+    <portlet-preference>
+        <name>orgInfoUrl</name>
+        <readOnly>true</readOnly>
+        <value>/uPortal/p/etablissement-swapper</value>
+    </portlet-preference>
+-->
+</portlet-definition>
