@@ -6,16 +6,32 @@
 
 ## About uPortal-start
 
-uPortal-start is the mechanism through which individuals and institutions adopt [Apereo uPortal][],
-the leading open source enterprise portal framework built by and for higher education institutions,
-K-12 schools, and research communities.  **uPortal-start is new for uPortal 5.0**
+uPortal-start is the starting point for running a [uPortal][Apereo uPortal]
+site. Colleges and universities use uPortal to build the website where students,
+faculty, and staff sign in and find campus content and applications.
 
-uPortal-start help you manage:
+A school copies uPortal-start with Git and keeps its own settings there.
+uPortal-start helps you manage:
 
   - Your uPortal configuration
-  - Your uPortal skin
-  - Your uPortal data
-  - And your uPortal deployments through an integrated suite of CLI tools
+  - Your skin: the colors, fonts, and branding of your site
+  - Your data: users, groups, portlets, and page layouts
+  - Your deployments, through Gradle tasks that install Tomcat, set up the
+    database, and deploy uPortal
+
+### Related projects
+
+uPortal-start combines the following projects into one deployment.
+
+  - [uPortal][uPortal on GitHub]: the Java framework. uPortal-start downloads a
+    released version from Maven Central, and `uPortalVersion` in
+    `gradle.properties` sets which one.
+  - [uPortal-web-components][]: browser components such as the `waffle-menu`
+    app launcher and the content carousel. The `resource-server` overlay serves
+    them to the browser.
+  - Portlets: Announcements, Calendar, News Reader, Notification, Bookmarks, Web
+    Proxy, and Simple Content. Each one comes from its own project, and the
+    `overlays` folder builds it into the deployment.
 
 ### Prerequisites
 
@@ -344,6 +360,8 @@ The intent is for Playwright installation and execution to be controlled by the 
 ```
 
 [Apereo uPortal]: https://www.apereo.org/projects/uportal
+[uPortal on GitHub]: https://github.com/uPortal-Project/uPortal
+[uPortal-web-components]: https://github.com/uPortal-Project/uPortal-web-components
 [uPortal 5.0 Manual]: https://uPortal-Project.github.io/uPortal
 [Oracle JDK 11]: https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html
 [Corretto 11]: https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html
