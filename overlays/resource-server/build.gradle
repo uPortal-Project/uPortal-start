@@ -16,6 +16,16 @@ dependencies {
 
     runtime "org.webjars.npm:vue:${vueVersion}@jar"
 
+    // Webjar replacements for formerly-vendored /rs/ libraries. The uPortal skins
+    // (respondr defaultSkin + common) and this repo's skinName template reference
+    // these via /resource-server/webjars/..., served by the engine's
+    // webjars-locator-core (matching the existing jquery-ui webjar usage). The
+    // corresponding rs/ trees have been dropped from src/rs — the webjar is now the
+    // single source for each.
+    runtime "org.webjars.npm:font-awesome:${fontAwesomeVersion}@jar"
+    runtime "org.webjars:underscorejs:${underscoreVersion}@jar"
+    runtime "org.webjars:backbonejs:${backboneVersion}@jar"
+
     // CKEditor 4 — used by SimpleContentPortlet's configureContent.jsp.
     // 4.22.1 is the last free 4.x release; all 4.x CVEs through that point
     // are patched (see uPortal CVE remediation queue).
@@ -45,7 +55,8 @@ dependencies {
  * generate .min.js/.min.css siblings with esbuild (see minify.js), and package THAT
  * copy into the WAR.  This reproduces what the resource-server webapp's
  * `npm run minify` build step produced previously, so the generated .min paths the
- * portal references (e.g. rs/underscore/1.8.3/underscore.min.js) continue to resolve.
+ * portal references (e.g. rs/jquery-plugins/noty/2.4.1/jquery.noty.packaged.min.js)
+ * continue to resolve.
  *
  * The minified rs/ is added at configuration time via `from`, so under the
  * WarOverlayPlugin's DuplicatesStrategy.EXCLUDE (first-added wins) it takes
@@ -57,16 +68,33 @@ dependencies {
 File rsSourceDir = file("${projectDir}/src/rs")
 String minifiedContentDir = "${buildDir}/rs-minified"
 
-task stageRsContent(type: Copy) {
-    from rsSourceDir
-    into "${minifiedContentDir}/rs"
-}
-
-task minifyRsContent(type: NpmTask, dependsOn: [npmInstall, stageRsContent]) {
-    // minify.js takes the directory that CONTAINS the rs/ tree as its argument.
-    args = ['run', 'minify', '--', minifiedContentDir]
+// Single task that owns ${minifiedContentDir} end-to-end: it syncs the vendored
+// rs/ sources into it, then runs esbuild (minify.js) to generate .min.js/.min.css
+// siblings in place.  Combining the sync and the minify avoids two tasks writing
+// into the same output directory (which would disable Gradle's up-to-date checking
+// and risk an overlapping-outputs warning).
+//
+// The sync (delete-stale) step matters: a library later replaced by a webjar and
+// removed from src/rs must also disappear from the staging dir, or the stale copy
+// would ship in the WAR.  Declaring src/rs as the only input and the staging dir as
+// the only output keeps incremental builds correct.
+task minifyRsContent(type: NpmTask, dependsOn: npmInstall) {
     inputs.dir rsSourceDir
     outputs.dir minifiedContentDir
+
+    doFirst {
+        // Qualify with project.sync so `from`/`into` resolve against a CopySpec
+        // rather than the NpmTask.  Sync (delete-stale) so a library later removed
+        // from src/rs (e.g. replaced by a webjar) also disappears from the staging
+        // dir instead of lingering in the WAR.
+        project.sync { spec ->
+            spec.from rsSourceDir
+            spec.into "${minifiedContentDir}/rs"
+        }
+    }
+
+    // minify.js takes the directory that CONTAINS the rs/ tree as its argument.
+    args = ['run', 'minify', '--', minifiedContentDir]
 }
 
 war {

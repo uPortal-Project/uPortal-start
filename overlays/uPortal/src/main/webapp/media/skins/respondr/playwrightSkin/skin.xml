@@ -28,8 +28,8 @@
   <css included="plain">/resource-server/rs/normalize/2.1.2/normalize-2.1.2.css</css>
   <css included="aggregated">/resource-server/rs/normalize/2.1.2/normalize-2.1.2.min.css</css>
 
-  <css included="plain">/resource-server/rs/fontawesome/4.7.0/css/font-awesome.css</css>
-  <css included="aggregated">/resource-server/rs/fontawesome/4.7.0/css/font-awesome.min.css</css>
+  <css included="plain">/resource-server/webjars/font-awesome/css/font-awesome.css</css>
+  <css included="aggregated">/resource-server/webjars/font-awesome/css/font-awesome.min.css</css>
 
   <css included="plain" resource="true">/rs/bootstrap-plugins/accessibility/1.0.2/css/bootstrap-accessibility.css</css>
   <css included="aggregated" resource="true">/rs/bootstrap-plugins/accessibility/1.0.2/css/bootstrap-accessibility.min.css</css>
