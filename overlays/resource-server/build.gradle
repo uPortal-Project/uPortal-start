@@ -1,13 +1,17 @@
-/*
- * NOTE:  This bundled app is a more recent copy of the ResourceServingWebapp.
- *
- * For releases beginning with 1.1.0, the resource-server-content module removed some older versions
- * of several libraries.  uPortal, however, still depends on some of those libraries, and currently
- * won't work without a copy of ResourceServingWebapp.  For webjar support, on the other hand, we
- * need version 1.3.x.  So (for now) we will run two copies.
- */
+apply plugin: 'com.github.node-gradle.node'
+
+node {
+    version = nodejsVersion
+    download = true
+}
 
 dependencies {
+    /*
+     * The resource-server webapp (the Spring Boot "serving layer") stays upstream and
+     * continues to provide the servlet, filters, webjar resolver, and the /rs/ + /webjars/
+     * resource handlers.  uPortal-start now OWNS the legacy /rs/ static content: it is
+     * vendored under src/rs, minified at build time, and layered onto this WAR below.
+     */
     runtime "org.jasig.resourceserver:resource-server-webapp:${resourceServerWebjarVersion}@war"
 
     runtime "org.webjars.npm:vue:${vueVersion}@jar"
@@ -31,6 +35,44 @@ dependencies {
 
 }
 
+/*
+ * Minify the vendored /rs/ content (Option M1 — the minify step moved out of the
+ * resource-server webapp along with the content it operates on).
+ *
+ * The raw originals are vendored under src/rs (deliberately NOT src/main/webapp, so
+ * the War plugin does not auto-include the unminified tree and collide with the
+ * minified copy we add below).  We stage a working copy into the build directory,
+ * generate .min.js/.min.css siblings with esbuild (see minify.js), and package THAT
+ * copy into the WAR.  This reproduces what the resource-server webapp's
+ * `npm run minify` build step produced previously, so the generated .min paths the
+ * portal references (e.g. rs/underscore/1.8.3/underscore.min.js) continue to resolve.
+ *
+ * The minified rs/ is added at configuration time via `from`, so under the
+ * WarOverlayPlugin's DuplicatesStrategy.EXCLUDE (first-added wins) it takes
+ * precedence over the rs/ tree still carried by the overlaid resource-server-webapp
+ * WAR (that overlay is added later, during the war task's doFirst).  Once the
+ * upstream webapp drops its resource-server-content dependency, the overlaid WAR will
+ * no longer carry rs/ at all and uPortal-start becomes the sole source.
+ */
+File rsSourceDir = file("${projectDir}/src/rs")
+String minifiedContentDir = "${buildDir}/rs-minified"
+
+task stageRsContent(type: Copy) {
+    from rsSourceDir
+    into "${minifiedContentDir}/rs"
+}
+
+task minifyRsContent(type: NpmTask, dependsOn: [npmInstall, stageRsContent]) {
+    // minify.js takes the directory that CONTAINS the rs/ tree as its argument.
+    args = ['run', 'minify', '--', minifiedContentDir]
+    inputs.dir rsSourceDir
+    outputs.dir minifiedContentDir
+}
+
 war {
     archiveName 'resource-server.war'
+
+    dependsOn minifyRsContent
+
+    from(minifiedContentDir)
 }
