@@ -12,9 +12,8 @@ esupFilemanagerPortletVersion=4.0.0
 feedbackPortletVersion=1.3.2
 newsReaderPortletVersion=5.1.5
 notificationPortletVersion=4.8.4
-# Required for very old front-end dependencies
-resourceServerVersion=1.0.48
-# Includes newer front-end dependencies and web components
+# The resource-server "serving engine" WAR; the legacy /rs/ content it serves is
+# vendored in overlays/resource-server. Includes web component webjars.
 resourceServerWebjarVersion=1.5.3
 simpleContentPortletVersion=3.4.4
 uPortalVersion=5.17.9
@@ -24,6 +23,10 @@ webProxyPortletVersion=2.4.1
 vueVersion=2.7.16
 uPortalWebComponentsVersion=1.40.1
 notificationWebComponentsVersion=1.0.4
+# Served as webjars (formerly vendored under rs/) — replace the /rs/ copies
+fontAwesomeVersion=4.7.0
+underscoreVersion=1.8.3
+backboneVersion=1.3.3
 # 4.22.1 is the last truly free CKEditor 4 (4.23+ are LTS requiring a
 # paid license key — they self-destruct on init without one). Latest CVE
 # patches for 4.x require that license. See the ledger row for the long-

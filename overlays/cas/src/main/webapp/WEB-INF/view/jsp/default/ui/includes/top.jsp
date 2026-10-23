@@ -35,15 +35,15 @@
                 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
                 <meta name="apple-mobile-web-app-capable" content="yes" />
                 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-				<link href="/ResourceServingWebapp/rs/jquery-mobile/1.0a3/themes/default/jquery.mobile-1.0a3-default.min.css" media="" rel="stylesheet" type="text/css"/>
+				<link href="/resource-server/rs/jquery-mobile/1.0a3/themes/default/jquery.mobile-1.0a3-default.min.css" media="" rel="stylesheet" type="text/css"/>
            </c:when>
            <c:otherwise>
                 <spring:theme code="standard.custom.css.file" var="customCssFile" />
                 <link type="text/css" rel="stylesheet" href="<c:url value="${customCssFile}" />" />
            </c:otherwise>
         </c:choose>
-		<script src="/ResourceServingWebapp/rs/jquery/1.5/jquery-1.5.min.js" type="text/javascript"></script>
-		<script src="/ResourceServingWebapp/rs/jqueryui/1.8/jquery-ui-1.8.min.js" type="text/javascript"></script>
+		<script src="/resource-server/rs/jquery/1.5/jquery-1.5.min.js" type="text/javascript"></script>
+		<script src="/resource-server/rs/jqueryui/1.8/jquery-ui-1.8.min.js" type="text/javascript"></script>
         <script type="text/javascript" src="<c:url value="/js/cas.js" />"></script>
 		<c:if test="${not empty requestScope['isMobile']}">
 			<script type="text/javascript">
@@ -54,7 +54,7 @@
 				  });
 				});
 			</script>
-			<script src="/ResourceServingWebapp/rs/jquery-mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js" type="text/javascript"></script>
+			<script src="/resource-server/rs/jquery-mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js" type="text/javascript"></script>
 		</c:if>
 	    <link rel="icon" href="<c:url value="/favicon.ico" />" type="image/x-icon" />
 	</head>

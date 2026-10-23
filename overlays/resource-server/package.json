@@ -1,0 +1,11 @@
+{
+  "name": "uportal-start-resource-server",
+  "private": true,
+  "scripts": {
+    "minify": "node minify.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0",
+    "glob": "^10.3.0"
+  }
+}
