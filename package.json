@@ -4,7 +4,7 @@
     "@playwright/test": "^1.58.2",
     "@typescript-eslint/eslint-plugin": "~8.6.0",
     "@typescript-eslint/parser": "~8.6.0",
-    "eslint": "~9.10.0",
+    "eslint": "~9.39.0",
     "eslint-plugin-no-jquery": "~3.0.0",
     "eslint-plugin-playwright": "~2.10.0",
     "eslint-plugin-sonarjs": "~2.0.0",
